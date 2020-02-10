@@ -139,7 +139,7 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
                             continue;
                         $old_abspath = $this->object->get_image_abspath($image, $named_size);
                         $new_abspath = $this->object->get_image_abspath($new_image, $named_size);
-                        if (is_array(@stat($old_abspath)))
+                        if (is_array(stat($old_abspath)))
                         {
                             $new_dir = dirname($new_abspath);
                             // Ensure the target directory exists
