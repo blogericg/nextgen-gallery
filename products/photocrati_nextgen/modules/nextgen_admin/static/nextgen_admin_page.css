@@ -1235,6 +1235,18 @@ table.nextgen_settings_position {
     color: #fff;
 }
 
+#ngg_gallery_quickswitch_wrapper {
+}
+
+#ngg_gallery_quickswitch_wrapper .select2-container {
+    min-width: 250px;
+    text-align: center;
+    margin-left: 5px;
+}
+
+#ngg_gallery_quickswitch {
+}
+
 /* 8) NGG Admin CSS: Media Queries */
 
 @media (max-width: 1240px) {

@@ -2,8 +2,8 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 4.0.0
-Stable tag: 3.2.23.1
-Tested up to: 5.3.2
+Stable tag: 3.2.23
+Tested up to: 5.3.0
 License: GPLv2
 
 The most popular WordPress gallery plugin and one of the most popular plugins of all time with over 27 million downloads.
@@ -178,18 +178,6 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 
 == Changelog ==
-
-= V3.2.23.1 - 02.04.2020 =
-* Changed: Removed use of 'contextual_help' filter which is deprecated
-* Changed: Renamed nggallery.po to nggallery.pot for better compatibility with Loco Translate
-* Fixed:   Compatibility with Divi Booster
-* Fixed:   Copying images to another gallery caused a PHP warning
-* Fixed:   Featured Image feature was not working
-* Fixed:   Fixed PHP warning sometimes displayed with album breadcrumbs
-* Fixed:   Fixed PHP warning when displaying certain albums
-* Fixed:   SimpleLightbox would not use image alttext attribute for titles
-* Fixed:   Uploading images with invalid EXIF would reject the image entirely
-* NEW:     Added feature on Manage Galleries page to search gallery names
 
 = V3.2.23 - 12.02.2019 =
 * NEW:     There is a new setting under Other Options > Misc to disable enqueueing FontAwesome entirely

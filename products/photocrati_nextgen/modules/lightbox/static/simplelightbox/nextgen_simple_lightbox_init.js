@@ -5,8 +5,7 @@ jQuery(function($) {
     var nextgen_simplebox_options = {
         history: false,
         animationSlide: false,
-        animationSpeed: 100,
-        captionSelector: 'self'
+        animationSpeed: 100
     };
 
     var nextgen_simplelightbox_init = function() {

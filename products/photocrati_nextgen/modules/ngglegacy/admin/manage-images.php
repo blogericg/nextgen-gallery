@@ -394,6 +394,43 @@ function nggallery_picturelist($controller)
                     </h3>
                 </div>
 
+                <?php // begin gallery quick-switch widget ?>
+                <div id="ngg_gallery_quickswitch_wrapper">
+                    <label for="ngg_gallery_quickswitch">
+                        <?php print __('Switch gallery:', 'nggallery'); ?>
+                        <select id="ngg_gallery_quickswitch">
+                            <?php
+                            $new_GET  = $_GET;
+                            $base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'];
+                            foreach (C_Gallery_Mapper::get_instance()->find_all() as $this_gallery) {
+                                $new_GET['gid'] = $this_gallery->gid;
+                                $new_get_parts  = http_build_query($new_GET);
+                                $this_url       = $base_url . $_SERVER['DOCUMENT_URI'] . '?' . $new_get_parts;
+                                ?>
+                                <option value="<?php print esc_attr($this_gallery->gid); ?>"
+                                        <?php selected($gallery->gid, $this_gallery->gid); ?>
+                                        data-url="<?php print esc_attr($this_url); ?>">
+                                    <?php print esc_html($this_gallery->title); ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </label>
+                </div>
+                <script type="text/javascript">
+                    jQuery(document).ready(function($) {
+                        var field = $('#ngg_gallery_quickswitch');
+                        field.select2({
+                            dropdownAutoWidth: true
+                        });
+                        // prevent select2 from "remembering" past choices
+                        field.select2('val', null);
+                        field.on('change', function(event) {
+                            window.location = field.find(':selected').data('url');
+                        });
+                    })(jQuery);
+                </script>
+                <?php // end gallery quick-switch widget ?>
+
                 <div class='ngg_page_content_main'>
 
                     <form id="updategallery"
