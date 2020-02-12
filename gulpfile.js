@@ -33,12 +33,16 @@ const argv		= require('yargs').argv;
 const zip		= require('gulp-zip');
 const children	= require('child_process');
 const fs		= require('fs');
-const gutil 	= require('gulp-util');
 const uglify 	= require('gulp-uglify');
 const cleancss  = require('gulp-clean-css');
 const rename 	= require('gulp-rename');
 const webpack 	= require('webpack-stream');
 const exec 		= children.exec;
+
+const gutil = {
+	log: require('fancy-log'),
+	colors: require('ansi-colors')
+}
 
 /*
  *
