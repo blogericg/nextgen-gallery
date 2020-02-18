@@ -149,7 +149,7 @@ class A_Watermarks_Form extends Mixin
 
 		return $this->render_partial('photocrati-nextgen_other_options#watermarks_tab', array(
             'watermark_automatically_at_upload_value'     => $settings->get('watermark_automatically_at_upload', 0),
-			'watermark_automatically_at_upload_label'     => __('Automatically watermark images during upload', 'nggallery'),
+			'watermark_automatically_at_upload_label'     => __('Automatically watermark images during upload:', 'nggallery'),
             'watermark_automatically_at_upload_label_yes' => __('Yes', 'nggallery'),
             'watermark_automatically_at_upload_label_no'  => __('Yes', 'nggallery'),
             'notice'					=>	__('Please note: You can only activate the watermark under Manage Gallery. This action cannot be undone.', 'nggallery'),
