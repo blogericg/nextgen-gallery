@@ -66,6 +66,7 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
      * Backs up an image file
      *
      * @param int|object $image
+     * @param bool $save
      * @return bool
      */
     function backup_image($image, $save=TRUE)
@@ -102,6 +103,11 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
         return $retval;
     }
 
+    /**
+     * @param C_Image[]|int[] $images
+     * @param C_Gallery|int $dst_gallery
+     * @return int[]
+     */
     function copy_images($images, $dst_gallery)
     {
         $retval = array();
@@ -134,7 +140,7 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
                     wp_set_object_terms($new_image_id, $tags, 'ngg_tag', true);
 
                     // Copy all of the generated versions (resized versions, watermarks, etc)
-                    foreach ($this->get_image_sizes($image) as $named_size) {
+                    foreach ($this->object->get_image_sizes($image) as $named_size) {
                         if (in_array($named_size, array('full', 'thumbnail')))
                             continue;
                         $old_abspath = $this->object->get_image_abspath($image, $named_size);
@@ -163,22 +169,26 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
      * Moves images from to another gallery
      * @param array $images
      * @param int|object $gallery
-     * @param boolean $db optionally only move the image files, not the db entries
-     * @return boolean
+     * @return int[]
      */
     function move_images($images, $gallery)
     {
-        $retval = $this->object->copy_images($images, $gallery, TRUE);
+        $retval = $this->object->copy_images($images, $gallery);
 
-        if ($images) {
+        if ($images)
+        {
             foreach ($images as $image_id) {
                 $this->object->delete_image($image_id);
             }
         }
 
         return $retval;
-    }    
+    }
 
+    /**
+     * @param string $abspath
+     * @return bool
+     */
     function delete_directory($abspath)
     {
         $retval = FALSE;
@@ -248,7 +258,7 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
             }
             // Delete all sizes of the image
             else {
-                foreach ($this->get_image_sizes($image) as $named_size) {
+                foreach ($this->object->get_image_sizes($image) as $named_size) {
                     
                     $image_abspath = $this->object->get_image_abspath($image, $named_size);        
                     @unlink($image_abspath);
