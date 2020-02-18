@@ -342,6 +342,13 @@ class Mixin_GalleryStorage_Base_Upload extends Mixin
             // Set gallery preview image if missing
             C_Gallery_Mapper::get_instance()->set_preview_image($dst_gallery, $image_id, TRUE);
 
+            // Automatically watermark the main image if requested
+            if ($settings->get('watermark_automatically_at_upload', 0))
+            {
+                $image_abspath = $this->object->get_image_abspath($image, 'full');
+                $this->object->generate_image_clone($image_abspath, $image_abspath, array('watermark' => TRUE));
+            }
+
             // Notify other plugins that an image has been added
             do_action('ngg_added_new_image', $image);
 
