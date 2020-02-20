@@ -151,7 +151,7 @@ class A_Watermarks_Form extends Mixin
             'watermark_automatically_at_upload_value'     => $settings->get('watermark_automatically_at_upload', 0),
 			'watermark_automatically_at_upload_label'     => __('Automatically watermark images during upload:', 'nggallery'),
             'watermark_automatically_at_upload_label_yes' => __('Yes', 'nggallery'),
-            'watermark_automatically_at_upload_label_no'  => __('Yes', 'nggallery'),
+            'watermark_automatically_at_upload_label_no'  => __('No', 'nggallery'),
             'notice'					=>	__('Please note: You can only activate the watermark under Manage Gallery. This action cannot be undone.', 'nggallery'),
             'watermark_source_label'	=>	__('How will you generate a watermark?', 'nggallery'),
 			'watermark_sources'			=>	$this->object->_get_watermark_sources(),
