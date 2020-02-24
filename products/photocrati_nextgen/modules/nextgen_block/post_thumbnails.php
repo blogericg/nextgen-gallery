@@ -53,21 +53,32 @@ class C_Ngg_Post_Thumbnails
     
     function set_or_remove_ngg_post_thumbnail($post, $request)
     {
-        $json = @json_decode($request->get_body());
-        if (is_object($json) && isset($json->meta) && property_exists($json->meta, 'ngg_post_thumbnail')) {
+        $json   = @json_decode($request->get_body());
+        $target = NULL;
 
-            $storage = C_Gallery_Storage::get_instance();
+        if (!is_object($json))
+            return;
 
-            // Was the post thumbnail removed?
-            if (!$json->meta->ngg_post_thumbnail) {
-                delete_post_thumbnail($post->ID);
-                $storage->delete_from_media_library($json->meta_ngg_post_thumbnail);
-            }
+        // WordPress 5.3 changed how the featured-image metadata was submitted to the server
+        if (isset($json->meta) && property_exists($json->meta, 'ngg_post_thumbnail'))
+            $target = $json->meta;
+        elseif (property_exists($json, 'ngg_post_thumbnail'))
+            $target = $json;
 
+        if (!$target)
+            return;
+
+        $storage = C_Gallery_Storage::get_instance();
+
+        // Was the post thumbnail removed?
+        if (!$target->ngg_post_thumbnail)
+        {
+            delete_post_thumbnail($post->ID);
+            $storage->delete_from_media_library($target->ngg_post_thumbnail);
+        }
+        else {
             // Was it added?
-            else {
-                $storage->set_post_thumbnail($post->ID, $json->meta->ngg_post_thumbnail);
-            }
+            $storage->set_post_thumbnail($post->ID, $target->ngg_post_thumbnail);
         }
     }
 

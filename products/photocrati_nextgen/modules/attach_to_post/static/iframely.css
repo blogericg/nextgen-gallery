@@ -134,7 +134,8 @@ html#iframely {
     margin-top: -20px;
 }
 
-#iframely #ngg_page_content .ngg_manage_galleries p.search-box {
+#iframely #ngg_page_content .ngg_manage_galleries p.search-box,
+#iframely #ngg_page_content .ngg_manage_galleries div.search-box {
     margin: 0;
     position: relative;
     float: none;
