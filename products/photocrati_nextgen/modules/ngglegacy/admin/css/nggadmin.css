@@ -351,6 +351,12 @@ a.switch-expert {
     font-size: 14px;
     letter-spacing: 1px;
 }
+
+#ngg_page_content #editgalleries #bulkaction {
+	min-height: 35px;
+	max-height: 35px;
+}
+
 #ngg_page_content .ngg_manage_galleries .tablenav.bottom {
     margin: 15px 0 0;
 }
@@ -1333,6 +1339,19 @@ DIV that shows the image as you drag it
 	}
 	#ngg_page_content .ngg_manage_galleries form.search-form {
 		width: 100%;
+	}
+	#ngg_page_content #editgalleries div.tablenav.top div.alignleft.actions input.button-primary {
+		width: auto !important;
+		display: inline-block;
+	}
+	#ngg_page_content #editgalleries div.tablenav.top div.alignleft.actions input.button-primary:first-of-type {
+		margin-left: 5px;
+	}
+	#ngg_page_content #editgalleries div.tablenav.top div.tablenav-pages {
+		display: none;
+	}
+	#ngg_page_content #editgalleries #bulkaction {
+		width: auto !important;
 	}
 }
 
