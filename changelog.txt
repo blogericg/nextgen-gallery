@@ -1,7 +1,7 @@
 NextGEN Gallery
 by Imagely
 
-= V3.2.23.3 - 02.27.2020 =
+= V3.2.23.4 - 02.28.2020 =
 * NEW:     Added feature on Manage Galleries page to search gallery names
 * NEW:     Added filter 'ngg_disable_shortcodes_in_request_api' to disable rendering of NextGen shortcodes in REST
 * NEW:     Added option to automatically watermark images during upload
@@ -15,6 +15,7 @@ by Imagely
 * Fixed:   No notification was given when moving or copying images on Manage Gallery
 * Fixed:   PHP warning would be displayed when MediaRSS feature was enabled
 * Fixed:   SimpleLightbox would not use image alttext attribute for titles
+* Fixed:   Uploading zip files containing images with uppercase file extensions would fail to extract any images
 * Fixed:   Uploading images with invalid EXIF would reject the image entirely
 
 = V3.2.23 - 12.02.2019 =

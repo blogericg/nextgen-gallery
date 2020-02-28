@@ -2,7 +2,7 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 4.0.0
-Stable tag: 3.2.23.3
+Stable tag: 3.2.23.4
 Tested up to: 5.3.2
 License: GPLv2
 
@@ -179,7 +179,7 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.2.23.3 - 02.27.2020 =
+= V3.2.23.4 - 02.28.2020 =
 * NEW:     Added feature on Manage Galleries page to search gallery names
 * NEW:     Added filter 'ngg_disable_shortcodes_in_request_api' to disable rendering of NextGen shortcodes in REST
 * NEW:     Added option to automatically watermark images during upload
@@ -193,6 +193,7 @@ For more information, feel free to visit the official website for the NextGEN Ga
 * Fixed:   No notification was given when moving or copying images on Manage Gallery
 * Fixed:   PHP warning would be displayed when MediaRSS feature was enabled
 * Fixed:   SimpleLightbox would not use image alttext attribute for titles
+* Fixed:   Uploading zip files containing images with uppercase file extensions would fail to extract any images
 * Fixed:   Uploading images with invalid EXIF would reject the image entirely
 
 = V3.2.23 - 12.02.2019 =
