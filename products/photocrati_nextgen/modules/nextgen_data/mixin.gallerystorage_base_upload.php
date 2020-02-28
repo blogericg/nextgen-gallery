@@ -107,6 +107,8 @@ class Mixin_GalleryStorage_Base_Upload extends Mixin
     public function is_allowed_image_extension($filename)
     {
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $extension = strtolower($extension);
+
         $allowed_extensions = apply_filters(
             'ngg_allowed_file_types',
             array('jpeg', 'jpg', 'png', 'gif')
