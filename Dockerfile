@@ -19,5 +19,8 @@ RUN curl -L https://getcomposer.org/installer -o composer-setup.php \
 COPY package.json /app
 COPY . /app
 RUN composer config --global --auth http-basic.repo.packagist.com token ${composerToken}
-
-CMD npm install; composer install; npx gulp build
+RUN npm install && \
+    composer install && \
+    npx gulp build
+#CMD npm install; composer install; npx gulp build
+CMD bash
