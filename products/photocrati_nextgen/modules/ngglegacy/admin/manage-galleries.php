@@ -32,7 +32,7 @@ function nggallery_manage_gallery_main()
     $query = $gallery_mapper->select();
 
     if (!empty($_GET['gs']))
-        $query->where(array('title LIKE %s', '%' . $_GET['gs']. '%'));
+        $query->where(array('title LIKE %s', '%' . trim($_GET['gs']) . '%'));
 
     $gallerylist = $query->order_by($orderby, $order)
                          ->limit($items_per_page, $start)
@@ -229,7 +229,7 @@ function nggallery_manage_gallery_main()
                                id="gallery-search-input"
                                name="gs"
                                placeholder="<?php _e('Search Galleries', 'nggallery'); ?>"
-                               value="<?php print !empty($_GET['gs']) ? esc_attr($_GET['gs']) : ''; ?>"/>
+                               value="<?php print !empty($_GET['gs']) ? esc_attr(trim($_GET['gs'])) : ''; ?>"/>
                         <input type="submit"
                                value="<?php _e('Search Galleries', 'nggallery'); ?>"
                                class="button-primary"/>
