@@ -1,9 +1,12 @@
-version: '3'
+version: '3.7'
 
 services:
-    reactr-build:
-        build: ./
-        working_dir: /app
-        volumes:
-          - ./:/app
-        tty: true
+  reactr-build:
+    build: ./
+    working_dir: /app
+    volumes:
+      - type: bind
+        source: ./
+        target: /app
+        consistency: delegated
+    tty: true

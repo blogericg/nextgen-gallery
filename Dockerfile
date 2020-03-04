@@ -9,7 +9,8 @@ WORKDIR /app
 
 # php modules
 RUN apk add --no-cache --virtual .build-deps autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c libxml2-dev zlib-dev git bash nano less unzip nodejs nodejs-npm \
-    && docker-php-ext-install opcache pdo_mysql mysqli soap zip dom xml
+    && docker-php-ext-install opcache pdo_mysql mysqli soap zip dom xml && \
+    npm install -g gulp
 
 # install composer
 RUN curl -L https://getcomposer.org/installer -o composer-setup.php \
@@ -21,6 +22,5 @@ COPY . /app
 RUN composer config --global --auth http-basic.repo.packagist.com token ${composerToken}
 RUN npm install && \
     composer install && \
-    npx gulp build
-#CMD npm install; composer install; npx gulp build
+    gulp build
 CMD bash

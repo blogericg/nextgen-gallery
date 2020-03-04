@@ -27,14 +27,14 @@ This will load the image, you can see the status by running `docker-compose ps`
 Once the container is running, you can then use Docker Composer to perform builds:
 
 ```
-docker-compose exec reactr-build npx gulp build
-docker-compose exec reactr-build npx gulp build -z 1.0.3
+docker-compose exec reactr-build gulp build
+docker-compose exec reactr-build gulp build -z 1.0.3
 ```
 
 To deploy a build, run
 
 ```
-docker-compose exec reactr-build -e DEPLOY_PATH=/Users/foobar/wordpress/wp-content npx gulp build -d
+docker-compose exec reactr-build -e DEPLOY_PATH=/Users/foobar/wordpress/wp-content gulp build -d
 ```
 
 You can also set environment variables as a file called `build.env` for example:
@@ -52,7 +52,7 @@ You would then omit the -e argument to docker and specify --env-file instead:
 If you wanted to run composer to update packages, you’d run docker-compose exec reactr-build composer update
 
 ```
-docker-compose exec reactr-build --env-file build.env npx gulp build -d
+docker-compose exec reactr-build --env-file build.env gulp build -d
 ```
 
 Once you are done, you can leave the container running, or bring it down by running:
