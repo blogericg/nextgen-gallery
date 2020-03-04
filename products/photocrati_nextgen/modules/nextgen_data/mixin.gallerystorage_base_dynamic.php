@@ -727,6 +727,7 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
                 {
                     $image->meta_data['width'] = $size_meta['width'];
                     $image->meta_data['height'] = $size_meta['height'];
+                    $image->meta_data['generated']= microtime();
                 }
 
                 $retval = $this->object->_image_mapper->save($image);

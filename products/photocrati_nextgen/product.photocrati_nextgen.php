@@ -25,6 +25,7 @@ class P_Photocrati_NextGen extends C_Base_Product
 		'photocrati-simple_html_dom'            =>  'always',
 		'photocrati-nextgen-data'               =>  'always',
 		'photocrati-nextgen_block'              =>  'always',
+		'imagely-gcs'							=>	'always',
 
 		// We should look at how to make the modules below only
 		// require loading in wp-admin
@@ -118,5 +119,4 @@ class P_Photocrati_NextGen extends C_Base_Product
 		C_Photocrati_Installer::add_handler($this->module_id, 'C_NextGen_Product_Installer');
 	}
 }
-
 new P_Photocrati_NextGen();

@@ -170,6 +170,8 @@ class C_NextGEN_Bootstrap
 			$this->_load_non_pope();
 			$this->_register_hooks();
 			$this->_load_pope();
+			
+			\ReactrIO\Background\Bootstrap::init();
 		}
 	}
 

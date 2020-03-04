@@ -1,5 +1,9 @@
 <?php
 
+class E_NggImageNotFound extends RuntimeException {};
+class E_NggImageSizeNotFound extends RuntimeException {};
+class E_NggCdnOutOfDate extends RuntimeException {};
+
 /**
  * Provides getter methods to C_Gallery_Storage for determining absolute paths, URL, etc
  * @property C_Gallery_Storage $object
@@ -431,10 +435,208 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
         return $retval;
     }
 
+    /**
+     * Gets data stored about CDN storage for the image
+     * @param stdClass|number $image
+     * @param string $size
+     * @returns null|[]
+     */
+    function get_cdn_data($image, $size='full', $cdn_key=NULL)
+    {
+        try {
+            if (!$cdn_key) $cdn_key = $this->get_current_cdn();
+            if (!$cdn_key) return NULL;
+            $meta_data = $this->get_stored_image_size_metadata($image, $size);
+            return isset($meta_data[$cdn_key])
+                ? $meta_data[$cdn_key]
+                : NULL;
+        }
+        catch (E_NggImageNotFound $ex) {
+            return NULL;
+        }
+        catch (E_NggImageSizeNotFound $ex) {
+            return NULL;
+        }
+    }
+
+    /**
+     * Returns stored image metadata for a particular image size
+     * @param int|Object|C_Image $image
+     * @param string $size
+     * @return []
+     * 
+     * @throws E_NggImageNotFound
+     * @throws E_NggImageSizeNotFound
+     */
+    function get_stored_image_size_metadata($image, $size='full')
+    {
+        $size       = $this->normalize_image_size_name($size);
+        $image      = $this->_get_image_entity_object($image);
+        $image_id   = $image->pid;
+
+        if ($size === 'full') {
+            return $image->meta_data;
+        }
+
+        if (!isset($image->meta_data[$size])) {
+            throw new E_NggImageSizeNotFound("Could not find image #{$image_id}'s metadata for the \"{$size}\" named size");
+        }
+
+        return $image->meta_data[$size];
+    }
+
+    /**
+     * Gets the image entity for an image parameter supplied. The image parameter could be a stdClass, C_Image, or int
+     * @param C_Image|Object|int $image
+     * @return Object
+     * 
+     * @throws E_NggImageNotFound
+     */
+    function _get_image_entity_object($image)
+    {
+        $image_obj  = is_object($image) ? $image : NULL;
+        $image_id   = is_object($image) && isset($image->pid) ? $image->pid : $image;
+
+        if (!$image_obj && is_numeric($image_id)) $image_obj = $this->_image_mapper->find($image_id);
+        if (!$image_obj) throw new E_NggImageNotFound(($image_id ? "Could not find image {$image_id}" : "Could not find specified image"));
+
+        return $image_obj;
+    }
+
+    /**
+     * Updates the meta data stored for a particular image size
+     * @param C_Image|Object|int $image
+     * @param [] $updates
+     * @param string $size
+     * @return bool
+     * 
+     * @throws E_NggImageNotFound
+     * @throws E_NggImageSizeNotFound
+     */
+    function update_stored_image_meta_data($image, $updates=[], $size='full')
+    {
+        $image = $this->_get_image_entity_object($image);
+        $size = $this->normalize_image_size_name($size);
+        $meta_data = array_merge($this->get_stored_image_size_metadata($image, $size), $updates);
+        if ($size == 'full') $image->meta_data = $meta_data;
+        else $image->meta_data[$size]= $meta_data;
+        return $this->_image_mapper->save($image);
+    }
+
+    /**
+     * Gets the id of the current configured CDN
+     * @param string
+     */
+    function get_current_cdn()
+    {
+        static $retval = NULL;
+        if (!$retval) $retval = C_NextGen_Settings::get_instance()->get('cdn');
+        return $retval;
+    }
+
+    /**
+     * Gets the latest timestamp when an image size was generated
+     * @param C_Image|Object|int $image
+     * @param string $size
+     * @return number
+     */
+    function get_latest_image_timestamp($image, $size='full')
+    {
+        try {
+            $meta_data = $this->get_stored_image_size_metadata($image, $size);
+            return isset($meta_data['generated']) ? $meta_data['generated'] : time();
+        }
+        catch (E_NggImageSizeNotFound $ex) {
+            return FALSE;
+        }
+        catch (E_NggImageSizeNotFound $ex) {
+            return FALSE;
+        }
+    }
+
+    /**
+     * Deteremines if a given image size has been published to the CDN
+     * @param C_Image|Object|int $image
+     * @param string $size
+     * @return bool
+     * 
+     * @throws E_NggCdnOutOfDate
+     */
+    function is_on_cdn($image, $size='full')
+    {
+        $timestamp = $this->get_latest_image_timestamp($image, $size);
+        $cdn_data = $this->get_cdn_data($image, $size);
+        if ($cdn_data) {
+            $image_id = $this->_get_image_id($image);
+            if ($timestamp > $cdn_data['version']) {
+                throw new E_NggCdnOutOfDate("A CDN version of the \"{$size}\" named size exists on the CDN for image {$image_id} but its out-of-date");
+            }
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Gets the CDN url for a particular image size
+     * @param C_Image|Object|int $image
+     * @param string $size
+     * @return string|NULL
+     */
+    function get_cdn_url_for($image, $size='full', $cdn_key=NULL)
+    {
+        if (!$cdn_key) $cdn_key = $this->get_current_cdn();
+        if (!$cdn_key) return NULL;
+
+        if (($data = $this->get_cdn_data($image, $size, $cdn_key))) {
+            return $data['public_url'];
+        }
+
+        return NULL;
+    }
+
+    /**
+     * Stores data about the CDN version of the image
+     * @param C_Image|Object|int $image
+     * @param number $timestamp
+     * @param [] $data
+     * @param string $size optional. Defaults to "full"
+     * @param string $cdn_key optional. Defaults to current configured CDN
+     * @return bool
+     */
+    function update_cdn_data($image, $timestamp, $public_url, $data, $size='full', $cdn_key=NULL)
+    {
+        if ($cdn_key == NULL) $cdn_key = $this->get_current_cdn();
+        if (!$cdn_key) return FALSE;
+
+        $data['version']    = $timestamp;
+        $data['public_url'] = $public_url;
+
+        $image = $this->_get_image_entity_object($image);
+        $size = $this->normalize_image_size_name($size);
+
+        $cdn_data = $this->get_cdn_data($image, $size, $cdn_key);
+        $cdn_data = $cdn_data ? array_merge($cdn_data, $data) : $data;
+
+        $meta_data = $this->get_stored_image_size_metadata($image, $size);
+        $meta_data[$cdn_key] = $cdn_data;
+
+        return $this->update_stored_image_meta_data($image, $meta_data, $size);
+    }
+
+    /**
+     * Gets the computed image url for an image. Not cached.
+     * @param C_Image|Object|int $image
+     * @param string $size
+     * @return string|NULL
+     */
     function _get_computed_image_url($image, $size='full')
     {
         $retval     = NULL;
         $dynthumbs  = C_Dynamic_Thumbnails_Manager::get_instance();
+
+        $cdn_url = $this->get_cdn_url_for($image, $size);
+        if($cdn_url) return $cdn_url;
         
         // Get the image abspath
         $image_abspath = $this->object->get_image_abspath($image, $size);

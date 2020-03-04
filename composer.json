@@ -10,7 +10,10 @@
         {"packagist.org": false}
     ],
     "require": {
-        "reactr-io/pope-framework": "v0.14"
+        "reactr-io/pope-framework": "v0.14",
+        "reactr-io/wp-background-jobs": "@dev",
+        "google/cloud-storage": "^1.18",
+        "reactr-io/url": "@dev"
     },
     "require-dev": {
         "nikic/php-parser": "^4.3"
