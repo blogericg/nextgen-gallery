@@ -5,8 +5,5 @@ services:
     build: ./
     working_dir: /app
     volumes:
-      - type: bind
-        source: ./
-        target: /app
-        consistency: delegated
+      - ./:/app:delegated
     tty: true
