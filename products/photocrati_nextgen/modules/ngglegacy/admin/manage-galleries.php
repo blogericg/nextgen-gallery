@@ -43,6 +43,7 @@ function nggallery_manage_gallery_main()
     ?>
 
     <script type="text/javascript">
+        var cdn_enabled = <?php echo (C_CDN_Providers::is_cdn_configured() ? 'true' : 'false') ?>;
         var $ = jQuery;
         // Listen for frame events
         $(function() {
@@ -264,6 +265,7 @@ function nggallery_manage_gallery_main()
                                 <option value="resize_images"> <?php _e("Resize images",        'nggallery'); ?></option>
                                 <option value="import_meta">   <?php _e("Import metadata",      'nggallery'); ?></option>
                                 <option value="recover_images"><?php _e("Recover from backup",  'nggallery'); ?></option>
+                                <option value="publish_to_cdn"><?php _e("Publish to CDN",  'nggallery'); ?></option>
                             </select>
 
                             <input name="showThickbox"
@@ -468,7 +470,6 @@ function nggallery_manage_gallery_main()
     <!-- #resize_images -->
     <div id="resize_images" style="display: none;">
         <form id="form-resize-images" method="POST" accept-charset="utf-8">
-
             <?php wp_nonce_field('ngg_thickbox_form') ?>
 
             <input type="hidden"

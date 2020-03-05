@@ -604,6 +604,15 @@ class nggManageGallery {
                             nggGallery::show_message(__('Gallery deleted successfully ', 'nggallery'));
 					}
 					break;
+				case 'publish_to_cdn':
+					array_map(
+						function($id){
+							return \ReactrIO\Background\Job::create(__("Publishing gallery #{$id}", 'nextgen-gallery'), 'cdn_publish_gallery', $id)->save('cdn');
+						},
+						$_POST['doaction']
+					);
+					nggGallery::show_message(__('Publish job(s) created for selected galleries.', 'nggallery'));
+					break;
 			}
 		}
 		if (isset ($_POST['addgallery']) && isset ($_POST['galleryname'])){
@@ -631,6 +640,31 @@ class nggManageGallery {
 		}
 
 		if (isset ($_POST['TB_bulkaction']) && isset ($_POST['TB_ResizeImages']))  {
+			if (C_CDN_Providers::is_cdn_configured()) {
+				
+				// Update the global settings.
+				$settings = C_NextGen_Settings::get_instance();
+				$settings->set('imgWidth', intval($_POST['imgWidth']));
+				$settings->set('imgHeight', intval($_POST['imgHeight']));
+				$settings->save();
+
+				array_map(
+					function($id) {
+						$id = intval($id);
+						$dataset = [
+							'id' 		=> $id,
+							'size'		=> 'full',
+							'params'	=> ['width' => intval($_POST['imgWidth']), 'height' => intval($_POST['imgHeight'])]
+						];
+						return \ReactrIO\Background\Job::create("Resizing images for gallery #{$id}", "cdn_resize_gallery", $dataset)->save('cdn');
+					},
+					$gallery_ids  = explode(',', $_POST['TB_imagelist'])
+				);
+
+				nggGallery::show_message(__('Resize job(s) created for selected galleries.', 'nggallery'));
+
+				return;
+			}
 
 			check_admin_referer('ngg_thickbox_form');
 
@@ -727,7 +761,6 @@ class nggManageGallery {
 		}
 
 		if (isset ($_POST['TB_bulkaction']) && isset ($_POST['TB_NewThumbnail']))  {
-
 			check_admin_referer('ngg_thickbox_form');
 
 			// save the new values for the next operation

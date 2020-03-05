@@ -75,8 +75,37 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
         // TODO: Implement
     }
 
+    /**
+     * Downloads the image
+     * @param string $image
+     * @param string $size
+     * @return string
+     */
     function download($image, $size='full')
-    {
-        // TODO: Implement
+    {   
+        $storage = C_Gallery_Storage::get_instance();
+
+        try {
+            $is_on_cdn = $storage->is_on_cdn($image, $size);
+        }
+        catch (E_NggCdnOutOfDate $ex) {
+            $is_on_cdn = FALSE;
+        }
+
+        if ($is_on_cdn) {
+            $image_url = $storage->get_image_url($image, $size);
+
+            if (!function_exists('download_url')) require_once(ABSPATH.'/wp-admin/includes/file.php');
+            $filename = download_url($image_url);    
+            if (is_wp_error($filename)) {
+                throw new RuntimeException(__("Could not download image #{$image}'\"{$size}\" sized image: {$image_url}"));
+            }
+
+            $image_abspath = $storage->get_image_abspath($image, $size);
+            move_uploaded_file($filename, $image_abspath);
+            return $image_abspath;
+        }
+
+        return $storage->get_image_abspath($image, $size);
     }
 }

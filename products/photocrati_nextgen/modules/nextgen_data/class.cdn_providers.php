@@ -109,8 +109,17 @@ class C_CDN_Providers
      */
     static function get_current()
     {
-        $key = C_NextGen_Settings::get_instance()->get('cdn');
+        $key = self::is_cdn_configured();
         if (!$key) throw new E_NggCdnUnconfigured(__("No CDN provider has been configured yet", "nextgen-gallery"));
         return self::get($key);
+    }
+
+    /**
+     * Determines whether a CDN has been configured yet
+     * @return bool
+     */
+    static function is_cdn_configured()
+    {
+        return C_NextGen_Settings::get_instance()->get('cdn', FALSE);
     }
 }

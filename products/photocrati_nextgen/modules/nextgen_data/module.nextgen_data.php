@@ -7,8 +7,6 @@ Depends: { photocrati-datamapper }
 }
  ***/
 
-use \ReactrIO\Background\Job;
-
 class M_NextGen_Data extends C_Base_Module
 {
 	function define($id = 'pope-module',
@@ -51,7 +49,10 @@ class M_NextGen_Data extends C_Base_Module
 
     function initialize()
     {
-		Job::register_type('cdn_offload', C_CDN_Offload_Job::class);
+		\ReactrIO\Background\Job::register_type('cdn_publish_image', C_CDN_Publish_Image_Job::class);
+		\ReactrIO\Background\Job::register_type('cdn_publish_gallery', C_CDN_Publish_Gallery_Job::class);
+		\ReactrIO\Background\Job::register_type('cdn_resize_image', C_CDN_Resize_Image_Job::class);
+		\ReactrIO\Background\Job::register_type('cdn_resize_gallery', C_CDN_Resize_Gallery_Job::class);
     }
 
     public static function check_gd_requirement()
@@ -75,7 +76,7 @@ class M_NextGen_Data extends C_Base_Module
 		add_action('init', array(&$this, 'register_custom_post_types'));
 		add_filter('posts_orderby', array($this, 'wp_query_order_by'), 10, 2);
 		add_action('ngg_added_new_image', function($image){
-			Job::create(__("Upload image {$image->pid} to CDN", 'nextgen-gallery'), 'cdn_offload', $image->pid)->save('cdn_offload');
+			\ReactrIO\Background\Job::create(__("Upload image {$image->pid} to CDN", 'nextgen-gallery'), 'cdn_publish_image', $image->pid)->save('cdn');
 		});
 	}
 
@@ -106,7 +107,7 @@ class M_NextGen_Data extends C_Base_Module
 
     function register_custom_post_types()
 	{
-		Job::register_post_type();
+		\ReactrIO\Background\Job::register_post_type();
 
 		$types = array(
 			'ngg_album'		=>	'NextGEN Gallery - Album',

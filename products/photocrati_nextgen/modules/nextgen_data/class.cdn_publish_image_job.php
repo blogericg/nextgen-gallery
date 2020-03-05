@@ -1,8 +1,6 @@
 <?php
 
-use \ReactrIO\Background\Job;
-
-class C_CDN_Offload_Job extends Job
+class C_CDN_Publish_Image_Job extends \ReactrIO\Background\Job
 {
     function run()
     {
