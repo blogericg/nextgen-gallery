@@ -1,5 +1,4 @@
 <?php
-if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); }
 
 /**
  * Plugin Name: NextGEN Gallery
@@ -11,10 +10,19 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You 
  * License: GPLv2
  * Text Domain: nggallery
  * Domain Path: /products/photocrati_nextgen/modules/i18n/lang
+ * Requires PHP: 5.4
  */
 
-if (!class_exists('E_Clean_Exit')) { class E_Clean_Exit extends RuntimeException {} }
-if (!class_exists('E_NggErrorException')) { class E_NggErrorException extends RuntimeException {} }
+if (preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
+    die('You are not allowed to call this page directly.');
+}
+
+if (!class_exists('E_Clean_Exit')) {
+    class E_Clean_Exit extends RuntimeException {}
+}
+if (!class_exists('E_NggErrorException')) {
+    class E_NggErrorException extends RuntimeException {}
+}
 
 // This is a temporary function to replace the use of WP's esc_url which strips spaces away from URLs
 // TODO: Move this to a better place
@@ -88,8 +96,7 @@ class C_NextGEN_Bootstrap
 		if (is_null($exception))
 		{
             $name = php_sapi_name();
-            if (FALSE === strpos($name, 'cgi')
-            &&  version_compare(PHP_VERSION, '5.3.3') >= 0)
+            if (FALSE === strpos($name, 'cgi'))
             {
                 $status = session_status();
                 if (in_array($status, array(PHP_SESSION_DISABLED, PHP_SESSION_NONE), TRUE))
@@ -100,8 +107,10 @@ class C_NextGEN_Bootstrap
                 throw new E_Clean_Exit;
             }
         }
-		elseif (!($exception instanceof E_Clean_Exit)) {
-			if (ob_get_level() > 0) ob_end_clean();
+		elseif (!($exception instanceof E_Clean_Exit))
+        {
+			if (ob_get_level() > 0)
+			    ob_end_clean();
 			self::print_exception($exception);
 		}
 	}
@@ -152,25 +161,35 @@ class C_NextGEN_Bootstrap
 	public function php_version_incompatible()
 	{ ?>
 		<div class="notice notice-error is-dismissible">
-			<p><?php print __('We’ve detected you are running PHP versions 7.0.26 or 7.1.12. These versions of PHP have a bug that breaks NextGEN Gallery and causes server crashes in certain conditions. To protect your site, NextGEN Gallery will not load. We recommend asking your host to roll back to an earlier version of PHP. For details on the PHP bug, see: <a target="_blank" href="https://bugs.php.net/bug.php?id=75573">bugs.php.net/bug.php?id=75573</a>', 'nggallery'); ?></p>
+			<p>
+                <?php print __('NextGen Gallery requires PHP version 5.4.0 at the minimum. You must upgrade your server for NextGen Gallery to function.', 'nggallery'); ?>
+            </p>
 		</div>
 		<?php
 	}
 
 	function __construct()
 	{
+        if (PHP_VERSION_ID < 504000)
+	   	{
+			add_action('admin_notices', array($this, 'php_version_incompatible'));
+			return;
+		}
+
 	    if (!defined('NGG_DISABLE_SHUTDOWN_EXCEPTION_HANDLER') || !NGG_DISABLE_SHUTDOWN_EXCEPTION_HANDLER)
-		    set_exception_handler(__CLASS__.'::shutdown');
+		    set_exception_handler(__CLASS__ . '::shutdown');
 
 		// We only load the plugin if we're outside of the activation request, loaded in an iframe
 		// by WordPress. Reason being, if WP_DEBUG is enabled, and another Pope-based plugin (such as
 		// the photocrati theme or NextGEN Pro/Plus), then PHP will output strict warnings
-		if ($this->is_not_activating()) {
+		if ($this->is_not_activating())
+		{
 			$this->_define_constants();
 			$this->_load_non_pope();
 			$this->_register_hooks();
 			$this->_load_pope();
-			
+
+			// TODO: Move this to a file that won't cause servers running PHP 5.2 to generate a fatal exception
 			\ReactrIO\Background\Bootstrap::init();
 		}
 	}

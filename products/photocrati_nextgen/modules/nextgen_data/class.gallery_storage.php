@@ -6,10 +6,8 @@ class E_UploadException extends E_NggErrorException
     {
         if (!$message)
             $message = "There was a problem uploading the file.";
-        if (PHP_VERSION_ID >= 50300)
-            parent::__construct($message, $code, $previous);
-        else
-            parent::__construct($message, $code);
+
+        parent::__construct($message, $code, $previous);
     }
 }
 
@@ -17,12 +15,12 @@ class E_InsufficientWriteAccessException extends E_NggErrorException
 {
     function __construct($message=FALSE, $filename=NULL, $code=NULL, $previous=NULL)
     {
-        if (!$message) $message = "Could not write to file. Please check filesystem permissions.";
-        if ($filename) $message .= " Filename: {$filename}";
-        if (PHP_VERSION_ID >= 50300)
-            parent::__construct($message, $code, $previous);
-        else
-            parent::__construct($message, $code);
+        if (!$message)
+            $message = "Could not write to file. Please check filesystem permissions.";
+        if ($filename)
+            $message .= " Filename: {$filename}";
+
+        parent::__construct($message, $code, $previous);
     }
 }
 
@@ -32,10 +30,8 @@ class E_NoSpaceAvailableException extends E_NggErrorException
     {
         if (!$message)
             $message = "You have exceeded your storage capacity. Please remove some files and try again.";
-        if (PHP_VERSION_ID >= 50300)
-            parent::__construct($message, $code, $previous);
-        else
-            parent::__construct($message, $code);
+
+        parent::__construct($message, $code, $previous);
     }
 }
 
@@ -45,10 +41,8 @@ class E_No_Image_Library_Exception extends E_NggErrorException
     {
         if (!$message)
             $message = "The site does not support the GD Image library. Please ask your hosting provider to enable it.";
-        if (PHP_VERSION_ID >= 50300)
-            parent::__construct($message, $code, $previous);
-        else
-            parent::__construct($message, $code);
+
+        parent::__construct($message, $code, $previous);
     }
 }
 

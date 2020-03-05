@@ -51,11 +51,6 @@ class M_NextGen_Data extends C_Base_Module
         return function_exists("gd_info");
     }
 
-    public static function check_pel_min_php_requirement()
-    {
-        return version_compare(phpversion(), '5.3.0', '>');
-    }
-
     public function check_domdocument_requirement()
     {
         return class_exists('DOMDocument');
@@ -85,13 +80,6 @@ class M_NextGen_Data extends C_Base_Module
             'phpext',
             array($this, 'check_domdocument_requirement'),
             array('message' => __('XML is strongly encouraged for safely editing image data', 'nggallery'))
-        );
-
-        C_Admin_Requirements_Manager::get_instance()->add(
-            'nextgen_data_pel_min_php_version',
-            'phpver',
-            array($this, 'check_pel_min_php_requirement'),
-            array('message' => __('PHP 5.3 is required to write EXIF data to thumbnails and resized images', 'nggallery'))
         );
 
         C_Admin_Requirements_Manager::get_instance()->add(

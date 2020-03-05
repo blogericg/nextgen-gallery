@@ -35,11 +35,5 @@ class M_WPCLI extends C_Base_Module
 
 new M_WPCLI();
 
-// WP-CLI makes use of namespaces so we must restrict this to PHP 5.3+
-if (defined('WP_CLI')
-&&  WP_CLI
-&&  class_exists('WP_CLI_Command', FALSE)
-&&  version_compare(phpversion(), '5.3.0', '>'))
-{
+if (defined('WP_CLI') && WP_CLI && class_exists('WP_CLI_Command', FALSE))
     include_once('include/ngg_wpcli.php');
-}

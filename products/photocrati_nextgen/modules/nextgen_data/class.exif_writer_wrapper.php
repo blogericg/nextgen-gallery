@@ -2,9 +2,7 @@
 
 class C_Exif_Writer_Wrapper
 {
-    // Because our C_Exif_Writer class relies on PEL (a library which uses namespaces) we wrap
-    // its use through these methods which performs a PHP version check before loading the class file
-
+    // TODO: Remove this file & class. It was initially created as a wrapper for hosts using PHP 5.2
     /**
      * @param $old_file
      * @param $new_file
@@ -12,10 +10,7 @@ class C_Exif_Writer_Wrapper
      */
     static public function copy_metadata($old_file, $new_file)
     {
-        if (!M_NextGen_Data::check_pel_min_php_requirement())
-            return FALSE;
         self::load_pel();
-
         return @C_Exif_Writer::copy_metadata($old_file, $new_file);
     }
 
@@ -25,10 +20,7 @@ class C_Exif_Writer_Wrapper
      */
     static public function read_metadata($filename)
     {
-        if (!M_NextGen_Data::check_pel_min_php_requirement())
-            return array();
         self::load_pel();
-
         return @C_Exif_Writer::read_metadata($filename);
     }
 
@@ -38,10 +30,7 @@ class C_Exif_Writer_Wrapper
      */
     static public function reset_orientation($exif = array())
     {
-        if (!M_NextGen_Data::check_pel_min_php_requirement())
-            return array();
         self::load_pel();
-
         return @C_Exif_Writer::reset_orientation($exif);
     }
 
@@ -52,10 +41,7 @@ class C_Exif_Writer_Wrapper
      */
     static public function write_metadata($filename, $metadata)
     {
-        if (!M_NextGen_Data::check_pel_min_php_requirement())
-            return FALSE;
         self::load_pel();
-
         return @C_Exif_Writer::write_metadata($filename, $metadata);
     }
 

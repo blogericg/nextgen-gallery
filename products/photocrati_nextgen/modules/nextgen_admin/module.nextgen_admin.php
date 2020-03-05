@@ -186,30 +186,15 @@ class M_NextGen_Admin extends C_Base_Module
 
         // Provides admin notices
         $notices = C_Admin_Notification_Manager::get_instance();
-        add_action('init', array($notices, 'serve_ajax_request'));
-        add_action('admin_footer', array($notices, 'enqueue_scripts'));
-        add_action('do_ngg_notices', array($notices, 'render'));
-        add_action('ngg_created_new_gallery', array($this, 'set_review_notice_flag'));
-        add_action('ngg_created_new_gallery', get_class().'::update_gallery_count_setting');
-        add_action('ngg_delete_gallery', get_class().'::update_gallery_count_setting');
-        if (!self::is_ngg_legacy_page()) {
+        add_action('init',                    [$notices, 'serve_ajax_request']);
+        add_action('admin_footer',            [$notices, 'enqueue_scripts']);
+        add_action('do_ngg_notices',          [$notices, 'render']);
+        add_action('ngg_created_new_gallery', [$this, 'set_review_notice_flag']);
+        add_action('ngg_created_new_gallery', get_class() . '::update_gallery_count_setting');
+        add_action('ngg_delete_gallery',      get_class() . '::update_gallery_count_setting');
+
+        if (!self::is_ngg_legacy_page())
             add_action('all_admin_notices', get_class().'::emit_do_notices_action');
-        }
-
-        if (defined('PHP_VERSION_ID')) {
-            $php_id = PHP_VERSION_ID;
-        }
-        else {
-            $version = explode('.', PHP_VERSION);
-            $php_id = ($version[0] * 10000 + $version[1] * 100 + $version[2]);
-        }
-
-        if ($php_id < 50300) {
-            $notices->add(
-                "ngg_php52_deprecation",
-                array("message" => __('PHP 5.2 will be deprecated in a future version of NextGEN. Please upgrade your PHP installation to 5.3 or above.', 'nggallery'))
-            );
-        }
 
         // Add review notices
         $review_notice_1 = new C_Review_Notice(array(
