@@ -28,17 +28,20 @@ class C_CDN_Resize_Image_Job extends C_CDN_Publish_Image_Job
 
     /**
      * Performs the resize operation
-     * @param int $image
+     * @param int $image_id
      * @param string $size
-     * @param [] $params
-     * @throws RuntimeException
+     * @param array $params
      * @return null
+     * @throws RuntimeException
      */
-    function resize_local_image($image, $size='full', $params=[])
+    function resize_local_image($image_id, $size = 'full', $params = [])
     {
         $storage = C_Gallery_Storage::get_instance();
-        if ($storage->generate_image_size($image, $size, $params) === FALSE) {
-            throw new RuntimeException(__("Could not resize the {$size} named size for image #{$image}", 'nextgen-gallery'));
+        if ($storage->generate_image_size($image_id, $size, $params) === FALSE)
+        {
+            throw new RuntimeException(
+                sprintf(__("Could not resize the '%s' named size for image #%d", 'nggallery'), $size, $image_id)
+            );
         }
     }
 }

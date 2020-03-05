@@ -1,12 +1,5 @@
 <?php
 
-/***
-{
-Module: photocrati-nextgen-data,
-Depends: { photocrati-datamapper }
-}
- ***/
-
 class M_NextGen_Data extends C_Base_Module
 {
 	function define($id = 'pope-module',
@@ -34,10 +27,8 @@ class M_NextGen_Data extends C_Base_Module
 	function _register_adapters()
 	{
 		$this->get_registry()->add_adapter('I_Component_Factory', 'A_NextGen_Data_Factory');
-		#$this->get_registry()->add_adapter('I_CustomPost_DataMapper', 'A_Attachment_DataMapper', 'attachment');
 		$this->get_registry()->add_adapter('I_Installer', 'A_NextGen_Data_Installer');
 	}
-
 
 	function _register_utilities()
 	{
@@ -49,10 +40,10 @@ class M_NextGen_Data extends C_Base_Module
 
     function initialize()
     {
-		\ReactrIO\Background\Job::register_type('cdn_publish_image', C_CDN_Publish_Image_Job::class);
+		\ReactrIO\Background\Job::register_type('cdn_publish_image',   C_CDN_Publish_Image_Job::class);
 		\ReactrIO\Background\Job::register_type('cdn_publish_gallery', C_CDN_Publish_Gallery_Job::class);
-		\ReactrIO\Background\Job::register_type('cdn_resize_image', C_CDN_Resize_Image_Job::class);
-		\ReactrIO\Background\Job::register_type('cdn_resize_gallery', C_CDN_Resize_Gallery_Job::class);
+		\ReactrIO\Background\Job::register_type('cdn_resize_image',    C_CDN_Resize_Image_Job::class);
+		\ReactrIO\Background\Job::register_type('cdn_resize_gallery',  C_CDN_Resize_Gallery_Job::class);
     }
 
     public static function check_gd_requirement()
@@ -72,12 +63,19 @@ class M_NextGen_Data extends C_Base_Module
 
     function _register_hooks()
 	{
-	    add_action('admin_init', array($this, 'register_requirements'));
-		add_action('init', array(&$this, 'register_custom_post_types'));
-		add_filter('posts_orderby', array($this, 'wp_query_order_by'), 10, 2);
-		add_action('ngg_added_new_image', function($image){
-			\ReactrIO\Background\Job::create(__("Upload image {$image->pid} to CDN", 'nextgen-gallery'), 'cdn_publish_image', $image->pid)->save('cdn');
-		});
+	    add_action('admin_init',    [$this, 'register_requirements']);
+		add_action('init',          [$this, 'register_custom_post_types']);
+		add_filter('posts_orderby', [$this, 'wp_query_order_by'], 10, 2);
+
+		if (C_CDN_Providers::is_cdn_configured())
+        {
+            add_action('ngg_added_new_image', function($image) {
+                \ReactrIO\Background\Job::create(
+                    sprintf(__("Upload image %d to CDN", 'nggallery'), $image->pid),
+                    'cdn_publish_image', $image->pid
+                )->save('cdn');
+            });
+        }
 	}
 
 	public function register_requirements()
@@ -260,34 +258,40 @@ class M_NextGen_Data extends C_Base_Module
 
     function get_type_list()
     {
-        return array(
-            'A_Attachment_Datamapper'           => 'adapter.attachment_datamapper.php',
-            'A_Customtable_Sorting_Datamapper'  => 'adapter.customtable_sorting_datamapper.php',
-            'A_Nextgen_Data_Factory'            => 'adapter.nextgen_data_factory.php',
-            'A_Parse_Image_Metadata'            => 'adapter.parse_image_metadata.php',
-            'C_Album'                           => 'class.album.php',
-            'C_Album_Mapper'                    => 'class.album_mapper.php',
-            'C_Exif_Writer_Wrapper'             => 'class.exif_writer_wrapper.php',
-            'C_Gallery'                         => 'class.gallery.php',
-            'C_Gallery_Mapper'                  => 'class.gallery_mapper.php',
-            'C_Gallery_Storage'                 => 'class.gallery_storage.php',
-            'C_Image'                           => 'class.image.php',
-            'C_Image_Mapper'                    => 'class.image_mapper.php',
-            'C_Image_Wrapper'                   => 'class.image_wrapper.php',
-            'C_Image_Wrapper_Collection'        => 'class.image_wrapper_collection.php',
-            'C_NextGen_Data_Installer'          => 'class.nextgen_data_installer.php',
-            'C_Nextgen_Metadata'                => 'class.nextgen_metadata.php',
-			'C_Ngglegacy_Thumbnail'             => 'class.ngglegacy_thumbnail.php',
-			'C_Dynamic_Thumbnails_Manager' 			=> 'class.dynamic_thumbnails_manager.php',			
-            'Mixin_NextGen_Table_Extras'        => 'mixin.nextgen_table_extras.php',
+        return [
+			'C_Dynamic_Thumbnails_Manager' 			 => 'class.dynamic_thumbnails_manager.php',
+			'C_Ngglegacy_Thumbnail'                  => 'class.ngglegacy_thumbnail.php',
+            'A_Attachment_Datamapper'                => 'adapter.attachment_datamapper.php',
+            'A_Customtable_Sorting_Datamapper'       => 'adapter.customtable_sorting_datamapper.php',
+            'A_Nextgen_Data_Factory'                 => 'adapter.nextgen_data_factory.php',
+            'A_Parse_Image_Metadata'                 => 'adapter.parse_image_metadata.php',
+            'C_Album'                                => 'class.album.php',
+            'C_Album_Mapper'                         => 'class.album_mapper.php',
+            'C_CDN_Provider'                         => 'class.cdn_providers.php',
+            'C_CDN_Providers'                        => 'class.cdn_providers.php',
+            'C_CDN_Publish_Gallery_Job'              => 'class.cdn_publish_gallery_job.php',
+            'C_CDN_Publish_Image_Job'                => 'class.cdn_publish_image_job.php',
+            'C_CDN_Resize_Gallery_Job'               => 'class.cdn_resize_gallery_job.php',
+            'C_CDN_Resize_Image_Job'                 => 'class.cdn_resize_image_job.php',
+            'C_Exif_Writer_Wrapper'                  => 'class.exif_writer_wrapper.php',
+            'C_Gallery'                              => 'class.gallery.php',
+            'C_Gallery_Mapper'                       => 'class.gallery_mapper.php',
+            'C_Gallery_Storage'                      => 'class.gallery_storage.php',
+            'C_Image'                                => 'class.image.php',
+            'C_Image_Mapper'                         => 'class.image_mapper.php',
+            'C_Image_Wrapper'                        => 'class.image_wrapper.php',
+            'C_Image_Wrapper_Collection'             => 'class.image_wrapper_collection.php',
+            'C_NextGen_Data_Installer'               => 'class.nextgen_data_installer.php',
+            'C_Nextgen_Metadata'                     => 'class.nextgen_metadata.php',
             'Mixin_GalleryStorage_Base'              => 'mixin.gallerystorage_base.php',
             'Mixin_GalleryStorage_Base_Dynamic'      => 'mixin.gallerystorage_base_dynamic.php',
             'Mixin_GalleryStorage_Base_Getters'      => 'mixin.gallerystorage_base_getters.php',
             'Mixin_GalleryStorage_Base_Management'   => 'mixin.gallerystorage_base_management.php',
             'Mixin_GalleryStorage_Base_MediaLibrary' => 'mixin.gallerystorage_base_medialibrary.php',
-            'Mixin_GalleryStorage_Base_Upload'       => 'mixin.gallerystorage_base_upload.php'
-
-        );
+            'Mixin_GalleryStorage_Base_Upload'       => 'mixin.gallerystorage_base_upload.php',
+            'Mixin_NextGen_Table_Extras'             => 'mixin.nextgen_table_extras.php'
+        ];
     }
 }
+
 new M_NextGen_Data();

@@ -17,7 +17,7 @@ class C_CDN_Resize_Gallery_Job extends \ReactrIO\Background\Job
                 $dataset = array_merge($this->get_dataset(), ['id' => $image->pid]);
 
                 return \ReactrIO\Background\Job::create(
-                    "Resizing image #{$image->pid}",
+                    sprintf(__("Resizing image #%d", 'nggallery'), $image->pid),
                     'cdn_resize_image',
                     $dataset,
                     $this->get_id()

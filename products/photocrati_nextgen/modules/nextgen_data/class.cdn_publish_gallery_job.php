@@ -10,7 +10,7 @@ class C_CDN_Publish_Gallery_Job extends \ReactrIO\Background\Job
         return array_map(
             function($image) {
                 return \ReactrIO\Background\Job::create(
-                    "Publish image #{$image->pid} to CDN",
+                    sprintf(__("Publish image #%d to CDN", 'nggallery'), $image->pid),
                     'cdn_publish_image',
                     $image->pid,
                     $this->get_id()

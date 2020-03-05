@@ -310,7 +310,7 @@ class Mixin_GalleryStorage_Base_Upload extends Mixin
                     foreach ($errors as $error) {
                         if (!empty($exception))
                             $exception .= "<br/>";
-                        $exception .= __(sprintf("Error while uploading %s: %s", $filename, $error), 'nextgen-gallery');
+                        $exception .= __(sprintf("Error while uploading %s: %s", $filename, $error), 'nggallery');
                     }
 
                 }

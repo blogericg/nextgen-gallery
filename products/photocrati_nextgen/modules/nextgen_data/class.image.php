@@ -23,7 +23,7 @@ class Mixin_NextGen_Gallery_Image_Validation extends Mixin
 		    'filename',
             185,
             '<=',
-            __('Image filenames may not be longer than 185 characters in length', 'nextgen-gallery')
+            __('Image filenames may not be longer than 185 characters in length', 'nggallery')
         );
 
 		return $this->object->is_valid();

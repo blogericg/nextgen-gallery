@@ -1,4 +1,5 @@
 <?php
+
 class M_GCS extends C_Base_Module
 {
     function define($id = 'pope-module',
@@ -9,17 +10,17 @@ class M_GCS extends C_Base_Module
                     $author = '',
                     $author_uri = '',
                     $context = FALSE) {
-                        parent::define(
-                            'imagely-gcs',
-                            'Google Cloud Storage CDN Provider',
-                            '0.0.1',
-                            'https://www.imagely.com/wordpress-gallery-plugin/nextgen-gallery/',
-                            'Imagely',
-                            'https://www.imagely.com',
-                            $context
-                        );
-                    }
-    
+        parent::define(
+            'imagely-gcs',
+            'Google Cloud Storage CDN Provider',
+            '0.0.1',
+            'https://www.imagely.com/wordpress-gallery-plugin/nextgen-gallery/',
+            'Imagely',
+            'https://www.imagely.com',
+            $context
+        );
+    }
+
     function initialize()
     {
         C_CDN_Providers::register(C_GCS_CDN_Provider::class);
@@ -30,4 +31,5 @@ class M_GCS extends C_Base_Module
         $settings->save();
     }
 }
+
 new M_GCS();    

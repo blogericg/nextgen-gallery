@@ -877,12 +877,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactr-io/url.git",
-                "reference": "8cba4776249b0e00dc9bf668cd887a92352240c1"
+                "reference": "9eaaaa8df52fd46c41f3cb7617afb66edeae8a5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactr-io/url/zipball/8cba4776249b0e00dc9bf668cd887a92352240c1",
-                "reference": "8cba4776249b0e00dc9bf668cd887a92352240c1",
+                "url": "https://api.github.com/repos/reactr-io/url/zipball/9eaaaa8df52fd46c41f3cb7617afb66edeae8a5c",
+                "reference": "9eaaaa8df52fd46c41f3cb7617afb66edeae8a5c",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -918,7 +918,7 @@
                 "source": "https://github.com/reactr-io/url/tree/master",
                 "issues": "https://github.com/reactr-io/url/issues"
             },
-            "time": "2020-03-04T04:44:10+00:00"
+            "time": "2020-03-04T22:15:48+00:00"
         },
         {
             "name": "reactr-io/wp-background-jobs",
@@ -926,12 +926,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactr-io/wp-background-jobs.git",
-                "reference": "c43a738b08e945b4d113a34181688cf07e34160a"
+                "reference": "ce489d8231cbc5f1d3764bbccba3bfa6ecf26a89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactr-io/wp-background-jobs/zipball/c43a738b08e945b4d113a34181688cf07e34160a",
-                "reference": "c43a738b08e945b4d113a34181688cf07e34160a",
+                "url": "https://api.github.com/repos/reactr-io/wp-background-jobs/zipball/ce489d8231cbc5f1d3764bbccba3bfa6ecf26a89",
+                "reference": "ce489d8231cbc5f1d3764bbccba3bfa6ecf26a89",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -964,7 +964,7 @@
                 "source": "https://github.com/reactr-io/wp-background-jobs/tree/master",
                 "issues": "https://github.com/reactr-io/wp-background-jobs/issues"
             },
-            "time": "2020-03-04T04:44:36+00:00"
+            "time": "2020-03-05T17:03:15+00:00"
         },
         {
             "name": "rize/uri-template",

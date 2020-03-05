@@ -437,19 +437,20 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
 
     /**
      * Gets data stored about CDN storage for the image
+     *
      * @param stdClass|number $image
      * @param string $size
-     * @returns null|[]
+     * @return null|array
      */
     function get_cdn_data($image, $size='full', $cdn_key=NULL)
     {
         try {
-            if (!$cdn_key) $cdn_key = $this->get_current_cdn();
-            if (!$cdn_key) return NULL;
+            if (!$cdn_key)
+                $cdn_key = C_CDN_Providers::is_cdn_configured();
+            if (!$cdn_key)
+                return NULL;
             $meta_data = $this->get_stored_image_size_metadata($image, $size);
-            return isset($meta_data[$cdn_key])
-                ? $meta_data[$cdn_key]
-                : NULL;
+            return isset($meta_data[$cdn_key]) ? $meta_data[$cdn_key] : NULL;
         }
         catch (E_NggImageNotFound $ex) {
             return NULL;
@@ -524,17 +525,6 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
     }
 
     /**
-     * Gets the id of the current configured CDN
-     * @param string
-     */
-    function get_current_cdn()
-    {
-        static $retval = NULL;
-        if (!$retval) $retval = C_NextGen_Settings::get_instance()->get('cdn');
-        return $retval;
-    }
-
-    /**
      * Gets the latest timestamp when an image size was generated
      * @param C_Image|Object|int $image
      * @param string $size
@@ -579,41 +569,47 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
 
     /**
      * Gets the CDN url for a particular image size
+     *
      * @param C_Image|Object|int $image
      * @param string $size
      * @return string|NULL
      */
-    function get_cdn_url_for($image, $size='full', $cdn_key=NULL)
+    function get_cdn_url_for($image, $size='full', $cdn_key = NULL)
     {
-        if (!$cdn_key) $cdn_key = $this->get_current_cdn();
-        if (!$cdn_key) return NULL;
+        if (!$cdn_key)
+            $cdn_key = C_CDN_Providers::is_cdn_configured();
+        if (!$cdn_key)
+            return NULL;
 
-        if (($data = $this->get_cdn_data($image, $size, $cdn_key))) {
+        if (($data = $this->get_cdn_data($image, $size, $cdn_key)))
             return $data['public_url'];
-        }
 
         return NULL;
     }
 
     /**
      * Stores data about the CDN version of the image
+     *
      * @param C_Image|Object|int $image
      * @param number $timestamp
-     * @param [] $data
+     * @param string $public_url
+     * @param array $data
      * @param string $size optional. Defaults to "full"
      * @param string $cdn_key optional. Defaults to current configured CDN
      * @return bool
      */
-    function update_cdn_data($image, $timestamp, $public_url, $data, $size='full', $cdn_key=NULL)
+    function update_cdn_data($image, $timestamp, $public_url, $data, $size = 'full', $cdn_key = NULL)
     {
-        if ($cdn_key == NULL) $cdn_key = $this->get_current_cdn();
-        if (!$cdn_key) return FALSE;
+        if ($cdn_key == NULL)
+            $cdn_key = C_CDN_Providers::is_cdn_configured();
+        if (!$cdn_key)
+            return FALSE;
 
         $data['version']    = $timestamp;
         $data['public_url'] = $public_url;
 
         $image = $this->_get_image_entity_object($image);
-        $size = $this->normalize_image_size_name($size);
+        $size  = $this->normalize_image_size_name($size);
 
         $cdn_data = $this->get_cdn_data($image, $size, $cdn_key);
         $cdn_data = $cdn_data ? array_merge($cdn_data, $data) : $data;
