@@ -1,7 +1,7 @@
 NextGEN Gallery
 by Imagely
 
-= V3.2.23.5 - 03.03.2020 =
+= V3.2.23.6 - 03.06.2020 =
 * NEW:     Added feature on Manage Galleries page to search gallery names
 * NEW:     Added filter 'ngg_disable_shortcodes_in_request_api' to disable rendering of NextGen shortcodes in REST
 * NEW:     Added option to automatically watermark images during upload
