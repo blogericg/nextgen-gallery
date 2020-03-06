@@ -172,7 +172,6 @@ class C_NextGEN_Bootstrap
 	{
         if (PHP_VERSION_ID < 50400)
 	   	{
-	   	    $tmp = PHP_VERSION_ID;
 			add_action('admin_notices', array($this, 'php_version_incompatible'));
 			return;
 		}
