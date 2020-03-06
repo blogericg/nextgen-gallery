@@ -170,8 +170,9 @@ class C_NextGEN_Bootstrap
 
 	function __construct()
 	{
-        if (PHP_VERSION_ID < 504000)
+        if (PHP_VERSION_ID < 50400)
 	   	{
+	   	    $tmp = PHP_VERSION_ID;
 			add_action('admin_notices', array($this, 'php_version_incompatible'));
 			return;
 		}
@@ -290,7 +291,7 @@ class C_NextGEN_Bootstrap
 		if ($tmp && (int)$tmp <= 300) @ini_set('xdebug.max_nesting_level', 300);
 
 		// Include pope framework
-        if (PHP_VERSION_ID >= 504000)
+        if (PHP_VERSION_ID >= 50400)
 		    require_once('vendor/autoload.php');
 
 		// Enable/disable pope caching. For now, the pope cache will not be used in multisite environments
