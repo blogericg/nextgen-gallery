@@ -24,6 +24,7 @@ class P_Photocrati_NextGen extends C_Base_Product
 		'photocrati-nextgen-legacy'             =>  'always',
 		'photocrati-simple_html_dom'            =>  'always',
 		'photocrati-nextgen-data'               =>  'always',
+		'imagely-cdn-jobs'                      =>  'always',
 		'photocrati-nextgen_block'              =>  'always',
 		'imagely-gcs'							=>	'always',
 

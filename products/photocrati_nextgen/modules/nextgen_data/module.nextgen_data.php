@@ -38,14 +38,6 @@ class M_NextGen_Data extends C_Base_Module
 		$this->get_registry()->add_utility('I_Gallery_Storage', 'C_Gallery_Storage');
 	}
 
-    function initialize()
-    {
-		\ReactrIO\Background\Job::register_type('cdn_publish_image',   C_CDN_Publish_Image_Job::class);
-		\ReactrIO\Background\Job::register_type('cdn_publish_gallery', C_CDN_Publish_Gallery_Job::class);
-		\ReactrIO\Background\Job::register_type('cdn_resize_image',    C_CDN_Resize_Image_Job::class);
-		\ReactrIO\Background\Job::register_type('cdn_resize_gallery',  C_CDN_Resize_Gallery_Job::class);
-    }
-
     public static function check_gd_requirement()
     {
         return function_exists("gd_info");
@@ -61,16 +53,6 @@ class M_NextGen_Data extends C_Base_Module
 	    add_action('admin_init',    [$this, 'register_requirements']);
 		add_action('init',          [$this, 'register_custom_post_types']);
 		add_filter('posts_orderby', [$this, 'wp_query_order_by'], 10, 2);
-
-		if (C_CDN_Providers::is_cdn_configured())
-        {
-            add_action('ngg_added_new_image', function($image) {
-                \ReactrIO\Background\Job::create(
-                    sprintf(__("Upload image %d to CDN", 'nggallery'), $image->pid),
-                    'cdn_publish_image', $image->pid
-                )->save('cdn');
-            });
-        }
 	}
 
 	public function register_requirements()
@@ -257,10 +239,6 @@ class M_NextGen_Data extends C_Base_Module
             'C_Album_Mapper'                         => 'class.album_mapper.php',
             'C_CDN_Provider'                         => 'class.cdn_providers.php',
             'C_CDN_Providers'                        => 'class.cdn_providers.php',
-            'C_CDN_Publish_Gallery_Job'              => 'class.cdn_publish_gallery_job.php',
-            'C_CDN_Publish_Image_Job'                => 'class.cdn_publish_image_job.php',
-            'C_CDN_Resize_Gallery_Job'               => 'class.cdn_resize_gallery_job.php',
-            'C_CDN_Resize_Image_Job'                 => 'class.cdn_resize_image_job.php',
             'C_Exif_Writer_Wrapper'                  => 'class.exif_writer_wrapper.php',
             'C_Gallery'                              => 'class.gallery.php',
             'C_Gallery_Mapper'                       => 'class.gallery_mapper.php',
