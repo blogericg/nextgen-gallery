@@ -551,97 +551,108 @@ class nggManageGallery {
 		include('templates/manage_gallery/gallery_create_page_field.php');
 	}
 
-	function post_processor_galleries() {
+	function post_processor_galleries()
+    {
 		global $wpdb, $ngg, $nggdb;
 
 		// bulk update in a single gallery
-		if (isset ($_POST['bulkaction']) && isset ($_POST['doaction']))  {
-
+		if (isset ($_POST['bulkaction']) && isset ($_POST['doaction']))
+		{
 			check_admin_referer('ngg_bulkgallery');
 
 			switch ($_POST['bulkaction']) {
 				case 'no_action';
-				// No action
-					break;
-				case 'recover_images':
-				// Recover images from backup
-					// A prefix 'gallery_' will first fetch all ids from the selected galleries
-					nggAdmin::do_ajax_operation( 'gallery_recover_image' , $_POST['doaction'], __('Recover from backup','nggallery') );
-					break;
-				case 'set_watermark':
-				// Set watermark
-					// A prefix 'gallery_' will first fetch all ids from the selected galleries
-					nggAdmin::do_ajax_operation( 'gallery_set_watermark' , $_POST['doaction'], __('Set watermark','nggallery') );
-					break;
-				case 'import_meta':
-				// Import Metadata
-					// A prefix 'gallery_' will first fetch all ids from the selected galleries
-					nggAdmin::do_ajax_operation( 'gallery_import_metadata' , $_POST['doaction'], __('Import metadata','nggallery') );
-					break;
-				case 'delete_gallery':
-					// Delete gallery
-					if (is_array($_POST['doaction']))
-					{
+                    // No action
+                    break;
+                case 'recover_images':
+                    // Recover images from backup
+                    // A prefix 'gallery_' will first fetch all ids from the selected galleries
+                    nggAdmin::do_ajax_operation( 'gallery_recover_image' , $_POST['doaction'], __('Recover from backup','nggallery') );
+                    break;
+                case 'set_watermark':
+                    // Set watermark
+                    // A prefix 'gallery_' will first fetch all ids from the selected galleries
+                    nggAdmin::do_ajax_operation( 'gallery_set_watermark' , $_POST['doaction'], __('Set watermark','nggallery') );
+                    break;
+                case 'import_meta':
+                    // Import Metadata
+                    // A prefix 'gallery_' will first fetch all ids from the selected galleries
+                    nggAdmin::do_ajax_operation( 'gallery_import_metadata' , $_POST['doaction'], __('Import metadata','nggallery') );
+                    break;
+                case 'delete_gallery':
+                    // Delete gallery
+                    if (is_array($_POST['doaction']))
+                    {
                         $deleted = FALSE;
-						$mapper = C_Gallery_Mapper::get_instance();
-						foreach ($_POST['doaction'] as $id) {
+                        $mapper = C_Gallery_Mapper::get_instance();
+                        foreach ($_POST['doaction'] as $id) {
 
-							$gallery = $mapper->find($id);
-							if ($gallery->path == '../' || FALSE !== strpos($gallery->path, '/../'))
-							{
-								nggGallery::show_message(sprintf(__('One or more "../" in Gallery paths could be unsafe and NextGen Gallery will not delete gallery %s automatically', 'nggallery'), $gallery->{$gallery->id_field}));
-							}
-							else {
-								/**
-								 * @var $mapper Mixin_Gallery_Mapper
-								 */
-								if ($mapper->destroy($id, TRUE))
-									$deleted = TRUE;
-							}
-						}
+                            $gallery = $mapper->find($id);
+                            if ($gallery->path == '../' || FALSE !== strpos($gallery->path, '/../'))
+                            {
+                                nggGallery::show_message(sprintf(__('One or more "../" in Gallery paths could be unsafe and NextGen Gallery will not delete gallery %s automatically', 'nggallery'), $gallery->{$gallery->id_field}));
+                            }
+                            else {
+                                /**
+                                 * @var $mapper Mixin_Gallery_Mapper
+                                 */
+                                if ($mapper->destroy($id, TRUE))
+                                    $deleted = TRUE;
+                            }
+                        }
 
-						if ($deleted)
+                        if ($deleted)
                             nggGallery::show_message(__('Gallery deleted successfully ', 'nggallery'));
-					}
-					break;
-				case 'publish_to_cdn':
-					array_map(
-						function($id){
-							return \ReactrIO\Background\Job::create(__("Publishing gallery #{$id}", 'nextgen-gallery'), 'cdn_publish_gallery', $id)->save('cdn');
-						},
-						$_POST['doaction']
-					);
-					nggGallery::show_message(__('Publish job(s) created for selected galleries.', 'nggallery'));
-					break;
-			}
-		}
-		if (isset ($_POST['addgallery']) && isset ($_POST['galleryname'])){
+                    }
+                    break;
+                case 'publish_to_cdn':
+                    if (C_CDN_Providers::is_cdn_configured())
+                    {
+                        array_map(
+                            function($id) {
+                                return \ReactrIO\Background\Job::create(
+                                    sprintf(__("Publishing gallery #%d", 'nextgen-gallery'), $id),
+                                    'cdn_publish_gallery',
+                                    $id
+                                )->save('cdn');
+                            },
+                            $_POST['doaction']
+                        );
+                        nggGallery::show_message(__('Publish job(s) created for selected galleries.', 'nggallery'));
+                        return;
+                    }
+                    break;
+            }
+        }
 
+		if (isset ($_POST['addgallery']) && isset ($_POST['galleryname']))
+		{
 			check_admin_referer('ngg_addgallery');
 
-			if ( !nggGallery::current_user_can( 'NextGEN Add new gallery' ))
+			if (!nggGallery::current_user_can('NextGEN Add new gallery'))
 				wp_die(__('Cheatin&#8217; uh?', 'nggallery'));
 
 			// get the default path for a new gallery
 			$newgallery = $_POST['galleryname'];
 			if (!empty($newgallery))
-			{
-				$gallery_mapper = C_Gallery_Mapper::get_instance();
-				$gallery = $gallery_mapper->create(array('title' => $newgallery));
-				if ($gallery->save() && !isset($_REQUEST['attach_to_post']))
-				{
-					$url = admin_url() . 'admin.php?page=nggallery-manage-gallery&mode=edit&gid=' . $gallery->gid;
-					$message = sprintf(__('Gallery successfully created. <a href="%s" target="_blank">Manage gallery</a>', 'nggallery'), $url);
-					nggGallery::show_message($message, 'gallery_created_msg');
-				}
-			}
+            {
+                $gallery_mapper = C_Gallery_Mapper::get_instance();
+                $gallery = $gallery_mapper->create(array('title' => $newgallery));
+                if ($gallery->save() && !isset($_REQUEST['attach_to_post']))
+                {
+                    $url = admin_url() . 'admin.php?page=nggallery-manage-gallery&mode=edit&gid=' . $gallery->gid;
+                    $message = sprintf(__('Gallery successfully created. <a href="%s" target="_blank">Manage gallery</a>', 'nggallery'), $url);
+                    nggGallery::show_message($message, 'gallery_created_msg');
+                }
+            }
 
-			do_action( 'ngg_update_addgallery_page' );
-		}
+            do_action( 'ngg_update_addgallery_page' );
+        }
 
-		if (isset ($_POST['TB_bulkaction']) && isset ($_POST['TB_ResizeImages']))  {
-			if (C_CDN_Providers::is_cdn_configured()) {
-				
+        if (isset ($_POST['TB_bulkaction']) && isset ($_POST['TB_ResizeImages']))
+        {
+            if (C_CDN_Providers::is_cdn_configured())
+            {
 				// Update the global settings.
 				$settings = C_NextGen_Settings::get_instance();
 				$settings->set('imgWidth', intval($_POST['imgWidth']));
@@ -656,13 +667,16 @@ class nggManageGallery {
 							'size'		=> 'full',
 							'params'	=> ['width' => intval($_POST['imgWidth']), 'height' => intval($_POST['imgHeight'])]
 						];
-						return \ReactrIO\Background\Job::create("Resizing images for gallery #{$id}", "cdn_resize_gallery", $dataset)->save('cdn');
+						return \ReactrIO\Background\Job::create(
+                            sprintf(__("Resizing images for gallery #%d", 'nggallery'), $id),
+                            "cdn_resize_gallery",
+                            $dataset
+                        )->save('cdn');
 					},
-					$gallery_ids  = explode(',', $_POST['TB_imagelist'])
+					$gallery_ids = explode(',', $_POST['TB_imagelist'])
 				);
 
 				nggGallery::show_message(__('Resize job(s) created for selected galleries.', 'nggallery'));
-
 				return;
 			}
 
@@ -674,13 +688,13 @@ class nggManageGallery {
 			// What is in the case the user has no if cap 'NextGEN Change options' ? Check feedback
 			update_option('ngg_options', $ngg->options);
 
-			$gallery_ids  = explode(',', $_POST['TB_imagelist']);
+			$gallery_ids = explode(',', $_POST['TB_imagelist']);
 			// A prefix 'gallery_' will first fetch all ids from the selected galleries
 			nggAdmin::do_ajax_operation( 'gallery_resize_image' , $gallery_ids, __('Resize images','nggallery') );
 		}
 
-		if (isset ($_POST['TB_bulkaction']) && isset ($_POST['TB_NewThumbnail']))  {
-
+		if (isset ($_POST['TB_bulkaction']) && isset ($_POST['TB_NewThumbnail']))
+		{
 			check_admin_referer('ngg_thickbox_form');
 
 			// save the new values for the next operation
@@ -700,43 +714,104 @@ class nggManageGallery {
 
 	}
 
-	function post_processor_images() {
+	function post_processor_images()
+    {
 		global $wpdb, $ngg, $nggdb;
 
 		// bulk update in a single gallery
-		if (isset ($_POST['bulkaction']) && isset ($_POST['doaction']))  {
-
+		if (isset ($_POST['bulkaction']) && isset ($_POST['doaction']))
+		{
 			check_admin_referer('ngg_updategallery');
 
 			switch ($_POST['bulkaction']) {
-				case 'no_action';
-					break;
-				case 'rotate_cw':
-					nggAdmin::do_ajax_operation( 'rotate_cw' , $_POST['doaction'], __('Rotate images', 'nggallery') );
-					break;
-				case 'rotate_ccw':
-					nggAdmin::do_ajax_operation( 'rotate_ccw' , $_POST['doaction'], __('Rotate images', 'nggallery') );
-					break;
-				case 'recover_images':
-					nggAdmin::do_ajax_operation( 'recover_image' , $_POST['doaction'], __('Recover from backup', 'nggallery') );
-					break;
-				case 'set_watermark':
-					nggAdmin::do_ajax_operation( 'set_watermark' , $_POST['doaction'], __('Set watermark', 'nggallery') );
-					break;
-				case 'delete_images':
-					if ( is_array($_POST['doaction']) ) {
-						foreach ( $_POST['doaction'] as $imageID ) {
+                case 'no_action';
+                    break;
+                case 'rotate_cw':
+                    if (C_CDN_Providers::is_cdn_configured())
+                    {
+                        array_map(
+                            function($id) {
+                                $id = intval($id);
+                                return \ReactrIO\Background\Job::create(
+                                    sprintf(__("Rotating image #%d", 'nggallery'), $id),
+                                    "cdn_rotate_image",
+                                    ['image_id' => $id, 'direction' => 'clockwise']
+                                )->save('cdn');
+                            },
+                            $_POST['doaction']
+                        );
+
+                        nggGallery::show_message(__('Rotate image job(s) created for selected images.', 'nggallery'));
+                        return;
+                    }
+                    else {
+                        nggAdmin::do_ajax_operation( 'rotate_cw' , $_POST['doaction'], __('Rotate images', 'nggallery') );
+                    }
+                    break;
+                case 'rotate_ccw':
+                    if (C_CDN_Providers::is_cdn_configured())
+                    {
+                        array_map(
+                            function($id) {
+                                $id = intval($id);
+                                return \ReactrIO\Background\Job::create(
+                                    sprintf(__("Rotating image #%d", 'nggallery'), $id),
+                                    "cdn_rotate_image",
+                                    ['image_id'  => $id, 'direction' => 'counter-clockwise']
+                                )->save('cdn');
+                            },
+                            $_POST['doaction']
+                        );
+
+                        nggGallery::show_message(__('Rotate image job(s) created for selected images.', 'nggallery'));
+                        return;
+                    }
+                    else {
+                        nggAdmin::do_ajax_operation('rotate_ccw', $_POST['doaction'], __('Rotate images', 'nggallery'));
+                    }
+                    break;
+                case 'recover_images':
+                    nggAdmin::do_ajax_operation( 'recover_image' , $_POST['doaction'], __('Recover from backup', 'nggallery') );
+                    break;
+                case 'set_watermark':
+                    if (C_CDN_Providers::is_cdn_configured())
+                    {
+                        array_map(
+                            function($id) {
+                                $id = intval($id);
+                                return \ReactrIO\Background\Job::create(
+                                    sprintf(__("Watermarking image #%d", 'nggallery'), $id),
+                                    'cdn_watermark_image',
+                                    ['image_id' => $id]
+                                )->save('cdn');
+                            },
+                            $_POST['doaction']
+                        );
+
+                        nggGallery::show_message(__('Watermark image job(s) created for selected images.', 'nggallery'));
+                        return;
+                    }
+                    else {
+                        nggAdmin::do_ajax_operation('set_watermark', $_POST['doaction'], __('Set watermark', 'nggallery'));
+                    }
+                    break;
+                case 'delete_images':
+					if (is_array($_POST['doaction']))
+					{
+						foreach ($_POST['doaction'] as $imageID) {
 							$image = $nggdb->find_image( $imageID );
-							if ($image) {
+							if ($image)
+							{
 								do_action('ngg_delete_picture', $image->pid, $image);
-								if ($ngg->options['deleteImg']) {
+								if ($ngg->options['deleteImg'])
+								{
                                     $storage = C_Gallery_Storage::get_instance();
                                     $storage->delete_image($image->pid);
 								}
 								$delete_pic = C_Image_Mapper::get_instance()->destroy($image->pid);
 							}
 						}
-						if($delete_pic)
+						if ($delete_pic)
 							nggGallery::show_message(__('Pictures deleted successfully ', 'nggallery'));
 					}
 					break;
@@ -746,8 +821,8 @@ class nggManageGallery {
 			}
 		}
 
-		if (isset ($_POST['TB_bulkaction']) && isset ($_POST['TB_ResizeImages']))  {
-
+		if (isset ($_POST['TB_bulkaction']) && isset ($_POST['TB_ResizeImages']))
+		{
 			check_admin_referer('ngg_thickbox_form');
 
 			//save the new values for the next operation
@@ -760,7 +835,8 @@ class nggManageGallery {
 			nggAdmin::do_ajax_operation( 'resize_image' , $pic_ids, __('Resize images', 'nggallery') );
 		}
 
-		if (isset ($_POST['TB_bulkaction']) && isset ($_POST['TB_NewThumbnail']))  {
+		if (isset($_POST['TB_bulkaction']) && isset($_POST['TB_NewThumbnail']))
+		{
 			check_admin_referer('ngg_thickbox_form');
 
 			// save the new values for the next operation
@@ -771,12 +847,33 @@ class nggManageGallery {
             $settings->save();
 			ngg_refreshSavedSettings();
 
-			$pic_ids  = explode(',', $_POST['TB_imagelist']);
-			nggAdmin::do_ajax_operation( 'create_thumbnail' , $pic_ids, __('Create new thumbnails', 'nggallery') );
-		}
+			$image_ids = explode(',', $_POST['TB_imagelist']);
 
-		if (isset ($_POST['TB_bulkaction']) && isset ($_POST['TB_SelectGallery']))  {
+			if (C_CDN_Providers::is_cdn_configured())
+            {
+                array_map(
+                    function($id) {
+                        $id = intval($id);
+                        return \ReactrIO\Background\Job::create(
+                            sprintf(__("Generating thumbnail for image #%d", 'nggallery'), $id),
+                            "cdn_generate_thumbnail_image",
+                            ['image_id' => $id]
+                        )->save('cdn');
+                    },
+                    $image_ids
+                );
 
+                nggGallery::show_message(__('Generate thumbnail job(s) created for selected images.', 'nggallery'));
+                return;
+            }
+			else {
+                nggAdmin::do_ajax_operation( 'create_thumbnail' , $image_ids, __('Create new thumbnails', 'nggallery') );
+            }
+
+        }
+
+		if (isset($_POST['TB_bulkaction']) && isset($_POST['TB_SelectGallery']))
+		{
 			check_admin_referer('ngg_thickbox_form');
 
 			$pic_ids  = explode(',', $_POST['TB_imagelist']);
@@ -792,7 +889,8 @@ class nggManageGallery {
 			}
 		}
 
-		if (isset ($_POST['TB_bulkaction']) && isset ($_POST['TB_EditTags']))  {
+		if (isset ($_POST['TB_bulkaction']) && isset ($_POST['TB_EditTags']))
+		{
 			// do tags update
 
 			check_admin_referer('ngg_thickbox_form');
@@ -802,35 +900,35 @@ class nggManageGallery {
 			$taglist = explode(',', $_POST['taglist']);
 			$taglist = array_map('trim', $taglist);
 
-			if (is_array($pic_ids)) {
-
+			if (is_array($pic_ids))
+			{
 				foreach($pic_ids as $pic_id) {
 
-					// which action should be performed ?
-					switch ($_POST['TB_bulkaction']) {
-						case 'no_action';
-						// No action
-							break;
-						case 'overwrite_tags':
-						// Overwrite tags
-							wp_set_object_terms($pic_id, $taglist, 'ngg_tag');
-							break;
-						case 'add_tags':
-						// Add / append tags
-							wp_set_object_terms($pic_id, $taglist, 'ngg_tag', TRUE);
-							break;
-						case 'delete_tags':
-						// Delete tags
-							$oldtags = wp_get_object_terms($pic_id, 'ngg_tag', 'fields=names');
-							// get the slugs, to vaoid  case sensitive problems
-							$slugarray = array_map('sanitize_title', $taglist);
-							$oldtags = array_map('sanitize_title', $oldtags);
-							// compare them and return the diff
-							$newtags = array_diff($oldtags, $slugarray);
-							wp_set_object_terms($pic_id, $newtags, 'ngg_tag');
-							break;
-					}
-				}
+                    // which action should be performed ?
+                    switch ($_POST['TB_bulkaction']) {
+                        case 'no_action';
+                            // No action
+                            break;
+                        case 'overwrite_tags':
+                            // Overwrite tags
+                            wp_set_object_terms($pic_id, $taglist, 'ngg_tag');
+                            break;
+                        case 'add_tags':
+                            // Add / append tags
+                            wp_set_object_terms($pic_id, $taglist, 'ngg_tag', TRUE);
+                            break;
+                        case 'delete_tags':
+                            // Delete tags
+                            $oldtags = wp_get_object_terms($pic_id, 'ngg_tag', 'fields=names');
+                            // get the slugs, to vaoid  case sensitive problems
+                            $slugarray = array_map('sanitize_title', $taglist);
+                            $oldtags = array_map('sanitize_title', $oldtags);
+                            // compare them and return the diff
+                            $newtags = array_diff($oldtags, $slugarray);
+                            wp_set_object_terms($pic_id, $newtags, 'ngg_tag');
+                            break;
+                    }
+                }
 
 				nggGallery::show_message( __('Tags changed', 'nggallery') );
 			}
@@ -940,7 +1038,7 @@ class nggManageGallery {
 
 	function can_user_manage_gallery()
 	{
-		$retval 	= FALSE;
+		$retval = FALSE;
 
 		if ($this->gallery && wp_get_current_user()->ID == $this->gallery->author) {
 			$retval = TRUE;
@@ -956,9 +1054,11 @@ class nggManageGallery {
 	{
 		$updated = 0;
 
-		if (!$this->can_user_manage_gallery()) return $updated;
+		if (!$this->can_user_manage_gallery())
+		    return $updated;
 
-		if (isset($_POST['images']) && is_array($_POST['images'])) {
+		if (isset($_POST['images']) && is_array($_POST['images']))
+		{
 			$image_mapper = C_Image_Mapper::get_instance();
 
 			foreach ($_POST['images'] as $pid => $data) {
@@ -984,11 +1084,14 @@ class nggManageGallery {
 					foreach ($data as $key => $value) {
 						$image->$key = $value;
 					}
-					if ($image_mapper->save($image)) {
+
+					if ($image_mapper->save($image))
+					{
 						$updated += 1;
 
 						// Update the tags for the image
-						if (isset($data['tags'])) {
+						if (isset($data['tags']))
+						{
 							$tags = $data['tags'];
 							if (!is_array($tags)) $tags = explode(',', $tags);
 							foreach ($tags as &$tag) $tag = trim($tag);
@@ -1023,7 +1126,8 @@ class nggManageGallery {
 	}
 
 	// Check if user can select a author
-	function get_editable_user_ids( $user_id, $exclude_zeros = true ) {
+	function get_editable_user_ids($user_id, $exclude_zeros = true)
+    {
 		global $wpdb;
 
 		$user = new WP_User( $user_id );
@@ -1043,11 +1147,13 @@ class nggManageGallery {
 		return $wpdb->get_col( $query );
 	}
 
-	function search_images() {
+	function search_images()
+    {
 		global $nggdb;
 
 		if ( empty($_GET['s']) )
 			return;
+
 		//on what ever reason I need to set again the query var
 		set_query_var('s', $_GET['s']);
 		$request = get_search_query();
@@ -1074,7 +1180,8 @@ class nggManageGallery {
      * @author taken from WP core (see includes/class-wp-list-table.php)
 	 * @return string echo the html pagination bar
 	 */
-	function pagination( $which, $current, $total_items, $per_page ) {
+	function pagination($which, $current, $total_items, $per_page)
+    {
 
         $total_pages = ($per_page > 0) ? ceil( $total_items / $per_page ) : 1;
 

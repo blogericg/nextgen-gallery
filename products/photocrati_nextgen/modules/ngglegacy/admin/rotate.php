@@ -34,39 +34,60 @@ $preview_image = $storage->get_image_url($id, 'full');
 ?>
 
 <script type='text/javascript'>
-	var selectedImage = "thumb<?php echo $id ?>";
+    var cdn_enabled   = <?php echo (C_CDN_Providers::is_cdn_configured() ? 'true' : 'false') ?>;
+    var selectedImage = "thumb<?php echo $id ?>";
 	
-	function rotateImage() {
+    function rotateImage() {
 		
-		var rotate_angle = jQuery('input[name=ra]:checked').val();
+        var rotate_angle = jQuery('input[name=ra]:checked').val();
 		
-		jQuery.ajax({
-		  url: ajaxurl,
-		  type : "POST",
-		  data:  {action: 'rotateImage', id: <?php echo $id ?>, ra: rotate_angle},
-		  cache: false,
-		  success: function (msg) { 
-				var d = new Date();
-				newUrl = jQuery("#"+selectedImage).attr("src") + "?" + d.getTime();
-				jQuery("#"+selectedImage).attr("src" , newUrl);
-					
-		  	showMessage('<?php _e('Image rotated', 'nggallery'); ?>') 
-		  },
-		  error: function (msg, status, errorThrown) { showMessage('<?php _e('Error rotating thumbnail', 'nggallery'); ?>') }
-		});
+        jQuery.ajax({
+            url: ajaxurl,
+            type : "POST",
+            data:  {
+                action: 'rotateImage',
+                id: <?php echo $id ?>, ra: rotate_angle
+            },
+            cache: false,
+            success: function (response) {
+                if (typeof response === 'string') {
+                    response = JSON.parse(response);
+                }
 
-	}
-	
-	function showMessage(message) {
-		jQuery('#thumbMsg').html(message);
-		jQuery('#thumbMsg').css({'display':'block'});
-		setTimeout(function(){ jQuery('#thumbMsg').fadeOut('slow'); }, 1500);
-		
-		var d = new Date();
-		newUrl = jQuery("#imageToEdit").attr("src") + "?" + d.getTime();
+                showMessage('<?php _e('Image rotated', 'nggallery'); ?>', true)
 
-		jQuery("#imageToEdit").attr("src" , newUrl);
-							
+                if (response.cdn_enabled) {
+                    setTimeout(function() {
+                        // TODO: this is known to be broken
+                        var $image = jQuery("#imageToEdit");
+                        $image.attr('src', response.new_image_url);
+                    }, 1000);
+                } else {
+                    var $image = jQuery("#imageToEdit");
+                    var d = new Date();
+                    var url = $image.attr('src');
+                    if (url.indexOf('?') > -1) {
+                        url += '&i=';
+                    } else {
+                        url += '?i=';
+                    }
+                    url += d.getTime();
+                    $image.attr("src" , url);
+                }
+            },
+            error: function (msg, status, errorThrown) {
+                showMessage('<?php _e('Error rotating thumbnail', 'nggallery'); ?>', false)
+            }
+        });
+    }
+
+	function showMessage(message, success) {
+        var $message = jQuery('#thumbMsg');
+		$message.html(message);
+		$message.css({'display':'block'});
+		setTimeout(function() {
+		    $message.fadeOut('slow');
+        }, 1500);
 	}
 </script>
 

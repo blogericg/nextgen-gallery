@@ -265,7 +265,7 @@ function nggallery_manage_gallery_main()
                                 <option value="resize_images"> <?php _e("Resize images",        'nggallery'); ?></option>
                                 <option value="import_meta">   <?php _e("Import metadata",      'nggallery'); ?></option>
                                 <option value="recover_images"><?php _e("Recover from backup",  'nggallery'); ?></option>
-                                <option value="publish_to_cdn"><?php _e("Publish to CDN",  'nggallery'); ?></option>
+                                <option value="publish_to_cdn"><?php _e("Publish to CDN",       'nggallery'); ?></option>
                             </select>
 
                             <input name="showThickbox"

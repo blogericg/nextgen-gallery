@@ -245,7 +245,7 @@ class nggAdmin{
     }
 
     /**
-     * Rotated/Flip an image based on the orientation flag or a definded angle
+     * Rotated/Flip an image based on the orientation flag or a defined angle
      *
      * @param int|object $image
      * @param string|bool $dir (optional) CW (clockwise)or CCW (counter clockwise), if set to false, the exif flag will be used
@@ -254,11 +254,15 @@ class nggAdmin{
      */
     static function rotate_image($image, $dir = false, $flip = false)
     {
-        if (is_object($image)) {
-            if (isset($image->id))        $image = $image->id;
-            elseif (isset($image->pid))   $image = $image->pid;
+        if (is_object($image))
+        {
+            if (isset($image->id))
+                $image = $image->id;
+            elseif (isset($image->pid))
+                $image = $image->pid;
         }
-        $storage  = C_Gallery_Storage::get_instance();
+
+        $storage = C_Gallery_Storage::get_instance();
 
         // XXX NextGEN Legacy wasn't handling watermarks or reflections at this stage, so we're forcefully disabling them to maintain compatibility
         $params = array('watermark' => false, 'reflection' => false);

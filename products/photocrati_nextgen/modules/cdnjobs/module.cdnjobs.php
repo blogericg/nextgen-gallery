@@ -23,10 +23,16 @@ class M_CDN_Jobs extends C_Base_Module
 
     function initialize()
     {
-        \ReactrIO\Background\Job::register_type('cdn_publish_image',   C_CDN_Publish_Image_Job::class);
-        \ReactrIO\Background\Job::register_type('cdn_publish_gallery', C_CDN_Publish_Gallery_Job::class);
-        \ReactrIO\Background\Job::register_type('cdn_resize_image',    C_CDN_Resize_Image_Job::class);
-        \ReactrIO\Background\Job::register_type('cdn_resize_gallery',  C_CDN_Resize_Gallery_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_import_metadata_gallery',    C_CDN_Import_MetaData_Gallery_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_import_metadata_image',      C_CDN_Import_MetaData_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_publish_gallery',            C_CDN_Publish_Gallery_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_publish_image',              C_CDN_Publish_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_generate_thumbnail_image',   C_CDN_Generate_Thumbnail_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_generate_thumbnail_gallery', C_CDN_Generate_Thumbnail_Gallery_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_resize_gallery',             C_CDN_Resize_Gallery_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_resize_image',               C_CDN_Resize_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_watermark_image',            C_CDN_Watermark_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_rotate_image',               C_CDN_Rotate_Image_Job::class);
     }
 
     function _register_hooks()
@@ -45,10 +51,18 @@ class M_CDN_Jobs extends C_Base_Module
     function get_type_list()
     {
         return [
-            'C_CDN_Publish_Gallery_Job' => 'class.publish_gallery.php',
-            'C_CDN_Publish_Image_Job'   => 'class.publish_image.php',
-            'C_CDN_Resize_Gallery_Job'  => 'class.resize_gallery.php',
-            'C_CDN_Resize_Image_Job'    => 'class.resize_image.php',
+            'C_CDN_Import_MetaData_Gallery_Job'    => 'class.import_metadata_gallery.php',
+            'C_CDN_Import_MetaData_Image_Job'      => 'class.import_metadata_image.php',
+            'C_CDN_Publish_Gallery_Job'            => 'class.publish_gallery.php',
+            'C_CDN_Publish_Image_Job'              => 'class.publish_image.php',
+            'C_CDN_Generate_Thumbnail_Image_Job'   => 'class.generate_thumbnail_image.php',
+            'C_CDN_Generate_Thumbnail_Gallery_Job' => 'class.generate_thumbnail_gallery.php',
+            'C_CDN_Resize_Gallery_Job'             => 'class.resize_gallery.php',
+            'C_CDN_Resize_Image_Job'               => 'class.resize_image.php',
+            'C_CDN_Rotate_Gallery_Job'             => 'class.rotate_gallery.php',
+            'C_CDN_Rotate_Image_Job'               => 'class.rotate_image.php',
+            'C_CDN_Watermark_Image_Job'            => 'class.watermark_image.php',
+            'C_CDN_Watermark_Gallery_Job'          => 'class.watermark_gallery.php'
         ];
     }
 }

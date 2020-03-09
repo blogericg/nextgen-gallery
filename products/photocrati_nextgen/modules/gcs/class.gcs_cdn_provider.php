@@ -84,9 +84,11 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
 
         $obj = $bucket->upload(
             fopen($storage->get_image_abspath($image, $size), 'r'),
-            ['predefinedAcl' => 'publicRead',
-             'metadata'      => [
-                 'version'   => $version]
+            [
+                'predefinedAcl' => 'publicRead',
+                'metadata'      => [
+                    'version' => $version
+                ]
             ]
         );
 
@@ -118,7 +120,7 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
             $is_on_cdn = FALSE;
         }
 
-        if ($is_on_cdn)
+        if ($is_on_cdn && $this->is_offload_enabled())
         {
             $image_url = $storage->get_image_url($image, $size);
 

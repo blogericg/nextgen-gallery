@@ -7,9 +7,9 @@ abstract class C_CDN_Provider
     abstract function get_key();
     abstract function is_configured();
 
-    abstract function upload($image,   $size='full');
-    abstract function download($image, $size='full');
-    abstract function delete($image,   $size='full');
+    abstract function upload($image,   $size = 'full');
+    abstract function download($image, $size = 'full');
+    abstract function delete($image,   $size = 'full');
 
     abstract function copy($image, $gallery_id);
     abstract function move($image, $gallery_id);

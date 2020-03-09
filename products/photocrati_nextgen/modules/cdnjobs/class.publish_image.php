@@ -7,7 +7,8 @@ class C_CDN_Publish_Image_Job extends \ReactrIO\Background\Job
         array_map(
             function($size) {
                 $cdn = C_CDN_Providers::get_current();
-                if ($cdn->upload($this->get_dataset(), $size)) {
+                if ($cdn->upload($this->get_dataset(), $size))
+                {
                     $this->logOutput(
                         sprintf(__("Uploaded '%s' size for %s", 'nggallery'), $size, $this->get_dataset())
                     );
