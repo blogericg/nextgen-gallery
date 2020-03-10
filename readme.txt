@@ -2,12 +2,12 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 4.0.0
-Stable tag: 3.2.23.6
+Stable tag: 3.3.0
 Tested up to: 5.3.2
 License: GPLv2
 Requires PHP: 5.4
 
-The most popular WordPress gallery plugin and one of the most popular plugins of all time with over 27 million downloads.
+The most popular WordPress gallery plugin and one of the most popular plugins of all time with over 28 million downloads.
 
 == Description ==
 
@@ -180,10 +180,12 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.2.23.6 - 03.06.2020 =
+= V3.2.24 - 03.10.2020 =
 * NEW:     Added feature on Manage Galleries page to search gallery names
 * NEW:     Added filter 'ngg_disable_shortcodes_in_request_api' to disable rendering of NextGen shortcodes in REST
 * NEW:     Added option to automatically watermark images during upload
+* Changed: Minimum PHP version supported is now 5.4
+* Changed: Pope framework now included via Composer
 * Changed: Removed use of 'contextual_help' filter which is deprecated
 * Changed: Renamed nggallery.po to nggallery.pot for better compatibility with Loco Translate
 * Fixed:   Compatibility with Divi Booster
