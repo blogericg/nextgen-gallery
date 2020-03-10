@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * Class A_NextGen_Basic_ImageBrowser_Urls
+ * @mixin C_Routing_App
+ * @adapts I_Routing_App
+ */
+class A_NextGen_Basic_ImageBrowser_Urls extends Mixin
+{
+	function create_parameter_segment($key, $value, $id=NULL, $use_prefix=FALSE)
+	{
+		if ($key == 'pid')
+			return "image/{$value}";
+		else
+			return $this->call_parent('create_parameter_segment', $key, $value, $id, $use_prefix);
+	}
+}
