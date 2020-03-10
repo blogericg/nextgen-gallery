@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "35845756514273e231169cf4eed30c64",
+    "content-hash": "225bb075e183bbcb8bf66528d238ac68",
     "packages": [
         {
             "name": "reactr-io/pope-framework",
