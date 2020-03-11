@@ -222,9 +222,6 @@ class nggManageGallery
                     break;
 
                 case 'rotate_cw':
-
-                    error_log("Creating task");
-
                     C_Image_Mapper::get_instance()->_use_cache = FALSE;
                     array_map(
                         function($id) {
@@ -285,6 +282,18 @@ class nggManageGallery
                     break;
 
                 case 'delete_images':
+                    array_map(
+                        function($id) {
+                            return \ReactrIO\Background\Job::create(
+                                sprintf(__("Deleting image #%d", 'nextgen-gallery'), $id),
+                                'cdn_delete_image',
+                                $id
+                            )->save('cdn');
+                        },
+                        $_POST['doaction']
+                    );
+                    self::$messages[] = __('Delete image job(s) created for selected images.', 'nggallery');
+                    return;
                     break;
 
                 case 'import_meta':
@@ -400,12 +409,24 @@ class nggManageGallery
 
     function processor() {
 
-        global $wpdb, $ngg, $nggdb;
+        global $ngg, $nggdb;
 
         // Delete a picture
         if ($this->mode == 'delpic')
         {
-            // TODO:Remove also Tag reference
+            if (C_CDN_Providers::is_cdn_configured())
+            {
+                $this->mode = 'edit';
+                \ReactrIO\Background\Job::create(
+                    sprintf(__("Deleting image #%d", 'nextgen-gallery'), $this->pid),
+                    'cdn_delete_image',
+                    $this->pid
+                )->save('cdn');
+                self::$messages[] = __('Delete image job(s) created for selected images.', 'nggallery');
+                return;
+            }
+
+            // TODO: Remove also Tag reference
             check_admin_referer('ngg_delpicture');
             $image = $nggdb->find_image($this->pid);
             if ($image)
@@ -952,9 +973,7 @@ class nggManageGallery
                                 nggGallery::show_message(sprintf(__('One or more "../" in Gallery paths could be unsafe and NextGen Gallery will not delete gallery %s automatically', 'nggallery'), $gallery->{$gallery->id_field}));
                             }
                             else {
-                                /**
-                                 * @var $mapper Mixin_Gallery_Mapper
-                                 */
+                                /** @var $mapper Mixin_Gallery_Mapper */
                                 if ($mapper->destroy($id, TRUE))
                                     $deleted = TRUE;
                             }
@@ -1070,7 +1089,7 @@ class nggManageGallery
                     break;
 
                 case 'delete_images':
-                    if (is_array($_POST['doaction']))
+                    if (is_array($_POST['doaction']) && !C_CDN_Providers::is_cdn_configured())
                     {
                         foreach($_POST['doaction'] as $imageID) {
                             $image = $nggdb->find_image($imageID);

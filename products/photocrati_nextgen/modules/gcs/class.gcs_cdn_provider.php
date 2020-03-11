@@ -68,7 +68,7 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
     /**
      * Uploads an image to the CDN
      *
-     * @param string $image
+     * @param int|C_Image|stdClass $image
      * @param string $size
      * @return bool
      */
@@ -97,9 +97,35 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
         return $storage->update_cdn_data($image, $version, $data['mediaLink'], $data, $size, $this->get_key());
     }
 
+    /**
+     * Deletes an image from the CDN
+     *
+     * @param int|C_Image|stdClass $image
+     * @param string $size
+     * @return bool
+     */
     function delete($image, $size = 'full')
     {
-        // TODO: Implement
+        if (!$this->is_configured())
+            throw new E_NggCdnUnconfigured(__("GCS has not been configured yet", 'nggallery'));
+
+        try {
+            $storage = C_Gallery_Storage::get_instance();
+            $gcs     = new StorageClient($this->get_config());
+            $bucket  = $gcs->bucket($this->get_bucket_name());
+
+            // The ID of objects is just the filename itself
+            $name = $storage->get_image_abspath($image, $size);
+            $name = basename($name);
+
+            $object = $bucket->object($name);
+            $object->delete();
+
+            return TRUE;
+        }
+        catch (\Google\Cloud\Core\Exception\NotFoundException $exception) {
+            return FALSE;
+        }
     }
 
     /**
