@@ -32,6 +32,7 @@ class M_CDN_Jobs extends C_Base_Module
         \ReactrIO\Background\Job::register_type('cdn_resize_gallery',             C_CDN_Resize_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_resize_image',               C_CDN_Resize_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_watermark_image',            C_CDN_Watermark_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_watermark_gallery',          C_CDN_Watermark_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_rotate_image',               C_CDN_Rotate_Image_Job::class);
     }
 

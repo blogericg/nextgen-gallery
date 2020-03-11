@@ -9,29 +9,29 @@ class C_CDN_Rotate_Image_Job extends C_CDN_Publish_Image_Job
         $data = $this->get_dataset();
 
         try {
-            $cdn->download($data['image_id'], 'backup');
+            $cdn->download($data['id'], 'backup');
         } catch (Exception $ex) {
-            $cdn->download($data['image_id'], 'full');
+            $cdn->download($data['id'], 'full');
         }
 
-        $this->rotate_local_image($data['image_id'], $data['direction']);
+        $this->rotate_local_image($data['id'], $data['direction']);
 
         // Call C_CDN_Publish_Image_Job->run()
-        $this->set_dataset($data['image_id']);
+        $this->set_dataset($data['id']);
         parent::run();
     }
 
     /**
-     * @param int $image_id
+     * @param int $id
      * @param string $direction 'clockwise' or 'counter-clockwise'
      * @throws RuntimeException
      */
-    function rotate_local_image($image_id, $direction)
+    function rotate_local_image($id, $direction)
     {
         if (!in_array($direction, ['clockwise', 'counter-clockwise']))
             throw new RuntimeException(
                 sprintf(__("Could not rotate image #%d with direction %s: direction must be clockwise or counter-clockwise", 'nggallery'),
-                    $image_id,
+                    $id,
                     $direction
                 )
             );
@@ -48,17 +48,17 @@ class C_CDN_Rotate_Image_Job extends C_CDN_Publish_Image_Job
         if ($direction === 'counter-clockwise')
             $params['rotation'] = -90;
 
-        if ($storage->generate_image_size($image_id, 'full', $params) === FALSE)
+        if ($storage->generate_image_size($id, 'full', $params) === FALSE)
             throw new RuntimeException(
-                sprintf(__("Could not rotate image #%d", 'nggallery'), $image_id)
+                sprintf(__("Could not rotate image #%d", 'nggallery'), $id)
             );
 
         // Avoid rotating the thumbnail a second time
         unset($params['rotation']);
 
-        if ($result = $storage->generate_thumbnail($image_id, $params) === FALSE)
+        if ($result = $storage->generate_thumbnail($id, $params) === FALSE)
             throw new RuntimeException(
-                sprintf(__("Could not generate thumbnail for image #%d", 'nggallery'), $image_id)
+                sprintf(__("Could not generate thumbnail for image #%d", 'nggallery'), $id)
             );
     }
 
