@@ -39,10 +39,6 @@ class nggLoader
 		add_action( 'init', array(&$this, 'register_taxonomy'), 9);
 		add_action( 'wpmu_new_blog', array(&$this, 'multisite_new_blog'), 10, 6);
 
-		// Add a message for PHP4 Users, can disable the update message later on
-		if (version_compare(PHP_VERSION, '5.0.0', '<'))
-			add_filter('transient_update_plugins', array(&$this, 'disable_upgrade'));
-
 		//Add some links on the plugin page
 		add_filter('plugin_row_meta', array(&$this, 'add_plugin_links'), 10, 2);
 
@@ -271,19 +267,6 @@ class nggLoader
 			nggallery_install($installer);
 			switch_to_blog($current_blog);
 		}
-	}
-
-	function disable_upgrade($option){
-
-		// PHP5.2 is required for NGG V1.4.0
-		if ( version_compare($option->response[ $this->plugin_name ]->new_version, '1.4.0', '>=') )
-			return $option;
-
-		if( isset($option->response[ $this->plugin_name ]) ){
-			//Clear it''s download link
-			$option->response[ $this->plugin_name ]->package = '';
-		}
-		return $option;
 	}
 
 	// Add links to Plugins page

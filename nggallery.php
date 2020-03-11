@@ -158,24 +158,8 @@ class C_NextGEN_Bootstrap
 		return $trace;
 	}
 
-	public function php_version_incompatible()
-	{ ?>
-		<div class="notice notice-error is-dismissible">
-			<p>
-                <?php print __('NextGen Gallery requires PHP version 5.4.0 at the minimum. You must upgrade your server for NextGen Gallery to function.', 'nggallery'); ?>
-            </p>
-		</div>
-		<?php
-	}
-
 	function __construct()
 	{
-        if (PHP_VERSION_ID < 50400)
-	   	{
-			add_action('admin_notices', array($this, 'php_version_incompatible'));
-			return;
-		}
-
 	    if (!defined('NGG_DISABLE_SHUTDOWN_EXCEPTION_HANDLER') || !NGG_DISABLE_SHUTDOWN_EXCEPTION_HANDLER)
 		    set_exception_handler(__CLASS__ . '::shutdown');
 
@@ -189,7 +173,6 @@ class C_NextGEN_Bootstrap
 			$this->_register_hooks();
 			$this->_load_pope();
 
-			// TODO: Move this to a file that won't cause servers running PHP 5.2 to generate a fatal exception
 			\ReactrIO\Background\Bootstrap::init();
 		}
 	}
@@ -290,12 +273,13 @@ class C_NextGEN_Bootstrap
 		if ($tmp && (int)$tmp <= 300) @ini_set('xdebug.max_nesting_level', 300);
 
 		// Include pope framework
-        if (PHP_VERSION_ID >= 50400)
-		    require_once('vendor/autoload.php');
+        require_once('vendor/autoload.php');
 
 		// Enable/disable pope caching. For now, the pope cache will not be used in multisite environments
-		if (class_exists('C_Pope_Cache')) {
-			if ((C_Pope_Cache::$enabled = NGG_POPE_CACHE)) {
+		if (class_exists('C_Pope_Cache'))
+		{
+			if ((C_Pope_Cache::$enabled = NGG_POPE_CACHE))
+			{
 				$blogid = (is_multisite() ? get_current_blog_id() : NULL);
 				if (isset($_SERVER['SERVER_ADDR']))
 					$cache_key_prefix = abs(crc32((implode('|', array($blogid, site_url(), AUTH_KEY, $_SERVER['SERVER_ADDR'])))));
@@ -308,7 +292,8 @@ class C_NextGEN_Bootstrap
 		}
 
 		// Enforce interfaces
-		if (property_exists('ExtensibleObject', 'enforce_interfaces')) ExtensibleObject::$enforce_interfaces = EXTENSIBLE_OBJECT_ENFORCE_INTERFACES;
+		if (property_exists('ExtensibleObject', 'enforce_interfaces'))
+		    ExtensibleObject::$enforce_interfaces = EXTENSIBLE_OBJECT_ENFORCE_INTERFACES;
 
 		// Get the component registry
 		$this->_registry = C_Component_Registry::get_instance();
