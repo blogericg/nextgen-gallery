@@ -29,6 +29,16 @@ class M_GCS extends C_Base_Module
         $settings = C_NextGen_Settings::get_instance();
         $settings->set('cdn', C_GCS_CDN_Provider::get_instance()->get_key());
         $settings->save();
+
+        \ReactrIO\Background\Job::register_type('cdn_gcs_delete_version', C_CDN_GCS_Delete_Image_Version_Job::class);
+    }
+
+    function get_type_list()
+    {
+        return [
+            'C_GCS_CDN_Provider'                 => 'class.gcs_cdn_provider.php',
+            'C_CDN_GCS_Delete_Image_Version_Job' => 'class.delete_image_version_job.php'
+        ];
     }
 }
 

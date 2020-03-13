@@ -222,7 +222,6 @@ class nggManageGallery
                     break;
 
                 case 'rotate_cw':
-                    C_Image_Mapper::get_instance()->_use_cache = FALSE;
                     array_map(
                         function($id) {
                             $id = intval($id);

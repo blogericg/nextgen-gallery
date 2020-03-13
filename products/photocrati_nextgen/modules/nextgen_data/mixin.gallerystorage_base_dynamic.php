@@ -647,6 +647,7 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
 
     /**
      * Generates a specific size for an image
+     *
      * @param int|object|C_Image $image
      * @param string $size
      * @param array|null $params (optional)
@@ -658,38 +659,36 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
         $retval = FALSE;
 
         // Get the image entity
-        if (is_numeric($image)) {
+        if (is_numeric($image))
             $image = $this->object->_image_mapper->find($image);
-        }
 
         // Ensure we have a valid image
         if ($image)
         {
-            $params = $this->object->get_image_size_params($image, $size, $params, $skip_defaults);
+            $params   = $this->object->get_image_size_params($image, $size, $params, $skip_defaults);
             $settings = C_NextGen_Settings::get_instance();
 
             // Get the image filename
-            $filename = $this->object->get_original_abspath($image, 'original');
+            $filename  = $this->object->get_original_abspath($image, 'original');
             $thumbnail = null;
 
-            if ($size == 'full' && $settings->imgBackup == 1) {
+            if ($size == 'full' && $settings->imgBackup == 1)
+            {
                 // XXX change this? 'full' should be the resized path and 'original' the _backup path
                 $backup_path = $this->object->get_backup_abspath($image);
 
                 if (!@file_exists($backup_path))
-                {
                     @copy($filename, $backup_path);
-                }
             }
 
             // Generate the thumbnail using WordPress
             $existing_image_abpath = $this->object->get_image_abspath($image, $size);
-            $existing_image_dir = dirname($existing_image_abpath);
+            $existing_image_dir    = dirname($existing_image_abpath);
 
             wp_mkdir_p($existing_image_dir);
 
             $clone_path = $existing_image_abpath;
-            $thumbnail = $this->object->generate_image_clone($filename, $clone_path, $params);
+            $thumbnail  = $this->object->generate_image_clone($filename, $clone_path, $params);
 
             // We successfully generated the thumbnail
             if ($thumbnail != null)
@@ -697,50 +696,46 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
                 $clone_path = $thumbnail->fileName;
 
                 if (function_exists('getimagesize'))
-                {
                     $dimensions = getimagesize($clone_path);
-                }
                 else
-                {
                     $dimensions = array($params['width'], $params['height']);
-                }
 
                 if (!isset($image->meta_data))
-                {
                     $image->meta_data = array();
-                }
+                if (!isset($image->meta_data[$size]))
+                    $image->meta_data[$size] = array();
 
-                $size_meta = array(
-                    'width'		=> $dimensions[0],
-                    'height'	=> $dimensions[1],
-                    'filename'	=> M_I18n::mb_basename($clone_path),
-                    'generated'	=> microtime()
+                $size_meta = array_merge(
+                    $image->meta_data[$size],
+                    array(
+                        'width'		=> $dimensions[0],
+                        'height'	=> $dimensions[1],
+                        'filename'	=> M_I18n::mb_basename($clone_path),
+                        'generated'	=> microtime()
+                    )
                 );
 
-                if (isset($params['crop_frame'])) {
+                if (isset($params['crop_frame']))
                     $size_meta['crop_frame'] = $params['crop_frame'];
-                }
 
                 $image->meta_data[$size] = $size_meta;
 
                 if ($size == 'full')
                 {
-                    $image->meta_data['width'] = $size_meta['width'];
-                    $image->meta_data['height'] = $size_meta['height'];
-                    $image->meta_data['generated']= microtime();
+                    $image->meta_data['width']     = $size_meta['width'];
+                    $image->meta_data['height']    = $size_meta['height'];
+                    $image->meta_data['generated'] = microtime();
                 }
 
                 $retval = $this->object->_image_mapper->save($image);
 
                 do_action('ngg_generated_image', $image, $size, $params);
 
-                if ($retval == 0) {
+                if ($retval == 0)
                     $retval = false;
-                }
 
-                if ($retval) {
+                if ($retval)
                     $retval = $thumbnail;
-                }
             }
             else {
                 // Something went wrong. Thumbnail generation failed!

@@ -64,6 +64,25 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
     {
         return 'gcs';
     }
+
+    /**
+     * @param int|C_Image|stdClass $image
+     * @param string $size
+     * @param int $time
+     * @return string
+     */
+    public function get_image_name($image, $size, $time = NULL)
+    {
+        if (is_numeric($image))
+            $image = C_Image_Mapper::get_instance()->find($image);
+
+        if (!$time)
+            $time = time();
+
+        $filename = basename(C_Gallery_Storage::get_instance()->get_image_abspath($image, $size));
+
+        return $image->galleryid . '/' . $image->pid . '/' . $time . '--' . $filename;
+    }
     
     /**
      * Uploads an image to the CDN
@@ -72,19 +91,30 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
      * @param string $size
      * @return bool
      */
-    function upload($image, $size='full')
+    function upload($image, $size = 'full')
     {
         if (!$this->is_configured())
             throw new E_NggCdnUnconfigured(__("GCS has not been configured yet", 'nggallery'));
 
+        $mapper  = C_Image_Mapper::get_instance();
         $storage = C_Gallery_Storage::get_instance();
         $gcs     = new StorageClient($this->get_config());
         $bucket  = $gcs->bucket($this->get_bucket_name());
         $version = $storage->get_latest_image_timestamp($image, $size);
 
+        // Prevent cache issues from getting in the way of the changes we are about to save
+        $original_cache = $mapper->_use_cache;
+        $mapper->_use_cache = FALSE;
+
+        if (is_numeric($image))
+            $image  = $mapper->find($image);
+
+        $name = $this->get_image_name($image, $size);
+
         $obj = $bucket->upload(
             fopen($storage->get_image_abspath($image, $size), 'r'),
             [
+                'name'          => $name,
                 'predefinedAcl' => 'publicRead',
                 'metadata'      => [
                     'version' => $version
@@ -92,9 +122,46 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
             ]
         );
 
+        $old_name = NULL;
+        if (isset($image->meta_data[$size]['gcs']['name']))
+            $old_name = $image->meta_data[$size]['gcs']['name'];
+        if ($size === 'full' && isset($image->meta_data['gcs']['name']))
+            $old_name = $image->meta_data['gcs']['name'];
+        if ($old_name)
+        {
+            \ReactrIO\Background\Job::create(
+                sprintf(__("Removing old version of image %d with size %s and name %s", 'nextgen-gallery'), $image->pid, $size, $old_name),
+                'cdn_gcs_delete_version',
+                $old_name
+            )->save('cdn');
+        }
+
         $data = $obj->info();
 
-        return $storage->update_cdn_data($image, $version, $data['mediaLink'], $data, $size, $this->get_key());
+        $retval = $storage->update_cdn_data($image, $version, $data['mediaLink'], $data, $size, $this->get_key());
+
+        $mapper->_use_cache = $original_cache;
+
+        return $retval;
+    }
+
+    function delete_version($name)
+    {
+        if (!$this->is_configured())
+            throw new E_NggCdnUnconfigured(__("GCS has not been configured yet", 'nggallery'));
+
+        try {
+            $gcs    = new StorageClient($this->get_config());
+            $bucket = $gcs->bucket($this->get_bucket_name());
+
+            $object = $bucket->object($name);
+            $object->delete();
+
+            return TRUE;
+        }
+        catch (\Google\Cloud\Core\Exception\NotFoundException $exception) {
+            return FALSE;
+        }
     }
 
     /**
@@ -110,13 +177,10 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
             throw new E_NggCdnUnconfigured(__("GCS has not been configured yet", 'nggallery'));
 
         try {
-            $storage = C_Gallery_Storage::get_instance();
-            $gcs     = new StorageClient($this->get_config());
-            $bucket  = $gcs->bucket($this->get_bucket_name());
+            $gcs    = new StorageClient($this->get_config());
+            $bucket = $gcs->bucket($this->get_bucket_name());
 
-            // The ID of objects is just the filename itself
-            $name = $storage->get_image_abspath($image, $size);
-            $name = basename($name);
+            $name = $this->get_image_name($image, $size);
 
             $object = $bucket->object($name);
             $object->delete();

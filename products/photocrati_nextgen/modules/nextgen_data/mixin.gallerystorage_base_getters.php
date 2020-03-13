@@ -462,26 +462,26 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
 
     /**
      * Returns stored image metadata for a particular image size
+     *
      * @param int|Object|C_Image $image
      * @param string $size
-     * @return []
-     * 
+     * @return array
      * @throws E_NggImageNotFound
      * @throws E_NggImageSizeNotFound
      */
     function get_stored_image_size_metadata($image, $size='full')
     {
-        $size       = $this->normalize_image_size_name($size);
-        $image      = $this->_get_image_entity_object($image);
-        $image_id   = $image->pid;
+        $size     = $this->normalize_image_size_name($size);
+        $image    = $this->_get_image_entity_object($image);
+        $image_id = $image->pid;
 
-        if ($size === 'full') {
+        if ($size === 'full')
             return $image->meta_data;
-        }
 
-        if (!isset($image->meta_data[$size])) {
-            throw new E_NggImageSizeNotFound("Could not find image #{$image_id}'s metadata for the \"{$size}\" named size");
-        }
+        if (!isset($image->meta_data[$size]))
+            throw new E_NggImageSizeNotFound(
+                sprintf(__("Could not find image #%d's metadata for the \"%s\" named size", 'nggallery'), $image_id, $size)
+            );
 
         return $image->meta_data[$size];
     }
@@ -506,31 +506,40 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
 
     /**
      * Updates the meta data stored for a particular image size
+     *
      * @param C_Image|Object|int $image
-     * @param [] $updates
+     * @param array $updates
      * @param string $size
      * @return bool
-     * 
      * @throws E_NggImageNotFound
      * @throws E_NggImageSizeNotFound
      */
-    function update_stored_image_meta_data($image, $updates=[], $size='full')
+    function update_stored_image_meta_data($image, $updates = [], $size = 'full')
     {
         $image = $this->_get_image_entity_object($image);
-        $size = $this->normalize_image_size_name($size);
-        $meta_data = array_merge($this->get_stored_image_size_metadata($image, $size), $updates);
-        if ($size == 'full') $image->meta_data = $meta_data;
-        else $image->meta_data[$size]= $meta_data;
+        $size  = $this->normalize_image_size_name($size);
+
+        $meta_data = array_merge(
+            $this->get_stored_image_size_metadata($image, $size),
+            $updates
+        );
+
+        if ($size == 'full')
+            $image->meta_data = $meta_data;
+        else
+            $image->meta_data[$size]= $meta_data;
+
         return $this->_image_mapper->save($image);
     }
 
     /**
      * Gets the latest timestamp when an image size was generated
+     *
      * @param C_Image|Object|int $image
      * @param string $size
      * @return number
      */
-    function get_latest_image_timestamp($image, $size='full')
+    function get_latest_image_timestamp($image, $size = 'full')
     {
         try {
             $meta_data = $this->get_stored_image_size_metadata($image, $size);
@@ -670,7 +679,7 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
         return $retval;
     }
 
-    function normalize_image_size_name($size='full')
+    function normalize_image_size_name($size = 'full')
     {
         switch($size) {
             case 'full':
