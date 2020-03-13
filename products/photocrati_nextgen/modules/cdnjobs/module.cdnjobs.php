@@ -23,15 +23,19 @@ class M_CDN_Jobs extends C_Base_Module
 
     function initialize()
     {
+        \ReactrIO\Background\Job::register_type('cdn_copy_image',                 C_CDN_Copy_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_delete_gallery',             C_CDN_Delete_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_delete_image',               C_CDN_Delete_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_generate_thumbnail_gallery', C_CDN_Generate_Thumbnail_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_generate_thumbnail_image',   C_CDN_Generate_Thumbnail_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_import_metadata_gallery',    C_CDN_Import_MetaData_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_import_metadata_image',      C_CDN_Import_MetaData_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_move_image',                 C_CDN_Move_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_publish_gallery',            C_CDN_Publish_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_publish_image',              C_CDN_Publish_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_resize_gallery',             C_CDN_Resize_Gallery_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_recover_image',              C_CDN_Recover_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_recover_gallery',            C_CDN_Recover_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_resize_image',               C_CDN_Resize_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_rotate_image',               C_CDN_Rotate_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_watermark_gallery',          C_CDN_Watermark_Gallery_Job::class);
@@ -45,7 +49,8 @@ class M_CDN_Jobs extends C_Base_Module
             add_action('ngg_added_new_image', function($image) {
                 \ReactrIO\Background\Job::create(
                     sprintf(__("Upload image %d to CDN", 'nggallery'), $image->pid),
-                    'cdn_publish_image', $image->pid
+                    'cdn_publish_image',
+                    $image->pid
                 )->save('cdn');
             });
         }
@@ -54,14 +59,18 @@ class M_CDN_Jobs extends C_Base_Module
     function get_type_list()
     {
         return [
+            'C_CDN_Copy_Image_Job'                 => 'class.copy_image.php',
             'C_CDN_Delete_Gallery_Job'             => 'class.delete_gallery.php',
             'C_CDN_Delete_Image_Job'               => 'class.delete_image.php',
             'C_CDN_Generate_Thumbnail_Gallery_Job' => 'class.generate_thumbnail_gallery.php',
             'C_CDN_Generate_Thumbnail_Image_Job'   => 'class.generate_thumbnail_image.php',
             'C_CDN_Import_MetaData_Gallery_Job'    => 'class.import_metadata_gallery.php',
             'C_CDN_Import_MetaData_Image_Job'      => 'class.import_metadata_image.php',
+            'C_CDN_Move_Image_Job'                 => 'class.move_image.php',
             'C_CDN_Publish_Gallery_Job'            => 'class.publish_gallery.php',
             'C_CDN_Publish_Image_Job'              => 'class.publish_image.php',
+            'C_CDN_Recover_Gallery_Job'            => 'class.recover_image.php',
+            'C_CDN_Recover_Image_Job'              => 'class.recover_image.php',
             'C_CDN_Resize_Gallery_Job'             => 'class.resize_gallery.php',
             'C_CDN_Resize_Image_Job'               => 'class.resize_image.php',
             'C_CDN_Rotate_Gallery_Job'             => 'class.rotate_gallery.php',

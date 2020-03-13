@@ -7,18 +7,16 @@
 class Mixin_GalleryStorage_Base_Management extends Mixin
 {
     /**
-     * Set correct file permissions (taken from wp core). Should be called
-     * after writing any file
+     * Set correct file permissions (taken from wp core). Should be called after writing any file
      *
-     * @class nggAdmin
      * @param string $filename
      * @return bool $result
      */
     function _chmod($filename = '')
     {
-        $stat = @ stat( dirname($filename) );
+        $stat = @stat(dirname($filename));
         $perms = $stat['mode'] & 0000666; // Remove execute bits for files
-        if ( @chmod($filename, $perms) )
+        if (@chmod($filename, $perms))
             return TRUE;
 
         return FALSE;
@@ -66,9 +64,10 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
      * Backs up an image file
      *
      * @param int|object $image
+     * @param bool $save
      * @return bool
      */
-    function backup_image($image, $save=TRUE)
+    function backup_image($image, $save = TRUE)
     {
         $retval = FALSE;
         $image_path = $this->object->get_image_abspath($image);
@@ -94,7 +93,8 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
                         'height'    => $dimensions[1],
                         'generated' => microtime()
                     );
-                    if ($save) $mapper->save($image);
+                    if ($save)
+                        $mapper->save($image);
                 }
             }
         }
@@ -102,6 +102,11 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
         return $retval;
     }
 
+    /**
+     * @param int[]|C_Image[]|stdClass[] $images
+     * @param int|stdClass|C_Gallery $dst_gallery
+     * @return int[]
+     */
     function copy_images($images, $dst_gallery)
     {
         $retval = array();
@@ -158,17 +163,16 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
         return $retval;
     }
 
-
     /**
      * Moves images from to another gallery
-     * @param array $images
-     * @param int|object $gallery
-     * @param boolean $db optionally only move the image files, not the db entries
-     * @return boolean
+     *
+     * @param int[]|C_Image[]|stdClass[] $images
+     * @param int|stdClass|C_Gallery $gallery
+     * @return int[]
      */
     function move_images($images, $gallery)
     {
-        $retval = $this->object->copy_images($images, $gallery, TRUE);
+        $retval = $this->object->copy_images($images, $gallery);
 
         if ($images) {
             foreach ($images as $image_id) {
@@ -183,14 +187,17 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
     {
         $retval = FALSE;
 
-        if (@file_exists($abspath)) {
+        if (@file_exists($abspath))
+        {
             $files = scandir($abspath);
             array_shift($files);
             array_shift($files);
             foreach ($files as $file) {
                 $file_abspath = implode(DIRECTORY_SEPARATOR, array(rtrim($abspath, "/\\"), $file));
-                if (is_dir($file_abspath)) $this->object->delete_directory($file_abspath);
-                else unlink($file_abspath);
+                if (is_dir($file_abspath))
+                    $this->object->delete_directory($file_abspath);
+                else
+                    unlink($file_abspath);
             }
             rmdir($abspath);
             $retval = @file_exists($abspath);
@@ -216,12 +223,15 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
         $abspath = $this->object->get_gallery_abspath($gallery);
 
         if ($abspath && file_exists($abspath) && !in_array(stripslashes($abspath), $safe_dirs))
-        {
             $this->object->_delete_gallery_directory($abspath);
-        }
     }
 
-    function delete_image($image, $size=FALSE)
+    /**
+     * @param int|C_Image|stdClass $image
+     * @param bool string $size
+     * @return bool
+     */
+    function delete_image($image, $size = FALSE)
     {
         $retval = FALSE;
 
@@ -305,7 +315,8 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
                                 $this->object->get_image_abspath($image, $named_size),
                                 $this->object->get_image_size_params($image, $named_size)
                             );
-                            if ($thumbnail) $thumbnail->destruct();
+                            if ($thumbnail)
+                                $thumbnail->destruct();
                         }
 
                         do_action('ngg_recovered_image', $image);

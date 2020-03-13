@@ -100,6 +100,17 @@ class nggManageGallery
                     break;
 
                 case 'recover_images':
+                    array_map(
+                        function($id) {
+                            return \ReactrIO\Background\Job::create(
+                                sprintf(__("Recovering images for gallery #%d", 'nextgen-gallery'), $id),
+                                'cdn_recover_gallery',
+                                $id
+                            )->save('cdn');
+                        },
+                        $_POST['doaction']
+                    );
+                    self::$messages[] = __('Watermark job(s) created for selected galleries.', 'nggallery');
                     break;
 
                 case 'set_watermark':
@@ -132,6 +143,17 @@ class nggManageGallery
                     break;
 
                 case 'delete_gallery':
+                    array_map(
+                        function($id) {
+                            return \ReactrIO\Background\Job::create(
+                                sprintf(__("Deleting images for gallery #%d", 'nextgen-gallery'), $id),
+                                'cdn_delete_gallery',
+                                $id
+                            )->save('cdn');
+                        },
+                        $_POST['doaction']
+                    );
+                    self::$messages[] = __('Delete job(s) created for selected galleries.', 'nggallery');
                     break;
 
                 case 'publish_to_cdn':
@@ -261,6 +283,20 @@ class nggManageGallery
                     break;
 
                 case 'recover_images':
+                    array_map(
+                        function($id) {
+                            $id = intval($id);
+                            return \ReactrIO\Background\Job::create(
+                                sprintf(__("Recovering image #%d", 'nggallery'), $id),
+                                'cdn_recover_image',
+                                ['id' => $id]
+                            )->save('cdn');
+                        },
+                        $_POST['doaction']
+                    );
+
+                    self::$messages[] = __('Recover image job(s) created for selected images.', 'nggallery');
+                    return;
                     break;
 
                 case 'set_watermark':
@@ -378,6 +414,39 @@ class nggManageGallery
 
         if (isset($_POST['TB_bulkaction']) && isset($_POST['TB_SelectGallery']))
         {
+            check_admin_referer('ngg_thickbox_form');
+
+            $destination_gid = (int) $_POST['dest_gid'];
+
+            if ($_POST['TB_bulkaction'] === 'copy_to')
+            {
+                array_map(
+                    function($id) use ($destination_gid) {
+                        return \ReactrIO\Background\Job::create(
+                            sprintf(__("Copy image #%d to gallery %d", 'nextgen-gallery'), $id, $destination_gid),
+                            'cdn_copy_image',
+                            ['id' => $id, 'destination' => $destination_gid]
+                        )->save('cdn');
+                    },
+                    explode(',', $_POST['TB_imagelist'])
+                );
+                self::$messages[] = __('Copy image job(s) created for selected images.', 'nggallery');
+                return;
+            }
+            elseif ($_POST['TB_bulkaction'] === 'move_to') {
+                array_map(
+                    function($id) use ($destination_gid) {
+                        return \ReactrIO\Background\Job::create(
+                            sprintf(__("Move image #%d to gallery %d", 'nextgen-gallery'), $id, $destination_gid),
+                            'cdn_move_image',
+                            ['id' => $id, 'destination' => $destination_gid]
+                        )->save('cdn');
+                    },
+                    explode(',', $_POST['TB_imagelist'])
+                );
+                self::$messages[] = __('Move image job(s) created for selected images.', 'nggallery');
+                return;
+            }
         }
 
         if (isset($_POST['scanfolder']))
@@ -943,6 +1012,8 @@ class nggManageGallery
                     break;
 
                 case 'recover_images':
+                    if (C_CDN_Providers::is_cdn_configured())
+                        return;
                     nggAdmin::do_ajax_operation('gallery_recover_image' , $_POST['doaction'], __('Recover from backup', 'nggallery'));
                     break;
 
@@ -1078,6 +1149,8 @@ class nggManageGallery
                     break;
 
                 case 'recover_images':
+                    if (C_CDN_Providers::is_cdn_configured())
+                        return;
                     nggAdmin::do_ajax_operation('recover_image' , $_POST['doaction'], __('Recover from backup', 'nggallery'));
                     break;
 
@@ -1155,6 +1228,9 @@ class nggManageGallery
 
         if (isset($_POST['TB_bulkaction']) && isset($_POST['TB_SelectGallery']))
         {
+            if (C_CDN_Providers::is_cdn_configured())
+                return;
+
             check_admin_referer('ngg_thickbox_form');
 
             $pic_ids  = explode(',', $_POST['TB_imagelist']);

@@ -13,12 +13,7 @@ class C_CDN_Delete_Image_Job extends \ReactrIO\Background\Job
 
         // Remove each image from the CDN
         foreach ($storage->get_image_sizes($id) as $size) {
-            if ($cdn->delete($id, $size))
-            {
-                $this->logOutput(
-                    sprintf(__("Deleted '%s' size for %s", 'nggallery'), $size, $this->get_dataset())
-                );
-            }
+            $cdn->delete($id, $size);
         }
 
         // Trigger our own delete-image logic built into the gallery storage

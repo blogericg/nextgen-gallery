@@ -71,7 +71,7 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
      * @param int $time
      * @return string
      */
-    public function get_image_name($image, $size, $time = NULL)
+    public function get_new_image_name($image, $size, $time = NULL)
     {
         if (is_numeric($image))
             $image = C_Image_Mapper::get_instance()->find($image);
@@ -82,6 +82,25 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
         $filename = basename(C_Gallery_Storage::get_instance()->get_image_abspath($image, $size));
 
         return $image->galleryid . '/' . $image->pid . '/' . $time . '--' . $filename;
+    }
+
+    public function get_current_image_name($image, $size)
+    {
+        if (is_numeric($image))
+        {
+            $mapper = C_Image_Mapper::get_instance();
+            $image  = $mapper->find($image);
+            if (!$image)
+                return;
+        }
+
+        $old_name = NULL;
+        if (isset($image->meta_data[$size]['gcs']['name']))
+            $old_name = $image->meta_data[$size]['gcs']['name'];
+        if ($size === 'full' && isset($image->meta_data['gcs']['name']))
+            $old_name = $image->meta_data['gcs']['name'];
+
+        return $old_name;
     }
     
     /**
@@ -109,7 +128,7 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
         if (is_numeric($image))
             $image  = $mapper->find($image);
 
-        $name = $this->get_image_name($image, $size);
+        $name = $this->get_new_image_name($image, $size);
 
         $obj = $bucket->upload(
             fopen($storage->get_image_abspath($image, $size), 'r'),
@@ -122,15 +141,11 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
             ]
         );
 
-        $old_name = NULL;
-        if (isset($image->meta_data[$size]['gcs']['name']))
-            $old_name = $image->meta_data[$size]['gcs']['name'];
-        if ($size === 'full' && isset($image->meta_data['gcs']['name']))
-            $old_name = $image->meta_data['gcs']['name'];
+        $old_name = $this->get_current_image_name($image, $size);
         if ($old_name)
         {
             \ReactrIO\Background\Job::create(
-                sprintf(__("Removing old version of image %d with size %s and name %s", 'nextgen-gallery'), $image->pid, $size, $old_name),
+                sprintf(__("Removing old version of image %d with name %s", 'nextgen-gallery'), $image->pid, $old_name),
                 'cdn_gcs_delete_version',
                 $old_name
             )->save('cdn');
@@ -180,10 +195,14 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
             $gcs    = new StorageClient($this->get_config());
             $bucket = $gcs->bucket($this->get_bucket_name());
 
-            $name = $this->get_image_name($image, $size);
+            $name = $this->get_current_image_name($image, $size);
 
-            $object = $bucket->object($name);
-            $object->delete();
+            if ($name) {
+                $object = $bucket->object($name);
+                $object->delete();
+            } else {
+                return FALSE;
+            }
 
             return TRUE;
         }
