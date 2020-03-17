@@ -197,26 +197,31 @@ class Mixin_Gallery_Image_Mapper extends Mixin
 
 	/**
 	 * Finds all images for a gallery
-	 * @param $gallery
+     *
+	 * @param int|C_Gallery|stdClass $gallery
 	 * @param bool $model
-	 *
 	 * @return array
 	 */
-	function find_all_for_gallery($gallery, $model=FALSE)
+	function find_all_for_gallery($gallery, $model = FALSE)
 	{
 		$retval = array();
 		$gallery_id = 0;
 
-		if (is_object($gallery)) {
-			if (isset($gallery->id_field)) $gallery_id = $gallery->{$gallery->id_field};
+		if (is_object($gallery))
+		{
+			if (isset($gallery->id_field))
+			    $gallery_id = $gallery->{$gallery->id_field};
 			else {
 				$key = $this->object->get_primary_key_column();
 				if (isset($gallery->$key)) $gallery_id = $gallery->$key;
 			}
 		}
-		elseif (is_numeric($gallery)) $gallery_id = $gallery;
+		elseif (is_numeric($gallery)) {
+            $gallery_id = $gallery;
+        }
 
-		if ($gallery_id) $retval = $this->object->select()->where(array("galleryid = %s", $gallery_id))->run_query(FALSE, $model);
+		if ($gallery_id)
+		    $retval = $this->object->select()->where(array("galleryid = %s", $gallery_id))->run_query(FALSE, $model);
 
 		return $retval;
 	}

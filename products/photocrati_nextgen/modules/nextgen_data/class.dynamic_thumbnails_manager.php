@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @property C_Dynamic_Thumbnails_Manager $object
+ */
 class Mixin_Dynamic_Thumbnails_Manager extends Mixin
 {
 	function get_route_name()

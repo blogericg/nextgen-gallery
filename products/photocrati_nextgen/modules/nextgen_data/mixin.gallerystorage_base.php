@@ -127,6 +127,15 @@ class Mixin_GalleryStorage_Base extends Mixin
     {
         $cache = C_Cache::get_instance();
         $cache->flush_directory($this->object->get_cache_abspath($gallery));
+
+        if (C_CDN_Providers::is_cdn_configured())
+        {
+            \ReactrIO\Background\Job::create(
+                sprintf(__("Flushing dynamic images for gallery #%d", 'nextgen-gallery'), $gallery->gid),
+                'cdn_flush_cache_gallery',
+                $gallery->gid
+            )->save('cdn');
+        }
     }
 
     /**

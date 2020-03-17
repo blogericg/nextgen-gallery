@@ -26,6 +26,8 @@ class M_CDN_Jobs extends C_Base_Module
         \ReactrIO\Background\Job::register_type('cdn_copy_image',                 C_CDN_Copy_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_delete_gallery',             C_CDN_Delete_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_delete_image',               C_CDN_Delete_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_flush_cache_gallery',        C_CDN_Flush_Cache_Gallery_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_flush_cache_image',          C_CDN_Flush_Cache_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_generate_thumbnail_gallery', C_CDN_Generate_Thumbnail_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_generate_thumbnail_image',   C_CDN_Generate_Thumbnail_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_import_metadata_gallery',    C_CDN_Import_MetaData_Gallery_Job::class);
@@ -62,6 +64,8 @@ class M_CDN_Jobs extends C_Base_Module
             'C_CDN_Copy_Image_Job'                 => 'class.copy_image.php',
             'C_CDN_Delete_Gallery_Job'             => 'class.delete_gallery.php',
             'C_CDN_Delete_Image_Job'               => 'class.delete_image.php',
+            'C_CDN_Flush_Cache_Gallery_Job'        => 'class.flush_cache_gallery.php',
+            'C_CDN_Flush_Cache_Image_Job'          => 'class.flush_cache_image.php',
             'C_CDN_Generate_Thumbnail_Gallery_Job' => 'class.generate_thumbnail_gallery.php',
             'C_CDN_Generate_Thumbnail_Image_Job'   => 'class.generate_thumbnail_image.php',
             'C_CDN_Import_MetaData_Gallery_Job'    => 'class.import_metadata_gallery.php',
