@@ -6,7 +6,7 @@
  * string size - the named size of the image to generate
  * array params - a list of params passed to C_Gallery_Storage::generate_image_size()
  */
-class C_CDN_Resize_Image_Job extends C_CDN_Publish_Image_Job
+class C_CDN_Resize_Image_Job extends \ReactrIO\Background\Job
 {
     function run()
     {
@@ -22,9 +22,6 @@ class C_CDN_Resize_Image_Job extends C_CDN_Publish_Image_Job
         }
         
         $this->resize_local_image($id, $data['size'], $data['params']);
-
-        $this->set_dataset($id);
-        parent::run();
     }
 
     /**

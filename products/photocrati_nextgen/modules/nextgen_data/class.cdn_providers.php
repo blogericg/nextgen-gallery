@@ -11,6 +11,8 @@ abstract class C_CDN_Provider
     abstract function download($image, $size = 'full');
     abstract function delete($image,   $size = 'full');
 
+    abstract function flush($image);
+
     abstract function copy($image, $gallery_id);
     abstract function move($image, $gallery_id);
     

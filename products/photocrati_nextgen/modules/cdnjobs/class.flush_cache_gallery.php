@@ -18,7 +18,7 @@ class C_CDN_Flush_Cache_Gallery_Job extends \ReactrIO\Background\Job
                 if (!$dynthumbs->is_size_dynamic($size))
                     continue;
 
-                if (empty($image->meta_data[$size][$key]) || empty($image->meta_data[$size][$key]['name']))
+                if (empty($image->meta_data[$size][$key]))
                     continue;
 
                 \ReactrIO\Background\Job::create(

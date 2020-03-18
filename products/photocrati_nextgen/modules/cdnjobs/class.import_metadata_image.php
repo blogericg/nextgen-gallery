@@ -17,7 +17,7 @@ class C_CDN_Import_MetaData_Image_Job extends C_CDN_Publish_Image_Job
         $this->import_metadata($id);
 
         // Call C_CDN_Publish_Image_Job->run()
-        $this->set_dataset($id);
+        $this->set_dataset(['id' => $id, 'size' => 'all']);
         parent::run();
     }
 

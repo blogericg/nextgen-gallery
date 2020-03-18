@@ -27,7 +27,8 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
         if (defined('NGG_GCS_SERVICE_ACCOUNT') && defined('NGG_GCS_BUCKET'))
             return [
                 'keyFile' => json_decode(constant('NGG_GCS_SERVICE_ACCOUNT'), true),
-                'bucket'  => constant('NGG_GCS_BUCKET')
+                'bucket'  => constant('NGG_GCS_BUCKET'),
+                'offload' => TRUE
             ];
 
         return [];
@@ -81,7 +82,12 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
 
         $filename = basename(C_Gallery_Storage::get_instance()->get_image_abspath($image, $size));
 
-        return $image->galleryid . '/' . $image->pid . '/' . $time . '--' . $filename;
+        $dir = $image->galleryid . '/' . $image->pid . '/';
+
+        if (C_Dynamic_Thumbnails_Manager::get_instance()->is_size_dynamic($size))
+            $dir .= 'dynamic/';
+
+        return $dir . $time . '--' . $filename;
     }
 
     public function get_current_image_name($image, $size)
@@ -101,6 +107,38 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
             $old_name = $image->meta_data['gcs']['name'];
 
         return $old_name;
+    }
+
+    /**
+     * Flushes all dynamically generated images
+     *
+     * @param C_Image|stdClass|int $image
+     * @throws E_NggCdnUnconfigured
+     * @return bool
+     */
+    function flush($image)
+    {
+        if (!$this->is_configured())
+            throw new E_NggCdnUnconfigured(__("GCS has not been configured yet", 'nggallery'));
+
+        try {
+            $gcs    = new StorageClient($this->get_config());
+            $bucket = $gcs->bucket($this->get_bucket_name());
+
+            if (is_numeric($image))
+                $image = C_Image_Mapper::get_instance()->find($image);
+
+            $dir = $image->galleryid . '/' . $image->pid . '/dynamic/';
+
+            foreach ($bucket->objects(['prefix' => $dir]) as $object) {
+                $object->delete();
+            }
+
+            return TRUE;
+        }
+        catch (\Google\Cloud\Core\Exception\NotFoundException $exception) {
+            return FALSE;
+        }
     }
     
     /**

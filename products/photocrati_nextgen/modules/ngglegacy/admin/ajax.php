@@ -158,7 +158,7 @@ function ngg_rotateImage()
             \ReactrIO\Background\Job::create(
                 sprintf(__("Publish rotated image #%d", 'nggallery'), $image_id),
                 'cdn_publish_image',
-                $image_id
+                ['id' => $image_id, 'size' => 'all']
             )->save('cdn');
             $retval['cdn_enabled'] = TRUE;
             $retval['new_image_url'] = C_Gallery_Storage::get_instance()->get_cdn_url_for($image_id, 'full');

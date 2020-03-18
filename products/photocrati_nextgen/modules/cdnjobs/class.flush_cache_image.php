@@ -14,18 +14,22 @@ class C_CDN_Flush_Cache_Image_Job extends \ReactrIO\Background\Job
 
         $image = $mapper->find($id);
 
+        $cdn->flush($image->pid);
+
+        $save = FALSE;
         foreach ($storage->get_image_sizes($image->pid) as $size) {
 
             if (!$dynthumbs->is_size_dynamic($size))
                 continue;
 
-            if (empty($image->meta_data[$size][$key]) || empty($image->meta_data[$size][$key]['name']))
+            if (empty($image->meta_data[$size][$key]))
                 continue;
 
-            $cdn->delete($image->pid, $size);
-
             unset($image->meta_data[$size]);
-            $mapper->save($image);
+            $save = TRUE;
         }
+
+        if ($save)
+            $mapper->save($image);
     }
 }

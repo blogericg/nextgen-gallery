@@ -50,9 +50,9 @@ class M_CDN_Jobs extends C_Base_Module
         {
             add_action('ngg_added_new_image', function($image) {
                 \ReactrIO\Background\Job::create(
-                    sprintf(__("Upload image %d to CDN", 'nggallery'), $image->pid),
+                    sprintf(__("Publishing size full image %d to CDN", 'nggallery'), $image->pid),
                     'cdn_publish_image',
-                    $image->pid
+                    ['id' => $image->pid, 'size' => 'full']
                 )->save('cdn');
             });
         }

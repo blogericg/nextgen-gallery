@@ -9,7 +9,7 @@ class C_CDN_Delete_Gallery_Job extends \ReactrIO\Background\Job
                 return \ReactrIO\Background\Job::create(
                     sprintf(__("Deleting image #%d", 'nggallery'), $image->pid),
                     'cdn_delete_image',
-                    ['id' => $image->pid],
+                    $image->pid,
                     $this->get_id()
                 )->save('cdn');
             },

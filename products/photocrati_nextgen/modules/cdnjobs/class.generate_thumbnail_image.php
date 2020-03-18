@@ -1,6 +1,6 @@
 <?php
 
-class C_CDN_Generate_Thumbnail_Image_Job extends C_CDN_Publish_Image_Job
+class C_CDN_Generate_Thumbnail_Image_Job extends \ReactrIO\Background\Job
 {
 
     function run()
@@ -16,10 +16,6 @@ class C_CDN_Generate_Thumbnail_Image_Job extends C_CDN_Publish_Image_Job
         }
 
         $this->generate_thumbnail_image($id);
-
-        // Call C_CDN_Publish_Image_Job->run()
-        $this->set_dataset($id);
-        parent::run();
     }
 
     /**

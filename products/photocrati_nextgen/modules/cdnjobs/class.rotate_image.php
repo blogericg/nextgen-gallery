@@ -1,6 +1,6 @@
 <?php
 
-class C_CDN_Rotate_Image_Job extends C_CDN_Publish_Image_Job
+class C_CDN_Rotate_Image_Job extends \ReactrIO\Background\Job
 {
 
     function run()
@@ -15,10 +15,6 @@ class C_CDN_Rotate_Image_Job extends C_CDN_Publish_Image_Job
         }
 
         $this->rotate_local_image($data['id'], $data['direction']);
-
-        // Call C_CDN_Publish_Image_Job->run()
-        $this->set_dataset($data['id']);
-        parent::run();
     }
 
     /**

@@ -17,7 +17,7 @@ class C_CDN_Recover_Image_Job extends C_CDN_Publish_Image_Job
         C_Gallery_Storage::get_instance()->recover_image($id);
 
         // Call C_CDN_Publish_Image_Job->run()
-        $this->set_dataset($id);
+        $this->set_dataset(['id' => $id, 'size' => 'all']);
         parent::run();
     }
 }

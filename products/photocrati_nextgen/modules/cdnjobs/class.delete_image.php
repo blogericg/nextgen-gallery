@@ -16,17 +16,15 @@ class C_CDN_Delete_Image_Job extends \ReactrIO\Background\Job
             $cdn->delete($id, $size);
         }
 
-        // Trigger our own delete-image logic built into the gallery storage
-        if (!$cdn->is_offload_enabled())
+        $image = $mapper->find($id);
+        if ($image)
         {
-            $image = $mapper->find($id);
-            if ($image)
-            {
-                do_action('ngg_delete_picture', $image->pid, $image);
-                if ($settings->get('deleteImg', FALSE))
-                    $storage->delete_image($image->pid);
-                $mapper->destroy($image->pid);
-            }
+            do_action('ngg_delete_picture', $image->pid, $image);
+
+            if ($settings->get('deleteImg', FALSE) && !$cdn->is_offload_enabled())
+                $storage->delete_image($image->pid);
+
+            $mapper->destroy($image->pid);
         }
 
         return $this;
