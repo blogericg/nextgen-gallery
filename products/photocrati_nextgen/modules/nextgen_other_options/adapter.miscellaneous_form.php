@@ -96,8 +96,7 @@ class A_Miscellaneous_Form extends Mixin
 
     function cache_action()
     {
-        $cache   = C_Cache::get_instance();
-        $cache->flush_galleries();
+        C_Cache::get_instance()->flush_galleries();
 		C_Photocrati_Transient_Manager::flush();
     }
 

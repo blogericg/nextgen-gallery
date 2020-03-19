@@ -323,15 +323,6 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
 
                         // Reimport all metadata
                         $retval = $this->object->_image_mapper->reimport_metadata($image);
-
-                        if (C_CDN_Providers::is_cdn_configured())
-                        {
-                            \ReactrIO\Background\Job::create(
-                                sprintf(__("Publishing recovered image #%d", 'nextgen-gallery'), $image->pid),
-                                'cdn_publish_image',
-                                ['id' => $image->pid, 'size' => 'all']
-                            )->save('cdn');
-                        }
                     }
                 }
             }

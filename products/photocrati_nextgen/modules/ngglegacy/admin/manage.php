@@ -322,7 +322,7 @@ class nggManageGallery
                             return \ReactrIO\Background\Job::create(
                                 sprintf(__("Deleting image #%d", 'nextgen-gallery'), $id),
                                 'cdn_delete_image',
-                                $id
+                                ['id' => $id, 'size' => 'all']
                             )->save('cdn');
                         },
                         $_POST['doaction']
@@ -488,7 +488,7 @@ class nggManageGallery
                 \ReactrIO\Background\Job::create(
                     sprintf(__("Deleting image #%d", 'nextgen-gallery'), $this->pid),
                     'cdn_delete_image',
-                    $this->pid
+                    ['id' => $this->pid, 'size' => 'all']
                 )->save('cdn');
                 self::$messages[] = __('Delete image job(s) created for selected images.', 'nggallery');
                 return;

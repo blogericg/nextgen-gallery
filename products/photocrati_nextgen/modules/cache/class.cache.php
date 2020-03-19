@@ -88,6 +88,8 @@ class Mixin_Cache extends Mixin
         if (empty($galleries))
             $galleries = C_Gallery_Mapper::get_instance()->find_all();
 
+        do_action('ngg_flush_galleries_cache', $galleries);
+
         foreach ($galleries as $gallery) {
             C_Gallery_Storage::get_instance()->flush_cache($gallery);
         }

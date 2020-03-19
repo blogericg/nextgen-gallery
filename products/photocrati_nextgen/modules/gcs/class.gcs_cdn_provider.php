@@ -36,12 +36,25 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
 
     public function copy($image_id, $gallery_id)
     {
-        // TODO: Implement this feature
+        C_Gallery_Storage::get_instance()->copy_images([$image_id], $gallery_id);
+        \ReactrIO\Background\Job::create(
+            sprintf(__("Copying image %d to gallery %d", 'nextgen-gallery'), $image_id, $gallery_id),
+            'cdn_publish_image',
+            ['id' => $image_id, 'size' => 'all']
+        )->save('cdn');
     }
 
     public function move($image_id, $gallery_id)
     {
-        // TODO: Implement this feature
+        // move_images() is just a wrapper to copy_images() that removes the original once copy_images() has finished
+        // so here we use copy_images() and then call for the originals to be removed
+        C_Gallery_Storage::get_instance()->copy_images([$image_id], $gallery_id);
+
+        \ReactrIO\Background\Job::create(
+            sprintf(__("Removing original files of moved image #%d", 'nggallery'), $image_id),
+            'cdn_delete_image',
+            ['id' => $image_id, 'size' => 'all']
+        )->save('cdn');
     }
 
     function get_bucket_name()
@@ -114,30 +127,26 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
      *
      * @param C_Image|stdClass|int $image
      * @throws E_NggCdnUnconfigured
-     * @return bool
      */
     function flush($image)
     {
         if (!$this->is_configured())
             throw new E_NggCdnUnconfigured(__("GCS has not been configured yet", 'nggallery'));
 
-        try {
-            $gcs    = new StorageClient($this->get_config());
-            $bucket = $gcs->bucket($this->get_bucket_name());
+        $gcs    = new StorageClient($this->get_config());
+        $bucket = $gcs->bucket($this->get_bucket_name());
 
-            if (is_numeric($image))
-                $image = C_Image_Mapper::get_instance()->find($image);
+        if (is_numeric($image))
+            $image = C_Image_Mapper::get_instance()->find($image);
 
-            $dir = $image->galleryid . '/' . $image->pid . '/dynamic/';
+        $dir = $image->galleryid . '/' . $image->pid . '/dynamic/';
 
-            foreach ($bucket->objects(['prefix' => $dir]) as $object) {
-                $object->delete();
-            }
-
-            return TRUE;
-        }
-        catch (\Google\Cloud\Core\Exception\NotFoundException $exception) {
-            return FALSE;
+        foreach ($bucket->objects(['prefix' => $dir]) as $object) {
+            \ReactrIO\Background\Job::create(
+                sprintf(__("Flushing dynamic image %s for image %d", 'nextgen-gallery'), $object->name(), $image->pid),
+                'cdn_delete_image',
+                ['id' => $image->pid, 'size' => $object->name()]
+            )->save('cdn');
         }
     }
     
@@ -198,23 +207,19 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
         return $retval;
     }
 
+    /**
+     * @param string $name
+     */
     function delete_version($name)
     {
         if (!$this->is_configured())
             throw new E_NggCdnUnconfigured(__("GCS has not been configured yet", 'nggallery'));
 
-        try {
-            $gcs    = new StorageClient($this->get_config());
-            $bucket = $gcs->bucket($this->get_bucket_name());
+        $gcs    = new StorageClient($this->get_config());
+        $bucket = $gcs->bucket($this->get_bucket_name());
 
-            $object = $bucket->object($name);
-            $object->delete();
-
-            return TRUE;
-        }
-        catch (\Google\Cloud\Core\Exception\NotFoundException $exception) {
-            return FALSE;
-        }
+        $object = $bucket->object($name);
+        $object->delete();
     }
 
     /**
@@ -222,30 +227,21 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
      *
      * @param int|C_Image|stdClass $image
      * @param string $size
-     * @return bool
      */
     function delete($image, $size = 'full')
     {
         if (!$this->is_configured())
             throw new E_NggCdnUnconfigured(__("GCS has not been configured yet", 'nggallery'));
 
-        try {
-            $gcs    = new StorageClient($this->get_config());
-            $bucket = $gcs->bucket($this->get_bucket_name());
+        $gcs    = new StorageClient($this->get_config());
+        $bucket = $gcs->bucket($this->get_bucket_name());
 
-            $name = $this->get_current_image_name($image, $size);
+        $name = $this->get_current_image_name($image, $size);
 
-            if ($name) {
-                $object = $bucket->object($name);
-                $object->delete();
-            } else {
-                return FALSE;
-            }
-
-            return TRUE;
-        }
-        catch (\Google\Cloud\Core\Exception\NotFoundException $exception) {
-            return FALSE;
+        if ($name)
+        {
+            $object = $bucket->object($name);
+            $object->delete();
         }
     }
 

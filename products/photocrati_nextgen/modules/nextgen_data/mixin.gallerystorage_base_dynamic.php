@@ -26,17 +26,6 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
         // Ensure we have a valid image
         if ($image)
         {
-            if (C_CDN_Providers::is_cdn_configured())
-            {
-                $cdn  = C_CDN_Providers::get_current();
-                try {
-                    $cdn->download($image->pid, 'full');
-                }
-                catch (Exception $ex) {
-                    $cdn->download($image->pid, 'backup');
-                }
-            }
-
             $params = $this->object->get_image_size_params($image, $size, $params, $skip_defaults);
 
             // Get the image filename
@@ -676,17 +665,6 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
         // Ensure we have a valid image
         if ($image)
         {
-            if (C_CDN_Providers::is_cdn_configured())
-            {
-                $cdn  = C_CDN_Providers::get_current();
-                try {
-                    $cdn->download($image->pid, 'full');
-                }
-                catch (Exception $ex) {
-                    $cdn->download($image->pid, 'backup');
-                }
-            }
-
             $params   = $this->object->get_image_size_params($image, $size, $params, $skip_defaults);
             $settings = C_NextGen_Settings::get_instance();
 
@@ -758,15 +736,6 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
 
                 if ($retval)
                     $retval = $thumbnail;
-
-                if (C_CDN_Providers::is_cdn_configured())
-                {
-                    \ReactrIO\Background\Job::create(
-                        sprintf(__("Publishing generated image size %s for image #%d", 'nextgen-gallery'), $size, $image->pid),
-                        'cdn_publish_image',
-                        ['id' => $image->pid, 'size' => $size]
-                    )->save('cdn');
-                }
             }
             else {
                 // Something went wrong. Thumbnail generation failed!

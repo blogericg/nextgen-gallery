@@ -55,6 +55,29 @@ class M_CDN_Jobs extends C_Base_Module
                     ['id' => $image->pid, 'size' => 'full']
                 )->save('cdn');
             });
+
+            add_action(
+                'ngg_generated_image',
+                function($image, $size, $params) {
+                    \ReactrIO\Background\Job::create(
+                        sprintf(__("Publishing generated image size %s for image #%d", 'nextgen-gallery'), $size, $image->pid),
+                        'cdn_publish_image',
+                        ['id' => $image->pid, 'size' => $size]
+                    )->save('cdn');
+                },
+                10,
+                3
+            );
+
+            add_action('ngg_flush_galleries_cache', function($galleries) {
+                foreach ($galleries as $gallery) {
+                    \ReactrIO\Background\Job::create(
+                        sprintf(__("Flushing dynamic images for gallery #%d", 'nextgen-gallery'), $gallery->gid),
+                        'cdn_flush_cache_gallery',
+                        $gallery->gid
+                    )->save('cdn');
+                }
+            });
         }
     }
 

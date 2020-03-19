@@ -1,6 +1,6 @@
 <?php
 
-class C_CDN_Copy_Image_Job extends C_CDN_Publish_Image_Job
+class C_CDN_Copy_Image_Job extends \ReactrIO\Background\Job
 {
     function run()
     {
@@ -16,10 +16,8 @@ class C_CDN_Copy_Image_Job extends C_CDN_Publish_Image_Job
             $cdn->download($id, 'full');
         }
 
-        $new_id = reset(C_Gallery_Storage::get_instance()->copy_images([$id], $destination_id));
+        $cdn->copy($id, $destination_id);
 
-        // Call C_CDN_Publish_Image_Job->run()
-        $this->set_dataset(['id' => $new_id, 'size' => 'all']);
-        parent::run();
+        return $this;
     }
 }
