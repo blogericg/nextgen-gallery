@@ -554,22 +554,38 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
     }
 
     /**
-     * Deteremines if a given image size has been published to the CDN
+     * Determines if a given image size has been published to the CDN
+     *
      * @param C_Image|Object|int $image
      * @param string $size
      * @return bool
-     * 
      * @throws E_NggCdnOutOfDate
      */
-    function is_on_cdn($image, $size='full')
+    function is_on_cdn($image, $size = 'full')
     {
         $timestamp = $this->get_latest_image_timestamp($image, $size);
+
         $cdn_data = $this->get_cdn_data($image, $size);
-        if ($cdn_data) {
+
+        $offload = FALSE;
+
+        if (C_CDN_Providers::is_cdn_configured())
+        {
+            $cdn = C_CDN_Providers::get_current();
+            $offload = $cdn->is_offload_enabled();
+        }
+
+        if ($cdn_data && !$offload)
+        {
             $image_id = $this->_get_image_id($image);
-            if ($timestamp > $cdn_data['version']) {
-                throw new E_NggCdnOutOfDate("A CDN version of the \"{$size}\" named size exists on the CDN for image {$image_id} but its out-of-date");
-            }
+            if ($timestamp > $cdn_data['version'])
+                throw new E_NggCdnOutOfDate(sprintf(__('A CDN version of the "%s" named size exists on the CDN for image #%d but its out-of-date', 'nggallery'), $size, $image_id));
+
+            return TRUE;
+        }
+        else if ($cdn_data && $offload)
+        {
+            // Offloading is enabled: the image should only be on the CDN
             return TRUE;
         }
 

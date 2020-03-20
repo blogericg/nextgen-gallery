@@ -33,7 +33,14 @@ class C_CDN_Publish_Image_Job extends \ReactrIO\Background\Job
                 $this->logOutput(sprintf(__("Uploaded '%s' size for %s", 'nggallery'), $sizes, $id));
 
                 if ($cdn->is_offload_enabled())
+                {
                     unlink($storage->get_image_abspath($id, $sizes));
+                    C_Cache::get_instance()->flush_directory(
+                        C_Gallery_Storage::get_instance()->get_cache_abspath(
+                            C_Image_Mapper::get_instance()->find($id)->galleryid
+                        )
+                    );
+                }
             }
 
             // Because 'backup' is not included in get_image_sizes()

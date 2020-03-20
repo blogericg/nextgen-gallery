@@ -9,9 +9,9 @@ class C_CDN_Watermark_Image_Job extends \ReactrIO\Background\Job
         $id   = $data['id'];
 
         try {
-            $cdn->download($id, 'backup');
-        } catch (Exception $ex) {
             $cdn->download($id, 'full');
+        } catch (Exception $ex) {
+            $cdn->download($id, 'backup');
         }
 
         $this->watermark_local_image($id);
@@ -30,6 +30,7 @@ class C_CDN_Watermark_Image_Job extends \ReactrIO\Background\Job
             'reflection' => FALSE,
             'crop'       => FALSE
         ];
+
 
         if ($storage->generate_image_size($id, 'full', $params) === FALSE)
             throw new RuntimeException(

@@ -9,9 +9,9 @@ class C_CDN_Rotate_Image_Job extends \ReactrIO\Background\Job
         $data = $this->get_dataset();
 
         try {
-            $cdn->download($data['id'], 'backup');
-        } catch (Exception $ex) {
             $cdn->download($data['id'], 'full');
+        } catch (Exception $ex) {
+            $cdn->download($data['id'], 'backup');
         }
 
         $this->rotate_local_image($data['id'], $data['direction']);

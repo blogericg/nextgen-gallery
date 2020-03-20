@@ -286,7 +286,8 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
             }
 
             $image_abspath = $storage->get_image_abspath($image, $size);
-            move_uploaded_file($filename, $image_abspath);
+            copy($filename, $image_abspath);
+            unlink($filename);
             return $image_abspath;
         }
 

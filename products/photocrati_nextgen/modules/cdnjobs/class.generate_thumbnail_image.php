@@ -10,9 +10,9 @@ class C_CDN_Generate_Thumbnail_Image_Job extends \ReactrIO\Background\Job
         $id   = $data['id'];
 
         try {
-            $cdn->download($id, 'backup');
-        } catch (Exception $ex) {
             $cdn->download($id, 'full');
+        } catch (Exception $ex) {
+            $cdn->download($id, 'backup');
         }
 
         $this->generate_thumbnail_image($id);
