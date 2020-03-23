@@ -403,7 +403,7 @@ class nggManageGallery
                     return \ReactrIO\Background\Job::create(
                         sprintf(__("Generating new thumbnail for image #%d", 'nextgen-gallery'), $id),
                         'cdn_generate_thumbnail_image',
-                        $id
+                        ['id' => $id]
                     )->save('cdn');
                 },
                 explode(',', $_POST['TB_imagelist'])

@@ -42,12 +42,29 @@ class M_CDN_Jobs extends C_Base_Module
         \ReactrIO\Background\Job::register_type('cdn_rotate_image',               C_CDN_Rotate_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_watermark_gallery',          C_CDN_Watermark_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_watermark_image',            C_CDN_Watermark_Image_Job::class);
+
+        $notices_manager = C_Admin_Notification_Manager::get_instance();
+        $notices_manager->add('cdnjobs_in_progress', 'C_CDN_Jobs_In_Progress_Notice');
+    }
+
+    function _register_adapters()
+    {
+        $this->get_registry()->add_adapter('I_Ajax_Controller', 'A_CDN_Jobs_In_Progress_Notice_Ajax');
     }
 
     function _register_hooks()
     {
         if (C_CDN_Providers::is_cdn_configured())
         {
+            add_action('ngg_admin_enqueue_scripts', function() {
+                $manager = C_Admin_Notification_Manager::get_instance();
+                $notice  = $manager->get_handler_instance('cdnjobs_in_progress');
+
+                /** @var C_CDN_Jobs_In_Progress_Notice $notice */
+                if ($notice->is_renderable())
+                    $notice->enqueue_static_resources();
+            });
+
             add_action('ngg_added_new_image', function($image) {
                 \ReactrIO\Background\Job::create(
                     sprintf(__("Publishing size full image %d to CDN", 'nggallery'), $image->pid),
@@ -84,6 +101,8 @@ class M_CDN_Jobs extends C_Base_Module
     function get_type_list()
     {
         return [
+            'C_CDN_Jobs_In_Progress_Notice'        => 'class.cdn_jobs_in_progress_notice.php',
+            'A_CDN_Jobs_In_Progress_Notice_Ajax'   => 'class.cdn_jobs_in_progress_notice_ajax.php',
             'C_CDN_Copy_Image_Job'                 => 'class.copy_image.php',
             'C_CDN_Delete_Gallery_Job'             => 'class.delete_gallery.php',
             'C_CDN_Delete_Image_Job'               => 'class.delete_image.php',
