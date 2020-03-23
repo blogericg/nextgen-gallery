@@ -156,7 +156,7 @@ function ngg_rotateImage()
         {
             // TODO: new_image_url is known to be broken
             \ReactrIO\Background\Job::create(
-                sprintf(__("Publish rotated image #%d", 'nggallery'), $image_id),
+                sprintf(__("Publishing rotated image #%d", 'nggallery'), $image_id),
                 'cdn_publish_image',
                 ['id' => $image_id, 'size' => 'all']
             )->save('cdn');

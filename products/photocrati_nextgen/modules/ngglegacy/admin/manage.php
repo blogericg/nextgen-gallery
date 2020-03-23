@@ -423,7 +423,7 @@ class nggManageGallery
                 array_map(
                     function($id) use ($destination_gid) {
                         return \ReactrIO\Background\Job::create(
-                            sprintf(__("Copy image #%d to gallery %d", 'nextgen-gallery'), $id, $destination_gid),
+                            sprintf(__("Copying image #%d to gallery %d", 'nextgen-gallery'), $id, $destination_gid),
                             'cdn_copy_image',
                             ['id' => $id, 'destination' => $destination_gid]
                         )->save('cdn');
@@ -437,7 +437,7 @@ class nggManageGallery
                 array_map(
                     function($id) use ($destination_gid) {
                         return \ReactrIO\Background\Job::create(
-                            sprintf(__("Move image #%d to gallery %d", 'nextgen-gallery'), $id, $destination_gid),
+                            sprintf(__("Moving image #%d to gallery %d", 'nextgen-gallery'), $id, $destination_gid),
                             'cdn_move_image',
                             ['id' => $id, 'destination' => $destination_gid]
                         )->save('cdn');
