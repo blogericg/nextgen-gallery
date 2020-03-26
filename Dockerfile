@@ -21,4 +21,4 @@ COPY package.json /app
 COPY . /app
 RUN composer config --global --auth http-basic.repo.packagist.com token ${composerToken}
 
-CMD npm install; composer install; gulp build; bash
+CMD composer install; npm install; gulp build; bash
