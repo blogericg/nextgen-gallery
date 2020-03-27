@@ -410,9 +410,9 @@ class M_NextGen_Admin extends C_Base_Module
         return C_NextGen_Admin_Page_Manager::is_requested_post_type() ? "$classes ngg-post-type" : $classes;
     }
 
-    function remove_post_type_screen_options()
+    function remove_post_type_screen_options($show)
     {
-        return C_NextGen_Admin_Page_Manager::is_requested_post_type() ? FALSE : TRUE;
+        return C_NextGen_Admin_Page_Manager::is_requested_post_type() ? FALSE : $show;
     }
 
     /* Add common admin markup to top of custom post type pages */
