@@ -1,6 +1,9 @@
 NextGEN Gallery
 by Imagely
 
+= V3.3.1 - 03.31.2020 =
+= Fixed:   Gallery path resolution was broken on wordpress.com hosting accounts
+
 = V3.3.0 - 03.10.2020 =
 * NEW:     Added feature on Manage Galleries page to search gallery names
 * NEW:     Added filter 'ngg_disable_shortcodes_in_request_api' to disable rendering of NextGen shortcodes in REST

@@ -2,7 +2,7 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 4.0.0
-Stable tag: 3.3.0
+Stable tag: 3.3.1
 Tested up to: 5.3.2
 License: GPLv2
 Requires PHP: 5.4
@@ -180,7 +180,10 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.2.24 - 03.10.2020 =
+= V3.3.1 - 03.31.2020 =
+= Fixed:   Gallery path resolution was broken on wordpress.com hosting accounts
+
+= V3.3.0 - 03.10.2020 =
 * NEW:     Added feature on Manage Galleries page to search gallery names
 * NEW:     Added filter 'ngg_disable_shortcodes_in_request_api' to disable rendering of NextGen shortcodes in REST
 * NEW:     Added option to automatically watermark images during upload
