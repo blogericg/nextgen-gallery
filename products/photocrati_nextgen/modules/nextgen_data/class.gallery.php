@@ -79,7 +79,7 @@ class Mixin_NextGen_Gallery_Validation
             'plugins'          => wp_normalize_path(WP_PLUGIN_DIR),
             'must use plugins' => wp_normalize_path(WPMU_PLUGIN_DIR),
             'wp-admin'         => $fs->join_paths($ABSPATH, 'wp-admin'),
-            'wp-includes'      => $fs->join_paths($ABSPATH, 'wp-admin'),
+            'wp-includes'      => $fs->join_paths($ABSPATH, 'wp-includes'),
             'themes'           => get_theme_root()
         );
         foreach ($not_ever_in as $label => $dir) {
