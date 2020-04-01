@@ -39,7 +39,13 @@ class C_Fs extends C_Component
 	{
 		parent::initialize();
 
-        $this->_document_root = $this->set_document_root(ABSPATH);
+		// Special hack for wordpress.com hosted accounts where ABSPATH is outside the DOCUMENT_ROOT
+        if (!empty($_SERVER['DOCUMENT_ROOT']) && strpos(ABSPATH, $_SERVER['DOCUMENT_ROOT']) === FALSE)
+            $root = $_SERVER['DOCUMENT_ROOT'];
+        else
+            $root = ABSPATH;
+
+        $this->_document_root = $this->set_document_root($root);
     }
 }
 
@@ -342,7 +348,6 @@ class Mixin_Fs_Instance_Methods extends Mixin
                 break;
             case 'gallery':
 			case 'galleries':
-				if (strpos($_SERVER['DOCUMENT_ROOT'], ABSPATH) === FALSE) return $_SERVER['DOCUMENT_ROOT'];
                 $root_type = NGG_GALLERY_ROOT_TYPE;
                 if ($root_type == 'content')
                     $retval = WP_CONTENT_DIR;
