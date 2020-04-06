@@ -307,7 +307,6 @@ class Mixin_Displayed_Gallery_Renderer extends Mixin
 		return $retval;
 	}
 
-
     /**
      * Renders a displayed gallery on the frontend
      * @param C_Displayed_Gallery $displayed_gallery
@@ -338,44 +337,46 @@ class Mixin_Displayed_Gallery_Renderer extends Mixin
             $displayed_gallery->id(md5(json_encode($displayed_gallery->get_entity())));
 
         // Get the display type controller
-        $controller = $this->get_registry()->get_utility(
-            'I_Display_Type_Controller', $displayed_gallery->display_type
-        );
+        $controller = C_Display_Type_Controller::get_instance($displayed_gallery->display_type);
 
 		// Get routing info
 		$router = C_Router::get_instance();
 		$url    = $router->get_url($router->get_request_uri(), TRUE);
 
 		// Should we lookup in cache?
-		if (is_array($displayed_gallery->container_ids) && in_array('All', $displayed_gallery->container_ids)) $lookup = FALSE;
-		elseif ($displayed_gallery->source == 'albums' && ($controller->param('gallery')) OR $controller->param('album')) $lookup = FALSE;
-        elseif (in_array($displayed_gallery->source, array('random', 'random_images'))) $lookup = FALSE;
-		elseif ($controller->param('show')) $lookup = FALSE;
-		elseif ($controller->is_cachable() === FALSE) $lookup = FALSE;
-        elseif (!NGG_RENDERING_CACHE_ENABLED) $lookup = FALSE;
+		if (is_array($displayed_gallery->container_ids) && in_array('All', $displayed_gallery->container_ids))
+		    $lookup = FALSE;
+		elseif ($displayed_gallery->source == 'albums' && ($controller->param('gallery')) OR $controller->param('album'))
+            $lookup = FALSE;
+        elseif (in_array($displayed_gallery->source, array('random', 'random_images')))
+            $lookup = FALSE;
+		elseif ($controller->param('show'))
+            $lookup = FALSE;
+		elseif ($controller->is_cachable() === FALSE)
+            $lookup = FALSE;
+        elseif (!NGG_RENDERING_CACHE_ENABLED)
+            $lookup = FALSE;
 
 		// Enqueue any necessary static resources
-        if ((!defined('NGG_SKIP_LOAD_SCRIPTS') || !NGG_SKIP_LOAD_SCRIPTS) && !$this->is_rest_request()) {
+        if ((!defined('NGG_SKIP_LOAD_SCRIPTS') || !NGG_SKIP_LOAD_SCRIPTS) && !$this->is_rest_request())
 		    $controller->enqueue_frontend_resources($displayed_gallery);
-        }
 
 		// Try cache lookup, if we're to do so
-		$key =  NULL;
+		$key  = NULL;
 		$html = FALSE;
 		if ($lookup)
         {
 			// The display type may need to output some things
 			// even when serving from the cache
-			if ($controller->has_method('cache_action')) {
+			if ($controller->has_method('cache_action'))
 				$retval = $controller->cache_action($displayed_gallery);
-			}
 
 			// Output debug message
 			$retval .= $this->debug_msg("Lookup!");
 
 			// Some settings affect display types
 			$settings = C_NextGen_Settings::get_instance();
-			$key_params = apply_filters('ngg_displayed_gallery_cache_params', array(
+			$key_params = apply_filters('ngg_displayed_gallery_cache_params', [
 				$displayed_gallery->get_entity(),
 				$url,
 				$mode,
@@ -387,50 +388,64 @@ class Mixin_Displayed_Gallery_Renderer extends Mixin
 				$settings->galSort,
 				$settings->galSortDir,
 				$this->get_display_type_version($displayed_gallery->get_display_type())
-			));
+			]);
 
             // Any displayed gallery links on the home page will need to be regenerated if the permalink structure
             // changes
-            if (is_home() OR is_front_page()) $key_params[] = get_option('permalink_structure');
+            if (is_home() OR is_front_page())
+                $key_params[] = get_option('permalink_structure');
 
 			// Try getting the rendered HTML from the cache
-			$key = C_Photocrati_Transient_Manager::create_key('displayed_gallery_rendering', $key_params);
+			$key  = C_Photocrati_Transient_Manager::create_key('displayed_gallery_rendering', $key_params);
             $html = C_Photocrati_Transient_Manager::fetch($key, FALSE);
 		}
 		else {
 		    $retval .= $this->debug_msg("Not looking up in cache as per rules");
         }
 
-        // TODO: This is hack. We need to figure out a more uniform way of detecting dynamic image urls
-        if (strpos($html, C_Photocrati_Settings_Manager::get_instance()->dynamic_thumbnail_slug.'/') !== FALSE) {
-            $html = FALSE; // forces the cache to be re-generated
-        }
+        // If the cached display has dynamic images we must invalidate the cache
+        if ($this->rendering_has_dynimages($html))
+            $html = FALSE;
 
         // Output debug messages
-        if ($html) $retval .= $this->debug_msg("HIT!");
-        else $retval .= $this->debug_msg("MISS!");
+        if ($html)
+            $retval .= $this->debug_msg("HIT!");
+        else
+            $retval .= $this->debug_msg("MISS!");
 
 		// If a cached version doesn't exist, then create the cache
 		if (!$html)
 		{
 			$retval .= $this->debug_msg("Rendering displayed gallery");
 
-			$current_mode = $controller->get_render_mode();
 			$controller->set_render_mode($mode);
-            $html = apply_filters(
+
+			$html = apply_filters(
                 'ngg_displayed_gallery_rendering',
                 $controller->index_action($displayed_gallery, TRUE),
                 $displayed_gallery
             );
 
-			if ($key != null) C_Photocrati_Transient_Manager::update($key, $html, NGG_RENDERING_CACHE_TTL);
+			if ($key != null)
+			    C_Photocrati_Transient_Manager::update($key, $html, NGG_RENDERING_CACHE_TTL);
 		}
 
 		$retval .= $html;
 
-		if (!$return) echo $retval;
+		if (!$return)
+		    print $retval;
 
 		return $retval;
+    }
+
+    /**
+     * @param string $html
+     * @return bool
+     */
+    public function rendering_has_dynimages($html)
+    {
+        $settings = C_Photocrati_Settings_Manager::get_instance();
+        return strpos($html, $settings->get('dynamic_thumbnail_slug') . '/') === FALSE ? FALSE : TRUE;
     }
 
 	/**

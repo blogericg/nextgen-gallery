@@ -11,7 +11,8 @@ class C_CDN_Publish_Image_Job extends \ReactrIO\Background\Job
         if (is_string($sizes) && $sizes === 'all')
         {
             $sizes = C_Gallery_Storage::get_instance()->get_image_sizes($id);
-            $sizes[] = 'backup';
+            if (!in_array('backup', $sizes))
+                $sizes[] = 'backup';
         }
 
         if (is_array($sizes))
@@ -24,7 +25,7 @@ class C_CDN_Publish_Image_Job extends \ReactrIO\Background\Job
                 )->save('cdn');
             }
         }
-        else if ($sizes === 'full') {
+        else {
             $storage = C_Gallery_Storage::get_instance();
             $cdn     = C_CDN_Providers::get_current();
 
@@ -33,18 +34,8 @@ class C_CDN_Publish_Image_Job extends \ReactrIO\Background\Job
                 $this->logOutput(sprintf(__("Uploaded '%s' size for %s", 'nggallery'), $sizes, $id));
 
                 if ($cdn->is_offload_enabled())
-                {
                     unlink($storage->get_image_abspath($id, $sizes));
-                    C_Cache::get_instance()->flush_directory(
-                        C_Gallery_Storage::get_instance()->get_cache_abspath(
-                            C_Image_Mapper::get_instance()->find($id)->galleryid
-                        )
-                    );
-                }
             }
-
-            // Because 'backup' is not included in get_image_sizes()
-            unlink($storage->get_image_abspath($id, 'backup'));
         }
 
         return $this;

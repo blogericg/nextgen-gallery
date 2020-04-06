@@ -28,6 +28,7 @@ class M_CDN_Jobs extends C_Base_Module
         \ReactrIO\Background\Job::register_type('cdn_delete_image',               C_CDN_Delete_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_flush_cache_gallery',        C_CDN_Flush_Cache_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_flush_cache_image',          C_CDN_Flush_Cache_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_generate_image_size',        C_CDN_Generate_Image_Size_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_generate_thumbnail_gallery', C_CDN_Generate_Thumbnail_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_generate_thumbnail_image',   C_CDN_Generate_Thumbnail_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_import_metadata_gallery',    C_CDN_Import_MetaData_Gallery_Job::class);
@@ -56,6 +57,46 @@ class M_CDN_Jobs extends C_Base_Module
     {
         if (C_CDN_Providers::is_cdn_configured())
         {
+            add_filter('ngg_displayed_gallery_rendering', function($html, $displayed_gallery) {
+                // TODO: move this out of being an enclosure
+                if (!C_CDN_Providers::is_cdn_configured() || !C_CDN_Providers::get_current()->is_offload_enabled())
+                    return $html;
+
+                $controller = C_Display_Type_Controller::get_instance($displayed_gallery->display_type);
+                $renderer = C_Displayed_Gallery_Renderer::get_instance();
+                if ($renderer->rendering_has_dynimages($html))
+                {
+                    $settings = C_NextGen_Settings::get_instance();
+                    $slug = $settings->get('dynamic_thumbnail_slug');
+
+                    $pattern = "#/{$slug}/(.*)/(.*)/(.*)[,\"\'\\s]#Um";
+
+                    $matches = NULL;
+
+                    preg_match_all($pattern, $html, $matches);
+
+                    foreach ($matches[0] as $ndx => $match) {
+
+                        $dynthumbs = C_Dynamic_Thumbnails_Manager::get_instance();
+
+                        $id     = $matches[1][$ndx];
+                        $params = $dynthumbs->get_params_from_uri($match);
+                        $size   = $dynthumbs->get_size_name($params);
+
+                        \ReactrIO\Background\Job::create(
+                            sprintf(__("Generating dynamic image size %s for image #%d", 'nextgen-gallery'), $size, $id),
+                            'cdn_generate_image_size',
+                            ['id' => $id, 'size' => $size, 'params' => $params]
+                        )->save('cdn');
+                    }
+
+                    // TODO: make this into a template
+                    return '<p>This gallery is still generating</p>';
+                }
+
+                return $html;
+            }, 10, 2);
+
             add_action('ngg_admin_enqueue_scripts', function() {
                 $manager = C_Admin_Notification_Manager::get_instance();
                 $notice  = $manager->get_handler_instance('cdnjobs_in_progress');
@@ -66,11 +107,13 @@ class M_CDN_Jobs extends C_Base_Module
             });
 
             add_action('ngg_added_new_image', function($image) {
-                \ReactrIO\Background\Job::create(
-                    sprintf(__("Publishing size full image %d to CDN", 'nggallery'), $image->pid),
-                    'cdn_publish_image',
-                    ['id' => $image->pid, 'size' => 'full']
-                )->save('cdn');
+                foreach (['full', 'backup'] as $size) {
+                    \ReactrIO\Background\Job::create(
+                        sprintf(__("Publishing size %s image %d to CDN", 'nggallery'), $size, $image->pid),
+                        'cdn_publish_image',
+                        ['id' => $image->pid, 'size' => $size]
+                    )->save('cdn');
+                }
             });
 
             add_action(
@@ -108,6 +151,7 @@ class M_CDN_Jobs extends C_Base_Module
             'C_CDN_Delete_Image_Job'               => 'class.delete_image.php',
             'C_CDN_Flush_Cache_Gallery_Job'        => 'class.flush_cache_gallery.php',
             'C_CDN_Flush_Cache_Image_Job'          => 'class.flush_cache_image.php',
+            'C_CDN_Generate_Image_Size_Job'        => 'class.generate_image_size.php',
             'C_CDN_Generate_Thumbnail_Gallery_Job' => 'class.generate_thumbnail_gallery.php',
             'C_CDN_Generate_Thumbnail_Image_Job'   => 'class.generate_thumbnail_image.php',
             'C_CDN_Import_MetaData_Gallery_Job'    => 'class.import_metadata_gallery.php',

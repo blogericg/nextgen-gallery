@@ -12,8 +12,13 @@ class C_CDN_Delete_Image_Job extends \ReactrIO\Background\Job
 
         if (is_string($sizes) && $sizes === 'all')
         {
-            $sizes = $storage->get_image_sizes($id);
-            $sizes[] = 'backup';
+            // We must wait to remove the image from the DB until after all the child jobs have finished
+            // TODO: there must be a better way to handle this in the Job class itself by requiring
+            // TODO: child tasks be processed before parents
+            $sizes = ['cdn_final_cleanup'];
+            $sizes = array_merge($sizes, $storage->get_image_sizes($id));
+            if (!in_array('backup', $sizes))
+                $sizes[] = 'backup';
         }
 
         if (is_array($sizes))
@@ -22,7 +27,8 @@ class C_CDN_Delete_Image_Job extends \ReactrIO\Background\Job
                 \ReactrIO\Background\Job::create(
                     sprintf(__("Deleting size %s image %d from CDN", 'nggallery'), $size, $id),
                     'cdn_delete_image',
-                    ['id' => $id, 'size' => $size]
+                    ['id' => $id, 'size' => $size],
+                    $this->get_id()
                 )->save('cdn');
             }
         }
@@ -32,15 +38,18 @@ class C_CDN_Delete_Image_Job extends \ReactrIO\Background\Job
 
             $cdn->delete($id, $sizes);
 
-            $image = $mapper->find($id);
-            if ($image)
+            if ($sizes === 'cdn_final_cleanup')
             {
-                do_action('ngg_delete_picture', $image->pid, $image);
+                $image = $mapper->find($id);
+                if ($image)
+                {
+                    do_action('ngg_delete_picture', $image->pid, $image);
 
-                if ($settings->get('deleteImg', FALSE) && !$cdn->is_offload_enabled())
-                    $storage->delete_image($image->pid);
+                    if ($settings->get('deleteImg', FALSE) && !$cdn->is_offload_enabled())
+                        $storage->delete_image($image->pid);
 
-                $mapper->destroy($image->pid);
+                    $mapper->destroy($image->pid);
+                }
             }
         }
 

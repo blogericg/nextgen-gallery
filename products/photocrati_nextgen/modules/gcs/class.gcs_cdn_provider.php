@@ -240,8 +240,12 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
 
         if ($name)
         {
-            $object = $bucket->object($name);
-            $object->delete();
+            try {
+                $object = $bucket->object($name);
+                $object->delete();
+            } catch (\Google\Cloud\Core\Exception\NotFoundException $exception) {
+                // The object doesn't exist, so there's no need to worry here
+            }
         }
     }
 
@@ -250,9 +254,10 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
      *
      * @param string $image
      * @param string $size
+     * @param bool $overwrite Force downloading an image that may already exist locally
      * @return string
      */
-    function download($image, $size = 'full')
+    function download($image, $size = 'full', $overwrite = FALSE)
     {   
         $storage = C_Gallery_Storage::get_instance();
 
@@ -263,7 +268,7 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
             $is_on_cdn = FALSE;
         }
 
-        if ($is_on_cdn && $this->is_offload_enabled())
+        if ($overwrite || ($is_on_cdn && $this->is_offload_enabled()))
         {
             $image_url = $storage->get_image_url($image, $size);
 

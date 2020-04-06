@@ -313,7 +313,8 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
                             $thumbnail = $this->object->generate_image_clone(
                                 $full_abspath,
                                 $this->object->get_image_abspath($image, $named_size),
-                                $this->object->get_image_size_params($image, $named_size)
+                                $this->object->get_image_size_params($image, $named_size),
+                                $image->pid
                             );
                             if ($thumbnail)
                                 $thumbnail->destruct();

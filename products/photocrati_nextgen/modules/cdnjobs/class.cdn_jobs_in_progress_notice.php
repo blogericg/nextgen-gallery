@@ -28,7 +28,7 @@ class C_CDN_Jobs_In_Progress_Notice
         if (!self::$has_checked)
         {
             self::$has_checked   = TRUE;
-            self::$jobs_count    = \ReactrIO\Background\Job::get_count_from_queue('cdn');
+            self::$jobs_count    = \ReactrIO\Background\Job::get_count_from_queue('cdn', [\ReactrIO\Background\Job::STATUS_QUEUED]);
             self::$is_renderable = (int)self::$jobs_count !== 0 ? TRUE : FALSE;
         }
 
@@ -42,7 +42,7 @@ class C_CDN_Jobs_In_Progress_Notice
     {
         return [
             'refreshing_label'  => __('Refreshing &hellip;', 'nggallery'),
-            'pending_label'     => __('There are %d CDN jobs pending.', 'nggallery'),
+            'pending_label'     => __('There are %d CDN job(s) pending.', 'nggallery'),
             'expand_link'       => sprintf(__('<a href="#" id="%s">Expand details &darr;</a>', 'nggallery'), 'ngg_cdn_jobs_in_progress_notice_expand_link'),
             'finished_label'    => sprintf(__('All CDN jobs are finished. You may now <a href="#" id="%s">refresh the page</a>.'),   'ngg_cdn_jobs_in_progress_notice_finished_link'),
             'minimize_label'    => __('Minimize details &uarr;', 'nggallery'),

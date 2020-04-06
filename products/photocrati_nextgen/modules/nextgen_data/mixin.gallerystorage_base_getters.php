@@ -215,98 +215,116 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
 
      /**
      * Gets the absolute path where the image is stored. Can optionally return the path for a particular sized image.
-     * @param int|object $image
+     *
+     * @param int|object|C_Image $image
      * @param string $size (optional) Default = full
+      * @param bool $check_existance
      * @return string
      */
-    function _get_computed_image_abspath($image, $size='full', $check_existance=FALSE)
+    function _get_computed_image_abspath($image, $size = 'full', $check_existance = FALSE)
     {
         $retval = NULL;
-        $fs     = C_Fs::get_instance();
 
         // If we have the id, get the actual image entity
-        if (is_numeric($image)) {
+        if (is_numeric($image))
             $image = $this->object->_image_mapper->find($image);
-        }
 
-        // Ensure we have the image entity - user could have passed in an
-        // incorrect id
-        if (is_object($image)) {
-            if (($gallery_path = $this->object->get_gallery_abspath($image->galleryid))) {
+        // Ensure we have the image entity - user could have passed in an incorrect id
+        if (is_object($image))
+        {
+            if (($gallery_path = $this->object->get_gallery_abspath($image->galleryid)))
+            {
                 $folder = $prefix = $size;
                 switch ($size) {
 
-                # Images are stored in the associated gallery folder
-                case 'full':
-                    $retval = path_join($gallery_path, $image->filename);
-                    break;
-
-                case 'backup':
-                    $retval = path_join($gallery_path, $image->filename.'_backup');
-                    if (!@file_exists($retval)) {
+                    # Images are stored in the associated gallery folder
+                    case 'full':
                         $retval = path_join($gallery_path, $image->filename);
-                    }
-                    break;
+                        break;
 
-                case 'thumbnail':
-                    $size = 'thumbnail';
-                    $folder = 'thumbs';
-                    $prefix = 'thumbs';
-                    // deliberately no break here
+                    case 'backup':
+                        $retval = path_join($gallery_path, $image->filename.'_backup');
+                        if (!@file_exists($retval))
+                            $retval = path_join($gallery_path, $image->filename);
+                        break;
 
-                default:
-                    // NGG 2.0 stores relative filenames in the meta data of
-                    // an image. It does this because it uses filenames
-                    // that follow conventional WordPress naming scheme.
-                    $image_path = NULL;
-                    $dynthumbs  = C_Dynamic_Thumbnails_Manager::get_instance();
-                    if (isset($image->meta_data) && isset($image->meta_data[$size]) && isset($image->meta_data[$size]['filename'])) {
-                        if ($dynthumbs && $dynthumbs->is_size_dynamic($size)) {
-                            $image_path = path_join($this->object->get_cache_abspath($image->galleryid), $image->meta_data[$size]['filename']);
+                    case 'thumbnail':
+                        $size = 'thumbnail';
+                        $folder = 'thumbs';
+                        $prefix = 'thumbs';
+                        // deliberately no break here
+
+                    default:
+                        // NGG 2.0 stores relative filenames in the meta data of an image. It does this because it uses
+                        // filenames that follow conventional WordPress naming scheme.
+                        $image_path = NULL;
+                        $dynthumbs  = C_Dynamic_Thumbnails_Manager::get_instance();
+                        if (isset($image->meta_data) && isset($image->meta_data[$size]) && isset($image->meta_data[$size]['filename']))
+                        {
+                            if ($dynthumbs && $dynthumbs->is_size_dynamic($size))
+                            {
+                                $image_path = path_join(
+                                    $this->object->get_cache_abspath($image->galleryid),
+                                    $image->meta_data[$size]['filename']
+                                );
+                            }
+                            else {
+                                $image_path = path_join($gallery_path, $folder);
+                                $image_path = path_join($image_path, $image->meta_data[$size]['filename']);
+                            }
+                        }
+
+                        // Filename not found in meta, but is dynamic
+                        else if ($dynthumbs && $dynthumbs->is_size_dynamic($size)) {
+                            $params = $dynthumbs->get_params_from_name($size, true);
+                            $image_path = path_join(
+                                $this->object->get_cache_abspath($image->galleryid),
+                                $dynthumbs->get_image_name($image, $params)
+                            );
+                    
+                        // Filename is not found in meta, nor dynamic
                         } else {
                             $image_path = path_join($gallery_path, $folder);
-                            $image_path = path_join($image_path, $image->meta_data[$size]['filename']);
+                            $image_path = path_join($image_path, "{$prefix}_{$image->filename}");
                         }
-                    }
 
-                    // Filename not found in meta, but is dynamic
-                    else if ($dynthumbs && $dynthumbs->is_size_dynamic($size)) {
-                            $params = $dynthumbs->get_params_from_name($size, true);
-                            $image_path = path_join($this->object->get_cache_abspath($image->galleryid), $dynthumbs->get_image_name($image, $params));
-                    
-                    // Filename is not found in meta, nor dynamic        
-                    } else {
-                        $image_path = path_join($gallery_path, $folder);
-                        $image_path = path_join($image_path, "{$prefix}_{$image->filename}");
-                    }
-
-                    $retval = $image_path;
-                    break;
+                        $retval = $image_path;
+                        break;
                 }
             }
         }
-        if ($retval && $check_existance && !@file_exists($retval)) $retval = NULL;
+
+        if ($retval && $check_existance && !@file_exists($retval))
+            $retval = NULL;
+
         return $retval;
     }
 
     /**
      * Gets the absolute path where the image is stored. Can optionally return the path for a particular sized image.
+     *
      * @param int|object $image
      * @param string $size (optional) Default = full
      * @param bool $check_existance (optional) Default = false
      * @return string
      */
-    function get_image_abspath($image, $size='full', $check_existance=FALSE)
+    function get_image_abspath($image, $size='full', $check_existance = FALSE)
     {
-        $image_id       = is_numeric($image) ? $image : $image->pid;
-        $size           = $this->object->normalize_image_size_name($size);
-        $key            = strval($image_id).$size;
+        $image_id = is_numeric($image) ? $image : $image->pid;
+        $size     = $this->object->normalize_image_size_name($size);
+        $key      = strval($image_id).$size;
+
+        // If CDN offloading is enabled the file will never exist
+        if (C_CDN_Providers::is_cdn_configured() && C_CDN_Providers::get_current()->is_offload_enabled())
+            $check_existance = FALSE;
         
-        if ($check_existance || !isset(self::$image_abspath_cache[$key])) {
-            $retval         = $this->object->_get_computed_image_abspath($image, $size, $check_existance);
-            self::$image_abspath_cache[$key]    = $retval;
+        if ($check_existance || !isset(self::$image_abspath_cache[$key]))
+        {
+            $retval = $this->object->_get_computed_image_abspath($image, $size, $check_existance);
+            self::$image_abspath_cache[$key] = $retval;
         }
-        $retval         = self::$image_abspath_cache[$key];
+
+        $retval = self::$image_abspath_cache[$key];
 
         return $retval;
     }
@@ -327,24 +345,25 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
      * @param string $size
      * @return null|array
      */
-    function get_image_dimensions($image, $size='full')
+    function get_image_dimensions($image, $size = 'full')
     {
         $retval = NULL;
 
         // If an image id was provided, get the entity
-        if (is_numeric($image)) $image = $this->object->_image_mapper->find($image);
+        if (is_numeric($image))
+            $image = $this->object->_image_mapper->find($image);
 
         // Ensure we have a valid image
-        if ($image) {
-
+        if ($image)
+        {
             $size = $this->normalize_image_size_name($size);
-            if (!$size) $size = 'full';
+            if (!$size)
+                $size = 'full';
 
             // Image dimensions are stored in the $image->meta_data
             // property for all implementations
-            if (isset($image->meta_data) && isset($image->meta_data[$size])) {
+            if (isset($image->meta_data) && isset($image->meta_data[$size]))
                 $retval = $image->meta_data[$size];
-            }
 
             // Didn't exist for meta data. We'll have to compute
             // dimensions in the meta_data after computing? This is most likely
@@ -352,12 +371,13 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
             else {
                 $dynthumbs = C_Dynamic_Thumbnails_Manager::get_instance();
                 $abspath = $this->object->get_image_abspath($image, $size, TRUE);
+
                 if ($abspath)
                 {
                     $dims = @getimagesize($abspath);
                     if ($dims) {
-                        $retval['width']	= $dims[0];
-                        $retval['height']	= $dims[1];
+                        $retval['width']  = $dims[0];
+                        $retval['height'] = $dims[1];
                     }
                 }
                 elseif ($size == 'backup') {
@@ -717,11 +737,12 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
 
     /**
      * Gets the url of a particular-sized image
+     *
      * @param int|object $image
      * @param string $size
      * @return string
      */
-    function get_image_url($image, $size='full')
+    function get_image_url($image, $size = 'full')
     {
         $retval         = NULL;
         $image_id       = is_numeric($image) ? $image : $image->pid;
@@ -893,11 +914,12 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
 
     /**
      * An alias for get_full_abspath()
+     *
      * @param int|object $image
      * @param bool $check_existance
      * @return null|string
      */
-    function get_original_abspath($image, $check_existance=FALSE)
+    function get_original_abspath($image, $check_existance = FALSE)
     {
         return $this->object->get_image_abspath($image, 'full', $check_existance);
     }
@@ -928,9 +950,9 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
      * @param bool $check_existance (optional)
      * @return string
      */
-    function get_original_url($image, $check_existance=FALSE)
+    function get_original_url($image, $check_existance = FALSE)
     {
-        return $this->object->get_image_url($image, 'full', $check_existance);
+        return $this->object->get_image_url($image, 'full');
     }
 
     /**
