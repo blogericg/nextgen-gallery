@@ -2,8 +2,13 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 4.0.0
+<<<<<<< HEAD
+Stable tag: 3.3.1
+Tested up to: 5.3.2
+=======
 Stable tag: 3.3.2
 Tested up to: 5.4.0
+>>>>>>> testing
 License: GPLv2
 Requires PHP: 5.4
 
