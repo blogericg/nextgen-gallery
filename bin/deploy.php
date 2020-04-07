@@ -101,12 +101,12 @@ class C_Deploy
 
 	function get_build_abspath()
 	{
-		return $this->_hg_working_copy.DIRECTORY_SEPARATOR.build.DIRECTORY_SEPARATOR.$this->_plugin_folder_name;
+		return $this->_hg_working_copy.DIRECTORY_SEPARATOR.'build'.DIRECTORY_SEPARATOR.$this->_plugin_folder_name;
 	}
 
 	function _create_build_and_zip()
 	{
-		system("gulp build -z {$this->_tag}");
+		system("npx gulp build -z {$this->_tag}");
 		return implode(DIRECTORY_SEPARATOR, array(
 			$this->_hg_working_copy,
 			'build',

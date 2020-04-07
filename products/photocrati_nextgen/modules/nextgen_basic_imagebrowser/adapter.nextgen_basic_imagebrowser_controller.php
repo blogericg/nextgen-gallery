@@ -1,56 +1,47 @@
 <?php
 
 /**
- * Provides rendering logic for the NextGen Basic ImageBrowser
- * @mixin C_Display_Type_Controller
+ * @property C_MVC_Controller|C_Display_Type_Controller|A_NextGen_Basic_ImageBrowser_Controller $object
  * @adapts I_Display_Type_Controller for "photocrati-nextgen_basic_imagebrowser" context
  */
 class A_NextGen_Basic_ImageBrowser_Controller extends Mixin
 {
-	/**
-	 * Renders the front-end display for the imagebrowser display type
-     *
-	 * @param C_Displayed_Gallery $displayed_gallery
-	 * @param bool $return
-	 * @return string
-	 */
-	function index_action($displayed_gallery, $return = FALSE)
-	{
-
-        // We now hide option for triggers on this display type. 
-        // This ensures they do not show based on past settings.
+    /**
+     * @param C_Displayed_Gallery $displayed_gallery
+     * @param bool $return
+     * @return string
+     */
+    function index_action($displayed_gallery, $return = FALSE)
+    {
+        // Force the trigger icon display off, regardless of past settings
         $displayed_gallery->display_settings['ngg_triggers_display'] = 'never';
 
-		$picture_list = array();
+        $picture_list = array();
 
-		foreach ($displayed_gallery->get_included_entities() as $image) {
-			$picture_list[$image->{$image->id_field}] = $image;
-		}
-
-		if ($picture_list)
-        {
-            $retval = $this->render_image_browser($displayed_gallery, $picture_list);
-
-			if ($return)
-            {
-                return $retval;
-            }
-			else {
-                echo $retval;
-            }
-		}
-		else {
-			return $this->object->render_partial('photocrati-nextgen_gallery_display#no_images_found', array(), $return);
+        foreach ($displayed_gallery->get_included_entities() as $image) {
+            $picture_list[$image->{$image->id_field}] = $image;
         }
-		return '';
-	}
+
+        if ($picture_list)
+        {
+            $retval = $this->object->render_image_browser($displayed_gallery, $picture_list);
+
+            if ($return)
+                return $retval;
+            else
+                print $retval;
+        }
+        else {
+            return $this->object->render_partial('photocrati-nextgen_gallery_display#no_images_found', array(), $return);
+        }
+
+        return '';
+    }
 
     /**
-     * Returns the rendered template of an image browser display
-     *
      * @param C_Displayed_Gallery $displayed_gallery
      * @param array $picture_list
-     * @return string Rendered HTML (probably)
+     * @return string Rendered HTML
      */
     function render_image_browser($displayed_gallery, $picture_list)
     {
@@ -94,7 +85,7 @@ class A_NextGen_Basic_ImageBrowser_Controller extends Mixin
 
         // get ids to the next and previous images
         $total = count($picture_array);
-        $key = array_search($numeric_pid, $picture_array);
+        $key   = array_search($numeric_pid, $picture_array);
         if (!$key)
         {
             $numeric_pid = reset($picture_array);
@@ -203,21 +194,25 @@ class A_NextGen_Basic_ImageBrowser_Controller extends Mixin
     }
 
     /**
-     * Enqueues all static resources required by this display type
-     *
      * @param C_Displayed_Gallery $displayed_gallery
      */
     function enqueue_frontend_resources($displayed_gallery)
     {
-		$this->call_parent('enqueue_frontend_resources', $displayed_gallery);
+        $this->call_parent('enqueue_frontend_resources', $displayed_gallery);
 
-		wp_enqueue_style(
+        wp_enqueue_style(
             'nextgen_basic_imagebrowser_style',
             $this->get_static_url('photocrati-nextgen_basic_imagebrowser#style.css'),
             array(),
             NGG_SCRIPT_VERSION
         );
+        wp_enqueue_script(
+            'nextgen_basic_imagebrowser_script',
+            $this->object->get_static_url(NGG_BASIC_IMAGEBROWSER . '#imagebrowser.js'),
+            array('ngg_common'),
+            NGG_SCRIPT_VERSION
+        );
 
-		$this->enqueue_ngg_styles();
+        $this->enqueue_ngg_styles();
     }
 }
