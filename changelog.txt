@@ -1,7 +1,7 @@
 NextGEN Gallery
 by Imagely
 
-= V3.3.1.1 - 04.01.2020 =
+= V3.3.2 - 04.07.2020 =
 * Fixed:   Gallery paths were calculated incorrectly on wordpress.com hosting
 * Fixed:   Insert Gallery Window could not edit an existing displayed gallery with a legacy template without breaking the displayed gallery
 * Fixed:   Manage Albums page could generate lengthy PHP warnings if galleries or other albums did not have a preview image assigned

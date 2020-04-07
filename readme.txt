@@ -2,8 +2,8 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 4.0.0
-Stable tag: 3.3.1.1
-Tested up to: 5.3.2
+Stable tag: 3.3.2
+Tested up to: 5.4.0
 License: GPLv2
 Requires PHP: 5.4
 
@@ -180,7 +180,7 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.3.1.1 - 04.01.2020 =
+= V3.3.2 - 04.07.2020 =
 * Fixed:   Gallery paths were calculated incorrectly on wordpress.com hosting
 * Fixed:   Insert Gallery Window could not edit an existing displayed gallery with a legacy template without breaking the displayed gallery
 * Fixed:   Manage Albums page could generate lengthy PHP warnings if galleries or other albums did not have a preview image assigned
