@@ -104,16 +104,19 @@ class Mixin_Gallery_Image_Mapper extends Mixin
 
 	function reimport_metadata($image_or_id)
 	{
-		// Get the image
 		$image = NULL;
-		if (is_int($image_or_id)) {
+		if (is_int($image_or_id))
 			$image = $this->object->find($image_or_id);
-		}
-		else $image = $image_or_id;
+		else
+		    $image = $image_or_id;
 
 		// Reset all image details that would have normally been imported
 		if (is_array($image->meta_data))
 		    unset($image->meta_data['saved']);
+
+		if (!class_exists('nggAdmin'))
+            include_once(NGGALLERY_ABSPATH . '/admin/functions.php');
+
 		nggAdmin::import_MetaData($image);
 
 		return $this->object->save($image);

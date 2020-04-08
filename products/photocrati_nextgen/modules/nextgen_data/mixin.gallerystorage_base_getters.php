@@ -214,13 +214,13 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
 
 
      /**
-     * Gets the absolute path where the image is stored. Can optionally return the path for a particular sized image.
-     *
-     * @param int|object|C_Image $image
-     * @param string $size (optional) Default = full
+      * Gets the absolute path where the image is stored. Can optionally return the path for a particular sized image.
+      *
+      * @param int|object|C_Image $image
+      * @param string $size (optional) Default = full
       * @param bool $check_existance
-     * @return string
-     */
+      * @return string
+      */
     function _get_computed_image_abspath($image, $size = 'full', $check_existance = FALSE)
     {
         $retval = NULL;
@@ -243,7 +243,13 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
                         break;
 
                     case 'backup':
-                        $retval = path_join($gallery_path, $image->filename.'_backup');
+                        $retval = path_join($gallery_path, $image->filename . '_backup');
+
+                        // When offloading is enabled this file will not exist on the local filesystem so the following
+                        // file_exists() check will always fail.
+                        if (C_CDN_Providers::is_cdn_configured() && C_CDN_Providers::get_current()->is_offload_enabled())
+                            break;
+
                         if (!@file_exists($retval))
                             $retval = path_join($gallery_path, $image->filename);
                         break;
@@ -308,7 +314,7 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
      * @param bool $check_existance (optional) Default = false
      * @return string
      */
-    function get_image_abspath($image, $size='full', $check_existance = FALSE)
+    function get_image_abspath($image, $size = 'full', $check_existance = FALSE)
     {
         $image_id = is_numeric($image) ? $image : $image->pid;
         $size     = $this->object->normalize_image_size_name($size);

@@ -14,15 +14,6 @@ class C_CDN_Watermark_Image_Job extends \ReactrIO\Background\Job
             $cdn->download($id, 'backup');
         }
 
-        $this->watermark_local_image($id);
-    }
-
-    /**
-     * @param int $id
-     * @throws RuntimeException
-     */
-    function watermark_local_image($id)
-    {
         $storage = C_Gallery_Storage::get_instance();
 
         $params = [
@@ -31,8 +22,17 @@ class C_CDN_Watermark_Image_Job extends \ReactrIO\Background\Job
             'crop'       => FALSE
         ];
 
+        // generate_image_size() will make a new _backup file if this setting is on
+        $settings = C_NextGen_Settings::get_instance();
+        $original = $settings->imgBackup;
+        $settings->imgBackup = 0;
 
-        if ($storage->generate_image_size($id, 'full', $params) === FALSE)
+        $result = $storage->generate_image_size($id, 'full', $params);
+
+        // Restore the original setting
+        $settings->imgBackup = $original;
+
+        if ($result === FALSE)
             throw new RuntimeException(
                 sprintf(__("Could not watermark image #%d", 'nggallery'), $id)
             );

@@ -1,6 +1,6 @@
 <?php
 
-class C_CDN_Recover_Image_Job extends C_CDN_Publish_Image_Job
+class C_CDN_Recover_Image_Job extends \ReactrIO\Background\Job
 {
     function run()
     {
@@ -14,10 +14,9 @@ class C_CDN_Recover_Image_Job extends C_CDN_Publish_Image_Job
             $cdn->download($id, 'full');
         }
 
+        // recover_image() will generate a new version of every dynamic image that has been generated; when finished
+        // it will trigger the action 'ngg_recovered_image' which the cdnjobs module class will listen for and
+        // will create a new task to upload each new image file
         C_Gallery_Storage::get_instance()->recover_image($id);
-
-        // Call C_CDN_Publish_Image_Job->run()
-        $this->set_dataset(['id' => $id, 'size' => 'all']);
-        parent::run();
     }
 }

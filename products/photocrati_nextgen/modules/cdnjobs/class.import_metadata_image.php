@@ -1,6 +1,6 @@
 <?php
 
-class C_CDN_Import_MetaData_Image_Job extends C_CDN_Publish_Image_Job
+class C_CDN_Import_MetaData_Image_Job extends \ReactrIO\Background\Job
 {
     function run()
     {
@@ -14,18 +14,12 @@ class C_CDN_Import_MetaData_Image_Job extends C_CDN_Publish_Image_Job
             $cdn->download($id, 'full');
         }
 
-        $this->import_metadata($id);
+        if (is_string($id))
+            $id = intval($id);
 
-        // Call C_CDN_Publish_Image_Job->run()
-        $this->set_dataset(['id' => $id, 'size' => 'all']);
-        parent::run();
-    }
-
-    /**
-     * @param int $id
-     */
-    function import_metadata($id)
-    {
         C_Image_Mapper::get_instance()->reimport_metadata($id);
+
+        if ($cdn->is_offload_enabled())
+            unlink(C_Gallery_Storage::get_instance()->get_image_abspath($id, 'backup'));
     }
 }

@@ -37,6 +37,7 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
     public function copy($image_id, $gallery_id)
     {
         C_Gallery_Storage::get_instance()->copy_images([$image_id], $gallery_id);
+
         \ReactrIO\Background\Job::create(
             sprintf(__("Copying image %d to gallery %d", 'nextgen-gallery'), $image_id, $gallery_id),
             'cdn_publish_image',
@@ -257,7 +258,7 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
      * @param bool $overwrite Force downloading an image that may already exist locally
      * @return string
      */
-    function download($image, $size = 'full', $overwrite = FALSE)
+    function download($image, $size = 'full')
     {   
         $storage = C_Gallery_Storage::get_instance();
 
@@ -268,7 +269,7 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
             $is_on_cdn = FALSE;
         }
 
-        if ($overwrite || ($is_on_cdn && $this->is_offload_enabled()))
+        if ($is_on_cdn && $this->is_offload_enabled())
         {
             $image_url = $storage->get_image_url($image, $size);
 

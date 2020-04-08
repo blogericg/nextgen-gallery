@@ -337,7 +337,7 @@ class nggManageGallery
                             return \ReactrIO\Background\Job::create(
                                 sprintf(__("Importing metadata for image #%d", 'nextgen-gallery'), $id),
                                 'cdn_import_metadata_image',
-                                $id
+                                ['id' => $id]
                             )->save('cdn');
                         },
                         $_POST['doaction']
@@ -361,7 +361,7 @@ class nggManageGallery
             $settings->save();
 
             array_map(
-                function($id, $width, $height) {
+                function($id) use ($width, $height) {
                     $id = intval($id);
                     $dataset = [
                         'id'        => $id,
@@ -377,9 +377,7 @@ class nggManageGallery
                         $dataset
                     )->save('cdn');
                 },
-                explode(',', $_POST['TB_imagelist']),
-                $width,
-                $height
+                explode(',', $_POST['TB_imagelist'])
             );
 
             self::$messages[] = __('Resize job(s) created for selected images.', 'nggallery');

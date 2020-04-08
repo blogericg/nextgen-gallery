@@ -58,13 +58,12 @@ class M_CDN_Jobs extends C_Base_Module
         if (C_CDN_Providers::is_cdn_configured())
         {
             add_filter('ngg_displayed_gallery_rendering', function($html, $displayed_gallery) {
+
                 // TODO: move this out of being an enclosure
-                if (!C_CDN_Providers::is_cdn_configured() || !C_CDN_Providers::get_current()->is_offload_enabled())
+                if (!C_CDN_Providers::get_current()->is_offload_enabled())
                     return $html;
 
-                $controller = C_Display_Type_Controller::get_instance($displayed_gallery->display_type);
-                $renderer = C_Displayed_Gallery_Renderer::get_instance();
-                if ($renderer->rendering_has_dynimages($html))
+                if (C_Displayed_Gallery_Renderer::get_instance()->rendering_has_dynimages($html))
                 {
                     $settings = C_NextGen_Settings::get_instance();
                     $slug = $settings->get('dynamic_thumbnail_slug');
@@ -109,12 +108,23 @@ class M_CDN_Jobs extends C_Base_Module
             add_action('ngg_added_new_image', function($image) {
                 foreach (['full', 'backup'] as $size) {
                     \ReactrIO\Background\Job::create(
-                        sprintf(__("Publishing size %s image %d to CDN", 'nggallery'), $size, $image->pid),
+                        sprintf(__("Publishing new image %d sized %s to CDN", 'nggallery'), $image->pid, $size),
                         'cdn_publish_image',
                         ['id' => $image->pid, 'size' => $size]
                     )->save('cdn');
                 }
             });
+
+            add_action(
+                'ngg_recovered_image',
+                function($image) {
+                    \ReactrIO\Background\Job::create(
+                        sprintf(__("Publishing recovered image #%d", 'nextgen-gallery'), $image->pid),
+                        'cdn_publish_image',
+                        ['id' => $image->pid, 'size' => 'all']
+                    )->save('cdn');
+                }
+            );
 
             add_action(
                 'ngg_generated_image',

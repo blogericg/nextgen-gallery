@@ -15,31 +15,25 @@ class C_CDN_Resize_Image_Job extends \ReactrIO\Background\Job
         $id   = $data['id'];
 
         try {
-            $cdn->download($id, 'backup');
-        }
-        catch (Exception $ex) {
             $cdn->download($id, 'full');
         }
-        
-        $this->resize_local_image($id, $data['size'], $data['params']);
-    }
-
-    /**
-     * Performs the resize operation
-     * @param int $id
-     * @param string $size
-     * @param array $params
-     * @return null
-     * @throws RuntimeException
-     */
-    function resize_local_image($id, $size = 'full', $params = [])
-    {
-        $storage = C_Gallery_Storage::get_instance();
-        if ($storage->generate_image_size($id, $size, $params) === FALSE)
-        {
-            throw new RuntimeException(
-                sprintf(__("Could not resize the '%s' named size for image #%d", 'nggallery'), $size, $id)
-            );
+        catch (Exception $ex) {
+            $cdn->download($id, 'backup');
         }
+
+        // generate_image_size() will make a new _backup file if this setting is on
+        $settings = C_NextGen_Settings::get_instance();
+        $original = $settings->imgBackup;
+        $settings->imgBackup = 0;
+
+        $result = C_Gallery_Storage::get_instance()->generate_image_size($id, $data['size'], $data['params']);
+
+        // Restore the original setting
+        $settings->imgBackup = $original;
+
+        if ($result === FALSE)
+            throw new RuntimeException(
+                sprintf(__("Could not resize the '%s' named size for image #%d", 'nggallery'), $data['size'], $id)
+            );
     }
 }

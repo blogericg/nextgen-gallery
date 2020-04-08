@@ -1,66 +1,65 @@
 <?php
 
-/**
- * Image METADATA PHP class for the WordPress plugin NextGEN Gallery
- * nggmeta.lib.php
- *
- * @author Alex Rabe
- *
- *
- */
+class nggMeta
+{
+    // Image Data
+    var $image     = '';    // The image object
+    var $size      = false; // The image size
+    var $exif_data = false; // EXIF data array
+    var $iptc_data = false; // IPTC data array
+    var $xmp_data  = false; // XMP data array
 
-class nggMeta{
-
-	/**** Image Data ****/
-    var $image			=	'';		// The image object
-    var $size			=	false;	// The image size
-	var $exif_data 		= 	false;	// EXIF data array
-	var $iptc_data 		= 	false;	// IPTC data array
-	var $xmp_data  		= 	false;	// XMP data array
-	/**** Filtered Data ****/
-	var $exif_array 	= 	false;	// EXIF data array
-	var $iptc_array 	= 	false;	// IPTC data array
-	var $xmp_array  	= 	false;	// XMP data array
-
-    var $sanitize       =   false;  // sanitize meta data on request
+    // Filtered Data
+    var $exif_array = false; // EXIF data array
+    var $iptc_array = false; // IPTC data array
+    var $xmp_array  = false; // XMP data array
+    var $sanitize   = false; // sanitize meta data on request
 
     /**
      * Parses the nggMeta data only if needed
+     *
      * @param object|int $image_or_id An image object or an image ID
      * @param bool $onlyEXIF Parse only exif if needed
      * @return bool
      */
     function __construct($image_or_id, $onlyEXIF = false)
     {
-	    if (is_int($image_or_id)) {
-		    //get the path and other data about the image
-		    $this->image = C_Image_Mapper::get_instance()->find( $image_or_id);
-	    }
-	    else $this->image = $image_or_id;
+        if (is_int($image_or_id))
+            $this->image = C_Image_Mapper::get_instance()->find($image_or_id);
+        else
+            $this->image = $image_or_id;
 
-	    $imagePath = C_Gallery_Storage::get_instance()->get_image_abspath($this->image);
+        $storage = C_Gallery_Storage::get_instance();
 
-        if ( !file_exists($imagePath ) )
+        // Read metadata from the backup file if it exists. Dynamic / resized images will lack all XMP metadata
+        // and will only have certain EXIF / IPTC fields copied into the new versions.
+        $imagePath = $storage->get_image_abspath($this->image, 'backup');
+
+        // Fallback to the 'full' sized image since backups can optionally be disabled
+        if (!file_exists($imagePath))
+            $imagePath = $storage->get_image_abspath($this->image, 'full');
+
+        if (!file_exists($imagePath ))
             return false;
 
-        $this->size = @getimagesize ( $imagePath , $metadata );
+        $this->size = @getimagesize($imagePath, $metadata);
 
-        if ($this->size && is_array($metadata)) {
-
+        if ($this->size && is_array($metadata))
+        {
             // get exif - data
-            if ( is_callable('exif_read_data'))
-                $this->exif_data = @exif_read_data($imagePath , NULL, TRUE);
+            if (is_callable('exif_read_data'))
+                $this->exif_data = @exif_read_data($imagePath, NULL, TRUE);
 
             // stop here if we didn't need other meta data
             if ($onlyEXIF)
                 return true;
 
             // get the iptc data - should be in APP13
-            if ( is_callable('iptcparse') && isset($metadata['APP13']) )
+            if (is_callable('iptcparse') && isset($metadata['APP13']))
                 $this->iptc_data = @iptcparse($metadata['APP13']);
 
             // get the xmp data in a XML format
-            if ( is_callable('xml_parser_create'))
+            if (is_callable('xml_parser_create'))
                 $this->xmp_data = $this->extract_XMP($imagePath );
 
             return true;
@@ -73,7 +72,7 @@ class nggMeta{
      * return the saved meta data from the database
      *
      * @since 1.4.0
-     * @param string $object (optional)
+     * @param string|false $object (optional)
      * @return array|mixed return either the complete array or the single object
      */
     function get_saved_meta($object = false) {
@@ -93,13 +92,13 @@ class nggMeta{
 
         // and remove empty tags or arrays
         foreach ($meta as $key => $value) {
-            if ( empty($value) OR is_array($value))
+            if (empty($value) OR is_array($value))
                 unset($meta[$key]);
         }
 
         // on request sanitize the output
-        if ( $this->sanitize == true )
-            array_walk( $meta , 'esc_html');
+        if ($this->sanitize == true)
+            array_walk($meta , 'esc_html');
 
         return $meta;
     }
@@ -119,8 +118,8 @@ class nggMeta{
 
             $meta= array();
 
-	        $exif = isset($this->exif_data['EXIF']) ? $this->exif_data['EXIF'] : array();
-	        if (count($exif)) {
+            $exif = isset($this->exif_data['EXIF']) ? $this->exif_data['EXIF'] : array();
+            if (count($exif)) {
 
                 if (!empty($exif['FNumber']))
                     $meta['aperture'] = 'F ' . round( $this->exif_frac2dec( $exif['FNumber'] ), 2 );
@@ -130,8 +129,8 @@ class nggMeta{
                     $meta['created_timestamp'] = $this->exif_date2ts($exif['DateTimeDigitized']);
                 else if (!empty($exif['DateTimeOriginal']))
                     $meta['created_timestamp'] = $this->exif_date2ts($exif['DateTimeOriginal']);
-				else if (!empty($exif['FileDateTime']))
-					$meta['created_timestamp'] = $this->exif_date2ts($exif['FileDateTime']);
+                else if (!empty($exif['FileDateTime']))
+                    $meta['created_timestamp'] = $this->exif_date2ts($exif['FileDateTime']);
                 if (!empty($exif['FocalLength']))
                     $meta['focal_length'] = $this->exif_frac2dec( $exif['FocalLength'] ) . __(' mm','nggallery');
                 if (!empty($exif['ISOSpeedRatings']))
@@ -202,17 +201,17 @@ class nggMeta{
     }
 
     // convert the exif date format to a unix timestamp
-	function exif_date2ts($str)
-	{
-		$retval = is_numeric($str) ? $str : @strtotime($str);
-		if (!$retval && $str) {
-			@list( $date, $time ) = explode( ' ', trim($str) );
-			@list( $y, $m, $d ) = explode( ':', $date );
-			$retval =  strtotime( "{$y}-{$m}-{$d} {$time}" );
+    function exif_date2ts($str)
+    {
+        $retval = is_numeric($str) ? $str : @strtotime($str);
+        if (!$retval && $str) {
+            @list( $date, $time ) = explode( ' ', trim($str) );
+            @list( $y, $m, $d ) = explode( ':', $date );
+            $retval =  strtotime( "{$y}-{$m}-{$d} {$time}" );
 
-		}
-		return $retval;
-	}
+        }
+        return $retval;
+    }
 
     /**
      * nggMeta::readIPTC() - IPTC Data Information for EXIF Display
@@ -321,11 +320,11 @@ class nggMeta{
             xml_parse_into_struct($parser, $this->xmp_data, $values);
             xml_parser_free($parser);
 
-            $xmlarray			= array();	// The XML array
-            $this->xmp_array  	= array();	// The returned array
-            $stack        		= array();	// tmp array used for stacking
-            $list_array   		= array();	// tmp array for list elements
-            $list_element 		= false;	// rdf:li indicator
+            $xmlarray           = array();  // The XML array
+            $this->xmp_array    = array();  // The returned array
+            $stack              = array();  // tmp array used for stacking
+            $list_array         = array();  // tmp array for list elements
+            $list_element       = false;    // rdf:li indicator
 
             foreach($values as $val) {
 
@@ -373,17 +372,17 @@ class nggMeta{
 
             // --------- Some values from the XMP format--------- //
             $xmpTags = array (
-                'xap:CreateDate' 			=> 'created_timestamp',
-                'xap:ModifyDate'  			=> 'last_modfied',
-                'xap:CreatorTool' 			=> 'tool',
-                'dc:format' 				=> 'format',
-                'dc:title'					=> 'title',
-                'dc:creator' 				=> 'author',
-                'dc:subject' 				=> 'keywords',
-                'dc:description' 			=> 'caption',
+                'xap:CreateDate'            => 'created_timestamp',
+                'xap:ModifyDate'            => 'last_modfied',
+                'xap:CreatorTool'           => 'tool',
+                'dc:format'                 => 'format',
+                'dc:title'                  => 'title',
+                'dc:creator'                => 'author',
+                'dc:subject'                => 'keywords',
+                'dc:description'            => 'caption',
                 'photoshop:AuthorsPosition' => 'position',
-                'photoshop:City'			=> 'city',
-                'photoshop:Country' 		=> 'country'
+                'photoshop:City'            => 'city',
+                'photoshop:Country'         => 'country'
             );
 
             foreach ($xmpTags as $key => $value) {
@@ -430,24 +429,24 @@ class nggMeta{
      * @param string $object
      * @return mixed $value
      */
-	function get_META($object = false) {
+    function get_META($object = false) {
 
-		// defined order first look into database, then XMP, IPTC and EXIF.
-		if ($value = $this->get_saved_meta($object))
-			return $value;
-		if ($value = $this->get_XMP($object))
-			return $value;
-		if ($object == 'created_timestamp' && ($d = $this->get_IPTC('created_date')) && ($t = $this->get_IPTC('created_time'))) {
-			return $this->exif_date2ts($d . ' '.$t);
-		}
-		if ($value = $this->get_IPTC($object))
-			return $value;
-		if ($value = $this->get_EXIF($object))
-			return $value;
+        // defined order first look into database, then XMP, IPTC and EXIF.
+        if ($value = $this->get_saved_meta($object))
+            return $value;
+        if ($value = $this->get_XMP($object))
+            return $value;
+        if ($object == 'created_timestamp' && ($d = $this->get_IPTC('created_date')) && ($t = $this->get_IPTC('created_time'))) {
+            return $this->exif_date2ts($d . ' '.$t);
+        }
+        if ($value = $this->get_IPTC($object))
+            return $value;
+        if ($value = $this->get_EXIF($object))
+            return $value;
 
-		// nothing found ?
-		return false;
-	}
+        // nothing found ?
+        return false;
+    }
 
     /**
      * nggMeta::i8n_name() -  localize the tag name
@@ -458,42 +457,42 @@ class nggMeta{
     function i18n_name($key) {
 
         $tagnames = array(
-            'aperture' 			=> __('Aperture','nggallery'),
-            'credit' 			=> __('Credit','nggallery'),
-            'camera' 			=> __('Camera','nggallery'),
-            'caption' 			=> __('Caption','nggallery'),
+            'aperture'          => __('Aperture','nggallery'),
+            'credit'            => __('Credit','nggallery'),
+            'camera'            => __('Camera','nggallery'),
+            'caption'           => __('Caption','nggallery'),
             'created_timestamp' => __('Date/Time','nggallery'),
-            'copyright' 		=> __('Copyright','nggallery'),
-            'focal_length' 		=> __('Focal length','nggallery'),
-            'iso' 				=> __('ISO','nggallery'),
-            'shutter_speed' 	=> __('Shutter speed','nggallery'),
-            'title' 			=> __('Title','nggallery'),
-            'author' 			=> __('Author','nggallery'),
-            'tags' 				=> __('Tags','nggallery'),
-            'subject' 			=> __('Subject','nggallery'),
-            'make' 				=> __('Make','nggallery'),
-            'status' 			=> __('Edit Status','nggallery'),
-            'category'			=> __('Category','nggallery'),
-            'keywords' 			=> __('Keywords','nggallery'),
-            'created_date' 		=> __('Date Created','nggallery'),
-            'created_time'		=> __('Time Created','nggallery'),
-            'position'			=> __('Author Position','nggallery'),
-            'city'				=> __('City','nggallery'),
-            'location'			=> __('Location','nggallery'),
-            'state' 			=> __('Province/State','nggallery'),
-            'country_code'		=> __('Country code','nggallery'),
-            'country'			=> __('Country','nggallery'),
-            'headline' 			=> __('Headline','nggallery'),
-            'credit'			=> __('Credit','nggallery'),
-            'source'			=> __('Source','nggallery'),
-            'copyright'			=> __('Copyright Notice','nggallery'),
-            'contact'			=> __('Contact','nggallery'),
-            'last_modfied'		=> __('Last modified','nggallery'),
-            'tool'				=> __('Program tool','nggallery'),
-            'format'			=> __('Format','nggallery'),
-            'width'				=> __('Image Width','nggallery'),
-            'height'			=> __('Image Height','nggallery'),
-            'flash'				=> __('Flash','nggallery')
+            'copyright'         => __('Copyright','nggallery'),
+            'focal_length'      => __('Focal length','nggallery'),
+            'iso'               => __('ISO','nggallery'),
+            'shutter_speed'     => __('Shutter speed','nggallery'),
+            'title'             => __('Title','nggallery'),
+            'author'            => __('Author','nggallery'),
+            'tags'              => __('Tags','nggallery'),
+            'subject'           => __('Subject','nggallery'),
+            'make'              => __('Make','nggallery'),
+            'status'            => __('Edit Status','nggallery'),
+            'category'          => __('Category','nggallery'),
+            'keywords'          => __('Keywords','nggallery'),
+            'created_date'      => __('Date Created','nggallery'),
+            'created_time'      => __('Time Created','nggallery'),
+            'position'          => __('Author Position','nggallery'),
+            'city'              => __('City','nggallery'),
+            'location'          => __('Location','nggallery'),
+            'state'             => __('Province/State','nggallery'),
+            'country_code'      => __('Country code','nggallery'),
+            'country'           => __('Country','nggallery'),
+            'headline'          => __('Headline','nggallery'),
+            'credit'            => __('Credit','nggallery'),
+            'source'            => __('Source','nggallery'),
+            'copyright'         => __('Copyright Notice','nggallery'),
+            'contact'           => __('Contact','nggallery'),
+            'last_modfied'      => __('Last modified','nggallery'),
+            'tool'              => __('Program tool','nggallery'),
+            'format'            => __('Format','nggallery'),
+            'width'             => __('Image Width','nggallery'),
+            'height'            => __('Image Height','nggallery'),
+            'flash'             => __('Flash','nggallery')
         );
 
         if ( isset($tagnames[$key]) )
@@ -507,24 +506,24 @@ class nggMeta{
      * Return the Timestamp from the image , if possible it's read from exif data
      * @return string
      */
-	function get_date_time() {
+    function get_date_time() {
 
-		$date = time();
+        $date = time();
 
-		$date = $this->exif_date2ts($this->get_META('created_timestamp'));
-		if (!$date) {
-			$image_path = C_Gallery_Storage::get_instance()->get_backup_abspath($this->image);
-			$date = @filectime($image_path);
-		}
+        $date = $this->exif_date2ts($this->get_META('created_timestamp'));
+        if (!$date) {
+            $image_path = C_Gallery_Storage::get_instance()->get_backup_abspath($this->image);
+            $date = @filectime($image_path);
+        }
 
-		// Failback
-		if (!$date) $date = time();
+        // Failback
+        if (!$date) $date = time();
 
-		// Return the MySQL format
-		$date_time = date( 'Y-m-d H:i:s', $date);
+        // Return the MySQL format
+        $date_time = date( 'Y-m-d H:i:s', $date);
 
-		return $date_time;
-	}
+        return $date_time;
+    }
 
     /**
      * This function return the most common metadata, via a filter we can add more

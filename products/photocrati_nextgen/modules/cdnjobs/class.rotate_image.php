@@ -44,15 +44,27 @@ class C_CDN_Rotate_Image_Job extends \ReactrIO\Background\Job
         if ($direction === 'counter-clockwise')
             $params['rotation'] = -90;
 
-        if ($storage->generate_image_size($id, 'full', $params) === FALSE)
-            throw new RuntimeException(
-                sprintf(__("Could not rotate image #%d", 'nggallery'), $id)
-            );
+        // generate_image_size() will make a new _backup file if this setting is on
+        $settings = C_NextGen_Settings::get_instance();
+        $original = $settings->imgBackup;
+        $settings->imgBackup = 0;
+
+        $result_one = $storage->generate_image_size($id, 'full', $params);
 
         // Avoid rotating the thumbnail a second time
         unset($params['rotation']);
 
-        if ($result = $storage->generate_thumbnail($id, $params) === FALSE)
+        $result_two = $storage->generate_thumbnail($id, $params);
+
+        // Restore the original setting
+        $settings->imgBackup = $original;
+
+        if ($result_one === FALSE)
+            throw new RuntimeException(
+                sprintf(__("Could not rotate image #%d", 'nggallery'), $id)
+            );
+
+        if ($result_two === FALSE)
             throw new RuntimeException(
                 sprintf(__("Could not generate thumbnail for image #%d", 'nggallery'), $id)
             );

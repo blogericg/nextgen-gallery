@@ -139,7 +139,7 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
                     wp_set_object_terms($new_image_id, $tags, 'ngg_tag', true);
 
                     // Copy all of the generated versions (resized versions, watermarks, etc)
-                    foreach ($this->get_image_sizes($image) as $named_size) {
+                    foreach ($this->object->get_image_sizes($image) as $named_size) {
                         if (in_array($named_size, array('full', 'thumbnail')))
                             continue;
                         $old_abspath = $this->object->get_image_abspath($image, $named_size);
@@ -258,7 +258,7 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
             }
             // Delete all sizes of the image
             else {
-                foreach ($this->get_image_sizes($image) as $named_size) {
+                foreach ($this->object->get_image_sizes($image) as $named_size) {
                     
                     $image_abspath = $this->object->get_image_abspath($image, $named_size);        
                     @unlink($image_abspath);
@@ -293,7 +293,7 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
 
             if ($backup_abspath != $full_abspath && @file_exists($backup_abspath))
             {
-                if (is_writable($full_abspath) && is_writable(dirname($full_abspath)))
+                if (is_writable(dirname($full_abspath)))
                 {
                     // Copy the backup
                     if (@copy($backup_abspath, $full_abspath))
@@ -313,9 +313,9 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
                             $thumbnail = $this->object->generate_image_clone(
                                 $full_abspath,
                                 $this->object->get_image_abspath($image, $named_size),
-                                $this->object->get_image_size_params($image, $named_size),
-                                $image->pid
+                                $this->object->get_image_size_params($image, $named_size)
                             );
+
                             if ($thumbnail)
                                 $thumbnail->destruct();
                         }
