@@ -1,6 +1,9 @@
 NextGEN Gallery
 by Imagely
 
+= V3.3.3 - 04.09.2020 =
+* Fixed:   Broken dynamic images
+
 = V3.3.2 - 04.07.2020 =
 * Fixed:   Gallery paths were calculated incorrectly on wordpress.com hosting
 * Fixed:   Insert Gallery Window could not edit an existing displayed gallery with a legacy template without breaking the displayed gallery
