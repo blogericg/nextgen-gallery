@@ -1,7 +1,7 @@
 NextGEN Gallery
 by Imagely
 
-= V3.3.4 - 04.09.2020 =
+= V3.3.5 - 04.09.2020 =
 * Fixed:   Broken dynamic images
 
 = V3.3.2 - 04.07.2020 =
