@@ -25,7 +25,9 @@ class M_CDN_Jobs extends C_Base_Module
     {
         \ReactrIO\Background\Job::register_type('cdn_copy_image',                 C_CDN_Copy_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_delete_gallery',             C_CDN_Delete_Gallery_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_delete_gallery_final',       C_CDN_Delete_Gallery_Final_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_delete_image',               C_CDN_Delete_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_delete_image_final',         C_CDN_Delete_Image_Final_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_flush_cache_gallery',        C_CDN_Flush_Cache_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_flush_cache_image',          C_CDN_Flush_Cache_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_generate_image_size',        C_CDN_Generate_Image_Size_Job::class);
@@ -158,7 +160,9 @@ class M_CDN_Jobs extends C_Base_Module
             'A_CDN_Jobs_In_Progress_Notice_Ajax'   => 'class.cdn_jobs_in_progress_notice_ajax.php',
             'C_CDN_Copy_Image_Job'                 => 'class.copy_image.php',
             'C_CDN_Delete_Gallery_Job'             => 'class.delete_gallery.php',
+            'C_CDN_Delete_Gallery_Final_Job'       => 'class.delete_gallery_final.php',
             'C_CDN_Delete_Image_Job'               => 'class.delete_image.php',
+            'C_CDN_Delete_Image_Final_Job'         => 'class.delete_image_final.php',
             'C_CDN_Flush_Cache_Gallery_Job'        => 'class.flush_cache_gallery.php',
             'C_CDN_Flush_Cache_Image_Job'          => 'class.flush_cache_image.php',
             'C_CDN_Generate_Image_Size_Job'        => 'class.generate_image_size.php',

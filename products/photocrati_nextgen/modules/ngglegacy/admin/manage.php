@@ -146,9 +146,9 @@ class nggManageGallery
                     array_map(
                         function($id) {
                             return \ReactrIO\Background\Job::create(
-                                sprintf(__("Deleting images for gallery #%d", 'nextgen-gallery'), $id),
+                                sprintf(__("Deleting gallery #%d", 'nextgen-gallery'), $id),
                                 'cdn_delete_gallery',
-                                $id
+                                ['id' => $id]
                             )->save('cdn');
                         },
                         $_POST['doaction']
@@ -1028,7 +1028,9 @@ class nggManageGallery
                     break;
 
                 case 'delete_gallery':
-                    // Delete gallery
+                    if (C_CDN_Providers::is_cdn_configured())
+                        return;
+
                     if (is_array($_POST['doaction']))
                     {
                         $deleted = FALSE;
