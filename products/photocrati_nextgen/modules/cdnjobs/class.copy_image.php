@@ -23,13 +23,17 @@ class C_CDN_Copy_Image_Job extends \ReactrIO\Background\Job
                 ['id' => $id, 'destination' => $destination_id]
             )->save('cdn')->get_id();
 
-            foreach ($sizes as $size) {
-                \ReactrIO\Background\Job::create(
-                    sprintf(__("Downloading image #%d sized %s to copy to gallery #%d", 'nggallery'), $id, $size, $destination_id),
-                    'cdn_copy_image',
-                    ['id' => $id, 'destination' => $destination_id, 'size' => $size],
-                    $parent_job_id
-                )->save('cdn');
+            // This step is not necessary if offloading is not enabled
+            if ($cdn->is_offload_enabled())
+            {
+                foreach ($sizes as $size) {
+                    \ReactrIO\Background\Job::create(
+                        sprintf(__("Downloading image #%d sized %s to copy to gallery #%d", 'nggallery'), $id, $size, $destination_id),
+                        'cdn_copy_image',
+                        ['id' => $id, 'destination' => $destination_id, 'size' => $size],
+                        $parent_job_id
+                    )->save('cdn');
+                }
             }
         }
         else if (is_string($data['size'])) {
