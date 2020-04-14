@@ -21,9 +21,13 @@ class M_CDN_Jobs extends C_Base_Module
         );
     }
 
+    // Used by tasks to disable the action listening in this module
+    public static $_run_ngg_generated_image_action = TRUE;
+
     function initialize()
     {
         \ReactrIO\Background\Job::register_type('cdn_copy_image',                 C_CDN_Copy_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_copy_image_final',           C_CDN_Copy_Image_Final_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_delete_gallery',             C_CDN_Delete_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_delete_gallery_final',       C_CDN_Delete_Gallery_Final_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_delete_image',               C_CDN_Delete_Image_Job::class);
@@ -36,6 +40,7 @@ class M_CDN_Jobs extends C_Base_Module
         \ReactrIO\Background\Job::register_type('cdn_import_metadata_gallery',    C_CDN_Import_MetaData_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_import_metadata_image',      C_CDN_Import_MetaData_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_move_image',                 C_CDN_Move_Image_Job::class);
+        \ReactrIO\Background\Job::register_type('cdn_move_image_final',           C_CDN_Move_Image_Final_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_publish_gallery',            C_CDN_Publish_Gallery_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_publish_image',              C_CDN_Publish_Image_Job::class);
         \ReactrIO\Background\Job::register_type('cdn_resize_gallery',             C_CDN_Resize_Gallery_Job::class);
@@ -108,6 +113,10 @@ class M_CDN_Jobs extends C_Base_Module
             });
 
             add_action('ngg_added_new_image', function($image) {
+                // Invoked by import_image_file() and should be restricted to only running in response to user events
+                if (defined('IN_REACTR_WORKER'))
+                    return;
+
                 foreach (['full', 'backup'] as $size) {
                     \ReactrIO\Background\Job::create(
                         sprintf(__("Publishing new image %d sized %s to CDN", 'nggallery'), $image->pid, $size),
@@ -131,6 +140,8 @@ class M_CDN_Jobs extends C_Base_Module
             add_action(
                 'ngg_generated_image',
                 function($image, $size, $params) {
+                    if (!self::$_run_ngg_generated_image_action)
+                        return;
                     \ReactrIO\Background\Job::create(
                         sprintf(__("Publishing generated image size %s for image #%d", 'nextgen-gallery'), $size, $image->pid),
                         'cdn_publish_image',
@@ -159,6 +170,7 @@ class M_CDN_Jobs extends C_Base_Module
             'C_CDN_Jobs_In_Progress_Notice'        => 'class.cdn_jobs_in_progress_notice.php',
             'A_CDN_Jobs_In_Progress_Notice_Ajax'   => 'class.cdn_jobs_in_progress_notice_ajax.php',
             'C_CDN_Copy_Image_Job'                 => 'class.copy_image.php',
+            'C_CDN_Copy_Image_Final_Job'           => 'class.copy_image_final.php',
             'C_CDN_Delete_Gallery_Job'             => 'class.delete_gallery.php',
             'C_CDN_Delete_Gallery_Final_Job'       => 'class.delete_gallery_final.php',
             'C_CDN_Delete_Image_Job'               => 'class.delete_image.php',
@@ -171,6 +183,7 @@ class M_CDN_Jobs extends C_Base_Module
             'C_CDN_Import_MetaData_Gallery_Job'    => 'class.import_metadata_gallery.php',
             'C_CDN_Import_MetaData_Image_Job'      => 'class.import_metadata_image.php',
             'C_CDN_Move_Image_Job'                 => 'class.move_image.php',
+            'C_CDN_Move_Image_Final_Job'           => 'class.move_image_final.php',
             'C_CDN_Publish_Gallery_Job'            => 'class.publish_gallery.php',
             'C_CDN_Publish_Image_Job'              => 'class.publish_image.php',
             'C_CDN_Recover_Gallery_Job'            => 'class.recover_image.php',

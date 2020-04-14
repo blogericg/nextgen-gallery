@@ -36,25 +36,32 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
 
     public function copy($image_id, $gallery_id)
     {
-        C_Gallery_Storage::get_instance()->copy_images([$image_id], $gallery_id);
+        $new_image_id = C_Gallery_Storage::get_instance()->copy_image($image_id, $gallery_id);
 
         \ReactrIO\Background\Job::create(
-            sprintf(__("Copying image %d to gallery %d", 'nextgen-gallery'), $image_id, $gallery_id),
+            sprintf(__("Publishing newly copied image %d to gallery %d", 'nextgen-gallery'), $new_image_id, $gallery_id),
             'cdn_publish_image',
-            ['id' => $image_id, 'size' => 'all']
+            ['id' => $new_image_id, 'size' => 'all']
         )->save('cdn');
     }
 
     public function move($image_id, $gallery_id)
     {
-        // move_images() is just a wrapper to copy_images() that removes the original once copy_images() has finished
-        // so here we use copy_images() and then call for the originals to be removed
-        C_Gallery_Storage::get_instance()->copy_images([$image_id], $gallery_id);
+        // The gallery storage's move_image() method will delete the image which we don't want to perform just yet
+        $new_image_id = C_Gallery_Storage::get_instance()->copy_image($image_id, $gallery_id);
 
+        // Now we create a job to remove the original file
         \ReactrIO\Background\Job::create(
             sprintf(__("Removing original files of moved image #%d", 'nggallery'), $image_id),
             'cdn_delete_image',
             ['id' => $image_id, 'size' => 'all']
+        )->save('cdn');
+
+        // And last we publish the new image
+        \ReactrIO\Background\Job::create(
+            sprintf(__("Publishing newly moved image #%d", 'nggallery'), $new_image_id),
+            'cdn_publish_image',
+            ['id' => $new_image_id, 'size' => 'all']
         )->save('cdn');
     }
 

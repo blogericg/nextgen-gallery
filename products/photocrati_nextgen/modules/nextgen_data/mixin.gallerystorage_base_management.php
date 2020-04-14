@@ -111,56 +111,71 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
     {
         $retval = array();
 
-        // Ensure that the image ids we have are valid
-        $image_mapper = C_Image_Mapper::get_instance();
         foreach ($images as $image) {
-            if (is_numeric($image))
-                $image = $image_mapper->find($image);
-
-            if (($image_abspath = $this->object->get_image_abspath($image)))
-            {
-                // Import the image; this will copy the main file
-                $new_image_id = $this->object->import_image_file($dst_gallery, $image_abspath, $image->filename);       
-
-                if ($new_image_id)
-                {
-                    // Copy the properties of the old image
-                    $new_image = $image_mapper->find($new_image_id);
-                    foreach (get_object_vars($image) as $key => $value) {
-                        if (in_array($key, array('pid', 'galleryid', 'meta_data', 'filename', 'sortorder', 'extras_post_id')))
-                            continue;
-                        $new_image->$key = $value;
-                    }
-                    $image_mapper->save($new_image);
-
-                    // Copy tags
-                    $tags = wp_get_object_terms($image->pid, 'ngg_tag', 'fields=ids');
-                    $tags = array_map('intval', $tags);
-                    wp_set_object_terms($new_image_id, $tags, 'ngg_tag', true);
-
-                    // Copy all of the generated versions (resized versions, watermarks, etc)
-                    foreach ($this->object->get_image_sizes($image) as $named_size) {
-                        if (in_array($named_size, array('full', 'thumbnail')))
-                            continue;
-                        $old_abspath = $this->object->get_image_abspath($image, $named_size);
-                        $new_abspath = $this->object->get_image_abspath($new_image, $named_size);
-                        if (is_array(@stat($old_abspath)))
-                        {
-                            $new_dir = dirname($new_abspath);
-                            // Ensure the target directory exists
-                            if (@stat($new_dir) === FALSE)
-                                wp_mkdir_p($new_dir);
-                            @copy($old_abspath, $new_abspath);
-                        }
-                    }
-                    
-                    // Mark as done
-                    $retval[] = $new_image_id;
-                }
-            }
+            $new_image_id = $this->object->copy_image($image, $dst_gallery);
+            if ($new_image_id)
+                $retval[] = $new_image_id;
         }
 
         return $retval;
+    }
+
+    /**
+     * @param int|stdClass|C_Image $image
+     * @param int|stdClass|C_Gallery $dst_gallery
+     * @return bool|int
+     */
+    function copy_image($image, $dst_gallery)
+    {
+        $image_mapper = C_Image_Mapper::get_instance();
+
+        // Ensure that the image is valid
+        if (is_numeric($image))
+            $image = $image_mapper->find($image);
+
+        if (($image_abspath = $this->object->get_image_abspath($image)))
+        {
+            // Import the image; this will copy the main file
+            $new_image_id = $this->object->import_image_file($dst_gallery, $image_abspath, $image->filename);
+
+            if ($new_image_id)
+            {
+                // Copy the properties of the old image
+                $new_image = $image_mapper->find($new_image_id);
+                foreach (get_object_vars($image) as $key => $value) {
+                    if (in_array($key, array('pid', 'galleryid', 'meta_data', 'filename', 'sortorder', 'extras_post_id')))
+                        continue;
+                    $new_image->$key = $value;
+                }
+                $image_mapper->save($new_image);
+
+                // Copy tags
+                $tags = wp_get_object_terms($image->pid, 'ngg_tag', 'fields=ids');
+                $tags = array_map('intval', $tags);
+                wp_set_object_terms($new_image_id, $tags, 'ngg_tag', true);
+
+                // Copy all of the generated versions (resized versions, watermarks, etc)
+                foreach ($this->object->get_image_sizes($image) as $named_size) {
+                    if (in_array($named_size, array('full', 'thumbnail')))
+                        continue;
+                    $old_abspath = $this->object->get_image_abspath($image, $named_size);
+                    $new_abspath = $this->object->get_image_abspath($new_image, $named_size);
+                    if (is_array(@stat($old_abspath)))
+                    {
+                        $new_dir = dirname($new_abspath);
+                        // Ensure the target directory exists
+                        if (@stat($new_dir) === FALSE)
+                            wp_mkdir_p($new_dir);
+                        @copy($old_abspath, $new_abspath);
+                    }
+                }
+
+                // Mark as done
+                return $new_image_id;
+            }
+        }
+
+        return FALSE;
     }
 
     /**
@@ -174,14 +189,21 @@ class Mixin_GalleryStorage_Base_Management extends Mixin
     {
         $retval = $this->object->copy_images($images, $gallery);
 
-        if ($images) {
-            foreach ($images as $image_id) {
-                $this->object->delete_image($image_id);
-            }
+        foreach ($images as $image_id) {
+            $this->object->delete_image($image_id);
         }
 
         return $retval;
-    }    
+    }
+
+    function move_image($image, $gallery)
+    {
+        $new_image_id = $this->object->copy_image($image, $gallery);
+
+        $this->object->delete_image($image);
+
+        return $new_image_id;
+    }
 
     function delete_directory($abspath)
     {

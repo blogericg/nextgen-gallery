@@ -277,7 +277,7 @@ class Mixin_GalleryStorage_Base_Upload extends Mixin
                     unlink($image_abspath);
                 }
 
-                // Ensure that we're not vulerable to CVE-2017-2416 exploit
+                // Ensure that we're not vulnerable to CVE-2017-2416 exploit
                 if (($dimensions = getimagesize($new_image_abspath)) !== FALSE) {
                     if ((isset($dimensions[0]) && intval($dimensions[0]) > 30000)
                         ||  (isset($dimensions[1]) && intval($dimensions[1]) > 30000)) {
