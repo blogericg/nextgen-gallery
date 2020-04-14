@@ -36,13 +36,24 @@ class C_GCS_CDN_Provider extends C_CDN_Provider
 
     public function copy($image_id, $gallery_id)
     {
-        $new_image_id = C_Gallery_Storage::get_instance()->copy_image($image_id, $gallery_id);
+        $storage = C_Gallery_Storage::get_instance();
+        $new_image_id = $storage->copy_image($image_id, $gallery_id);
 
         \ReactrIO\Background\Job::create(
             sprintf(__("Publishing newly copied image %d to gallery %d", 'nextgen-gallery'), $new_image_id, $gallery_id),
             'cdn_publish_image',
             ['id' => $new_image_id, 'size' => 'all']
         )->save('cdn');
+
+        // Cleanup any files brought to the server for copy_image() to function. The method move() creates a new task
+        // to delete the original image and does not require this same treatment.
+        if ($this->is_offload_enabled() && $storage->is_on_cdn($image_id))
+        {
+            $sizes = array_merge(['backup'], $storage->get_image_sizes());
+            foreach ($sizes as $size) {
+                unlink($storage->get_image_abspath($image_id, $size));
+            }
+        }
     }
 
     public function move($image_id, $gallery_id)

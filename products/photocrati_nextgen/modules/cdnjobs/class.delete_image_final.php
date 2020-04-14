@@ -18,8 +18,8 @@ class C_CDN_Delete_Image_Final_Job extends \ReactrIO\Background\Job
         {
             do_action('ngg_delete_picture', $image->pid, $image);
 
-            if ($settings->get('deleteImg', FALSE) && !$cdn->is_offload_enabled())
-                $storage->delete_image($image->pid);
+            if ($settings->get('deleteImg', FALSE))
+                @$storage->delete_image($image->pid);
             else
                 $mapper->destroy($image->pid);
         }
