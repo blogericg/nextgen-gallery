@@ -41,11 +41,17 @@ class M_NggLegacy extends C_Base_Module
         )));
 	}
 
+    function _register_adapters()
+    {
+        $this->get_registry()->add_adapter('I_Ajax_Controller', 'A_NGGLegacy_Manage_Gallery_Ajax');
+    }
+
 	function get_type_list()
 	{
-		return array(
-			'C_NggLegacy_Installer' => 'class.ngglegacy_installer.php'
-		);
+		return [
+		    'A_NGGLegacy_Manage_Gallery_Ajax' => 'lib/adapter.manage_gallery_ajax.php',
+			'C_NggLegacy_Installer'           => 'class.ngglegacy_installer.php'
+		];
 	}
 }
 

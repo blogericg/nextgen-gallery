@@ -765,9 +765,11 @@ class nggManageGallery
 
     function render_rotate_action_link($id, $picture)
     {
-        $url        = nextgen_esc_url(NGGALLERY_URLPATH.'admin/rotate.php?id='.$picture->pid);
-        $title      = esc_attr__('Rotate', 'nggallery');
-        $label      = esc_html__('Rotate', 'nggallery');
+        $url   = C_NextGen_Settings::get_instance()->get('ajax_url');
+        $url  .= '&action=ngglegacy_manage_gallery_rotate_image';
+        $url  .= '&id=' . $picture->pid;
+        $title = esc_attr__('Rotate', 'nggallery');
+        $label = esc_html__('Rotate', 'nggallery');
 
         return "<a href='{$url}' class='ngg-dialog' title='{$title}'>{$label}</a>";
     }
