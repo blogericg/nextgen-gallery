@@ -48,12 +48,12 @@ class A_Miscellaneous_Form extends Mixin
                     'photocrati-nextgen_other_options#update_legacy_featured_images_field',
                     [
                         'i18n' => [
-                            'label'        => __('Update legacy featured images', 'nggallery'),
-                            'confirmation' => __('Are you sure you want to continue? This will copy images into the media library', 'nggallery'),
-                            'tooltip'      => __('WordPress 5.4 broke legacy NextGen featured images', 'nggallery'),
-                            'header'             => __('Updating legacy post featured images', 'nggallery'),
-                            'no_images_found'    => __('No legacy featured images were found that required updating', 'nggallery'),
-                            'operation_finished' => __('Operation completed. Featured images have been restored and are now in the media library.', 'nggallery')
+                            'label'        => __('Update legacy page featured images', 'nggallery'),
+                            'confirmation' => __('Continue? This will copy all NextGen 1.x page featured images into the media library.', 'nggallery'),
+                            'tooltip'      => __('WordPress 5.4 is incompatible with NextGen 1.x page featured images and they must be updated in a bulk process to correct them. This button will launch a background process (with a progress bar) that imports each NextGen image into the Media Library. This process can be resumed if you close the popup window or this browser window.', 'nggallery'),
+                            'header'             => __('Updating legacy page featured images', 'nggallery'),
+                            'no_images_found'    => __('No legacy page featured images were found.', 'nggallery'),
+                            'operation_finished' => __('Operation complete. Legacy featured images have been corrected.', 'nggallery')
                         ]
                     ],
                     TRUE
