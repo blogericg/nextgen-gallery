@@ -38,23 +38,9 @@ class A_NextGen_Basic_Album_Controller extends Mixin_NextGen_Basic_Pagination
                 return '';
             $GLOBALS['nggShowGallery'] = TRUE;
 
-			// Try finding the gallery by slug first. If nothing is found, we assume that
-			// the user passed in a gallery id instead
-			$mapper = C_Gallery_Mapper::get_instance();
-            $tmp    = $mapper->select()->where(array('slug = %s', $gallery))->limit(1)->run_query();
-
-            // NextGen turns "This & That" into "this-&amp;-that" when assigning gallery slugs
-            if (empty($tmp) && strpos($gallery, '&') !== FALSE)
-                $tmp = $mapper->select()
-                              ->where(array('slug = %s', str_replace('&', '&amp;', $gallery)))
-                              ->limit(1)
-                              ->run_query();
-
-			$result = reset($tmp);
-            unset($tmp);
-			if ($result) {
+			$result = C_Gallery_Mapper::get_instance()->get_by_slug($gallery);
+			if ($result)
 				$gallery = $result->{$result->id_field};
-			}
 
             $renderer = C_Displayed_Gallery_Renderer::get_instance('inner');
             $gallery_params = array(
@@ -81,16 +67,11 @@ class A_NextGen_Basic_Album_Controller extends Mixin_NextGen_Basic_Pagination
 		else if (($album = $this->param('album'))) {
 
 			// Are we to display a sub-album?
-            {
-                $mapper = C_Album_Mapper::get_instance();
-                $result = $mapper->select()->where(array('slug = %s', $album))->limit(1)->run_query();
-                $result = array_pop($result);
-                $album_sub = $result ? $result->{$result->id_field} : null;
-                
-                if ($album_sub != null) {
-                	$album = $album_sub;
-                }
-            }
+            $result    = C_Album_Mapper::get_instance()->get_by_slug($album);
+            $album_sub = $result ? $result->{$result->id_field} : null;
+            if ($album_sub != null)
+                $album = $album_sub;
+
             $displayed_gallery->entity_ids = array();
 			$displayed_gallery->sortorder = array();
             $displayed_gallery->container_ids = ($album === '0' OR $album === 'all') ? array() : array($album);
