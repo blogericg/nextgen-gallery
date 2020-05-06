@@ -669,7 +669,7 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
             $settings = C_NextGen_Settings::get_instance();
 
             // Get the image filename
-            $filename = $this->object->get_original_abspath($image, 'original');
+            $filename = $this->object->get_image_abspath($image, 'original');
             $thumbnail = null;
 
             if ($size == 'full' && $settings->imgBackup == 1) {
