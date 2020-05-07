@@ -45,8 +45,10 @@ class C_NextGen_Settings_Installer
 		$this->blog_settings = C_NextGen_Settings::get_instance();
 		$this->site_settings = C_NextGen_Global_Settings::get_instance();
 
+		$upload_dir = wp_upload_dir();
+
 		$this->_global_settings = array(
-			'gallerypath'   => implode(DIRECTORY_SEPARATOR, array('wp-content', 'uploads', 'sites', '%BLOG_ID%', 'nggallery')).DIRECTORY_SEPARATOR,
+			'gallerypath' => trailingslashit($upload_dir['basedir']) . 'nggallery' . DIRECTORY_SEPARATOR,
 			'wpmuCSSfile' => 'nggallery.css',
 			'wpmuStyle'   => FALSE,
 			'wpmuRoles'   => FALSE,
@@ -59,7 +61,7 @@ class C_NextGen_Settings_Installer
 		);
 
 		$this->_local_settings = array(
-			'gallerypath'	 => 'wp-content'.DIRECTORY_SEPARATOR.'gallery'.DIRECTORY_SEPARATOR,
+			'gallerypath'	 => trailingslashit($upload_dir['basedir']) . 'gallery' . DIRECTORY_SEPARATOR,
 			'deleteImg'      => TRUE,              // delete Images
 			'usePermalinks'  => FALSE,             // use permalinks for parameters
 			'permalinkSlug'  => 'nggallery',       // the default slug for permalinks
