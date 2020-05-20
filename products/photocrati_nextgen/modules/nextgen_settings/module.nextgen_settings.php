@@ -40,15 +40,16 @@ class C_NextGen_Settings_Installer
 	private $_global_settings = array();
 	private $_local_settings  = array();
 
+	public $blog_settings = NULL;
+	public $site_settings = NULL;
+
 	function __construct()
 	{
 		$this->blog_settings = C_NextGen_Settings::get_instance();
 		$this->site_settings = C_NextGen_Global_Settings::get_instance();
 
-		$upload_dir = wp_upload_dir();
-
-		$this->_global_settings = array(
-			'gallerypath' => trailingslashit($upload_dir['basedir']) . 'nggallery' . DIRECTORY_SEPARATOR,
+		$this->_global_settings = apply_filters('ngg_default_global_settings', [
+            'gallerypath' => implode(DIRECTORY_SEPARATOR, array('wp-content', 'uploads', 'sites', '%BLOG_ID%', 'nggallery')) . DIRECTORY_SEPARATOR,
 			'wpmuCSSfile' => 'nggallery.css',
 			'wpmuStyle'   => FALSE,
 			'wpmuRoles'   => FALSE,
@@ -58,10 +59,10 @@ class C_NextGen_Settings_Installer
 			'datamapper_driver'    => 'custom_table_datamapper',
 			'maximum_entity_count' => 500,
 			'router_param_slug'    => 'nggallery'
-		);
+        ]);
 
-		$this->_local_settings = array(
-			'gallerypath'	 => trailingslashit($upload_dir['basedir']) . 'gallery' . DIRECTORY_SEPARATOR,
+		$this->_local_settings = apply_filters('ngg_default_settings', [
+            'gallerypath'	 => 'wp-content' . DIRECTORY_SEPARATOR . 'gallery' . DIRECTORY_SEPARATOR,
 			'deleteImg'      => TRUE,              // delete Images
 			'usePermalinks'  => FALSE,             // use permalinks for parameters
 			'permalinkSlug'  => 'nggallery',       // the default slug for permalinks
@@ -140,7 +141,7 @@ class C_NextGen_Settings_Installer
 
             // Duration of caching of 'random' widgets image IDs
             'random_widget_cache_ttl' => 30
-		);
+        ]);
 	}
 
 	function install_global_settings($reset=FALSE)
