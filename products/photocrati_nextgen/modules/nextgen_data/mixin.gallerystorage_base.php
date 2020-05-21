@@ -81,29 +81,42 @@ class Mixin_GalleryStorage_Base extends Mixin
 
     /**
      * Sets a NGG image as a post thumbnail for the given post
+     *
+     * @param int $postId
+     * @param int|C_Image|stdClass $image
+     * @param bool $only_create_attachment
+     * @return int
      */
     function set_post_thumbnail($postId, $image, $only_create_attachment=FALSE)
     {
-        $retval = FALSE; // attachment_id or FALSE
+        $retval = FALSE;
 
         // Get the post ID
-        if (is_object($postId)) {
+        if (is_object($postId))
+        {
             $post = $postId;
             $postId = isset($post->ID) ? $post->ID : $post->post_id;
         }
 
         // Get the image
-        if (is_int($image)) {
+        if (is_int($image))
+        {
             $imageId = $image;
-            $mapper = C_Image_Mapper::get_instance();
-            $image = $mapper->find($imageId);
+            $mapper  = C_Image_Mapper::get_instance();
+            $image   = $mapper->find($imageId);
         }
 
-        if ($image && $postId) {
+        if ($image && $postId)
+        {
             $attachment_id = $this->object->is_in_media_library($image->pid);
-            if ($attachment_id === FALSE) $attachment_id = $this->object->copy_to_media_library($image);
-            if ($attachment_id) {
-                if (!$only_create_attachment) set_post_thumbnail($postId, $attachment_id);
+
+            if ($attachment_id === FALSE)
+                $attachment_id = $this->object->copy_to_media_library($image);
+
+            if ($attachment_id)
+            {
+                if (!$only_create_attachment)
+                    set_post_thumbnail($postId, $attachment_id);
                 $retval = $attachment_id;
             }
         }
