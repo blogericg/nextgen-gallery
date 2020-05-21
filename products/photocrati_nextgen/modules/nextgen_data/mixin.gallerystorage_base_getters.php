@@ -205,6 +205,11 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
 
     function get_gallery_relpath($gallery)
     {
+        // Special hack for home.pl: their document root is just '/'
+        $root = $this->object->get_gallery_root();
+        if ($root === '/')
+            return $this->get_gallery_abspath($gallery);
+
         return str_replace($this->object->get_gallery_root(), '', $this->get_gallery_abspath($gallery));
     }
 
