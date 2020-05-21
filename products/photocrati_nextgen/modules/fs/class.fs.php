@@ -38,15 +38,8 @@ class C_Fs extends C_Component
 	function initialize()
 	{
 		parent::initialize();
-
-		// Special hack for wordpress.com hosted accounts where ABSPATH is outside the DOCUMENT_ROOT
-        if (!empty($_SERVER['DOCUMENT_ROOT']) && strpos(ABSPATH, $_SERVER['DOCUMENT_ROOT']) === FALSE)
-            $root = $_SERVER['DOCUMENT_ROOT'];
-        else
-            $root = ABSPATH;
-
-        $this->_document_root = $this->set_document_root($root);
-    }
+		$this->_document_root = $this->set_document_root(ABSPATH);
+	}
 }
 
 class Mixin_Fs_Instance_Methods extends Mixin
@@ -347,7 +340,7 @@ class Mixin_Fs_Instance_Methods extends Mixin
                 $retval = WP_CONTENT_DIR;
                 break;
             case 'gallery':
-			case 'galleries':
+            case 'galleries':
                 $root_type = NGG_GALLERY_ROOT_TYPE;
                 if ($root_type == 'content')
                     $retval = WP_CONTENT_DIR;
