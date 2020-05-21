@@ -64,7 +64,6 @@ class C_NextGen_Settings_Installer
 			'usePermalinks'  => FALSE,             // use permalinks for parameters
 			'permalinkSlug'  => 'nggallery',       // the default slug for permalinks
 			'graphicLibrary' => 'gd',              // default graphic library
-			'imageMagickDir' => '/usr/local/bin/', // default path to ImageMagick
 			'useMediaRSS'    => FALSE,             // activate the global Media RSS file
 			'galleries_in_feeds' => FALSE,         // enables rendered gallery output in rss/atom feeds
 
