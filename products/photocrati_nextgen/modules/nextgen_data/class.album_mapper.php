@@ -85,6 +85,22 @@ class Mixin_Album_Mapper extends Mixin
 	}
 
     /**
+     * @param string $slug
+     * @return null|stdClass|C_Album
+     */
+	public function get_by_slug($slug)
+    {
+        return array_pop(
+            $this->object->select()
+                ->where(
+                    ['slug = %s', sanitize_title($slug)]
+                )
+                ->limit(1)
+                ->run_query()
+        );
+    }
+
+    /**
      * Sets the defaults for an album
      * @param C_DataMapper_Model|C_Album|stdClass $entity
      */
