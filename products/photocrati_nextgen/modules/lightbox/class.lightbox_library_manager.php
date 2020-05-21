@@ -38,7 +38,7 @@ class C_Lightbox_Library_Manager
         $simplelightbox->title    = __('Simplelightbox', 'nggallery');
         $simplelightbox->code     = 'class="ngg-simplelightbox" rel="%GALLERY_NAME%"';
         $simplelightbox->styles   = array(
-            'photocrati-lightbox#simplelightbox/simplelightbox.css'
+            'photocrati-lightbox#simplelightbox/simple-lightbox.css'
         );
         $simplelightbox->scripts  = array(
             'photocrati-lightbox#simplelightbox/simple-lightbox.js',
