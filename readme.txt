@@ -2,7 +2,7 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 4.0.0
-Stable tag: 3.3.5
+Stable tag: 3.3.5.1
 Tested up to: 5.4.0
 License: GPLv2
 Requires PHP: 5.4
@@ -179,6 +179,14 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 
 == Changelog ==
+
+= V3.3.5.1 - 05.21.2020 =
+* NEW:     Added a mechanism in Other Options > Misc to update page featured images assigned with NextGen version 1 that were broken by a WordPress 5.4 API change
+* NEW:     Updated SimpleLightbox to the latest version. This fixes all gallery images appearing in the lightbox if more than one gallery was on the page.
+* Fixed:   Album routing was broken if the albums were named using a non-latin alphabet
+* Fixed:   Custom CSS styles was broken on some IIS servers
+* Fixed:   Gallery path validation was broken on some IIS servers
+* Fixed:   NextGen was unable to serve AJAX requests on home.pl hosting
 
 = V3.3.5 - 04.09.2020 =
 * Fixed:   Broken dynamic images
