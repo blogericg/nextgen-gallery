@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cbd7cc85e20f8c2320f988212a15c87",
+    "content-hash": "82ce22d8971d1f742e7c2238cf7840d8",
     "packages": [
         {
             "name": "imagely/pope-framework",
@@ -21,7 +21,7 @@
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://repo.packagist.com/reactr-io/dists/%package%/%version%/%reference%.%type%",
+                        "url": "https://repo.packagist.com/imagely/dists/%package%/%version%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
