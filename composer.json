@@ -11,7 +11,7 @@
         {"packagist.org": false}
     ],
     "require": {
-        "reactr-io/pope-framework": "v0.14"
+        "imagely/pope-framework": "v0.16"
     },
     "require-dev": {
         "nikic/php-parser": "^4.3"
