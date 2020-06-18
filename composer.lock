@@ -32,7 +32,7 @@
                     "./lib/autoload.php"
                 ]
             },
-            "notification-url": "https://repo.packagist.com/reactr-io/downloads/",
+            "notification-url": "https://repo.packagist.com/imagely/downloads/",
             "license": [
                 "GPL-2.0-only"
             ],
@@ -66,7 +66,7 @@
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://repo.packagist.com/reactr-io/dists/%package%/%version%/%reference%.%type%",
+                        "url": "https://repo.packagist.com/imagely/dists/%package%/%version%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -93,7 +93,7 @@
                     "PhpParser\\": "lib/PhpParser"
                 }
             },
-            "notification-url": "https://repo.packagist.com/reactr-io/downloads/",
+            "notification-url": "https://repo.packagist.com/imagely/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
