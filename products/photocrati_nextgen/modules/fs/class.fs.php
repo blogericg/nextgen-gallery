@@ -38,8 +38,8 @@ class C_Fs extends C_Component
 	function initialize()
 	{
 		parent::initialize();
-		$this->_document_root = $this->set_document_root(ABSPATH);
-	}
+        $this->_document_root = $this->set_document_root(ABSPATH);
+    }
 }
 
 class Mixin_Fs_Instance_Methods extends Mixin
