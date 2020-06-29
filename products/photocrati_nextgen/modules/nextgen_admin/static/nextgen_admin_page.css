@@ -20,7 +20,6 @@
  *      interfaces will use the same styling, be they basic or pro. Adding it here also acts to 
  *      ensure style consistency for users who update to the NextGEN redesign version, while still 
  *      running an older version of NextGEN Pro.
- *  7) NGG Admin CSS: Freemius Customizations
  *  8) NGG Admin CSS: Media Queries
  *
  ***/
@@ -1128,111 +1127,6 @@ table.nextgen_settings_position {
 
 #ngg_page_content .ngg_payment_gateway_enable_row {
     background: black !important;
-}
-
-/* 7) NGG Admin CSS: Freemius Customizations */
-
-.ngg-admin #fs_connect {
-    box-shadow: none;
-    border: 1px solid #e0e0e0;
-    margin-left: 10px;
-}
-
-.ngg-admin #fs_connect .fs-content p {
-    font-size: 17px;
-    font-family: Lato, sans-serif;
-}
-
-.ngg-admin #fs_connect a {
-    color: #9fbb1a;
-}
-
-.ngg-admin #fs_connect a:hover {
-    color: #b8d433;
-}
-
-.ngg-admin #fs_connect .fs-visual {
-    padding: 30px 20px !important;
-    background: #fff;
-}
-
-.ngg-admin #fs_connect .fs-visual .fs-plugin-icon, 
-.ngg-admin #fs_connect .fs-visual .fs-connect-logo, 
-.ngg-admin #fs_connect .fs-visual .fs-site-icon {
-    border: none;
-    padding: 0;
-    top: 30px;
-}
-
-.ngg-admin #fs_connect .fs-content {
-    padding: 30px 20px;
-}
-
-.ngg-admin #fs_connect .fs-actions,
-.ngg-admin #fs_connect .fs-permissions,
-.ngg-admin #fs_connect .fs-permissions.fs-open,
-.ngg-admin #fs_connect .fs-terms {
-    background: black;
-    color: #fff;
-    padding: 0 !important;
-}
-
-.ngg-admin #fs_connect .fs-actions {
-    padding: 30px 20px !important;
-}
-
-.ngg-admin #fs_connect .fs-permissions ul li i.dashicons {
-    color: #9fbb1a;
-}
-
-.ngg-admin #fs_connect .fs-permissions.fs-open ul {
-    margin-bottom: 0;
-    padding-bottom: 20px;
-}
-
-.ngg-admin #fs_connect .fs-permissions ul li div span {
-    color: #fff;
-}
-
-.ngg-admin #fs_connect .fs-terms {
-    padding-bottom: 15px !important;
-}
-
-.ngg-admin #fs_connect .fs-actions .button.button-primary {
-    background-color: #9fbb1a !important;
-    color: #fff !important;
-    border: none !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-    height: 35px !important;
-    padding: 0 24px !important;
-    line-height: 35px;
-    width: auto !important;
-    border-radius: 0;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: .5px;
-    font-family: Lato, sans-serif;
-}
-
-.ngg-admin #fs_connect .fs-actions .button.button-secondary {
-    border: none !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-    height: 35px !important;
-    padding: 0 24px !important;
-    line-height: 35px;
-    width: auto !important;
-    border-radius: 0;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: .5px;
-    font-family: Lato, sans-serif;
-}
-
-.ngg-admin #fs_connect .fs-permissions a:hover,
-.ngg-admin #fs_connect .fs-terms a:hover {
-    color: #fff;
 }
 
 /* 8) NGG Admin CSS: Media Queries */
