@@ -27,7 +27,7 @@
 
 /***** 1) NGG Admin CSS: Original 2.0 CSS *****/
 
-.ngg-admin .notice, 
+.ngg-admin .notice,
 .ngg-admin div.updated, 
 .ngg-admin div.error {
     margin: 20px 15px 0 0;
@@ -36,7 +36,7 @@
 .ngg-admin #ngg_page_content .notice, 
 .ngg-admin #ngg_page_content div.updated, 
 .ngg-admin #ngg_page_content div.error {
-    margin: 20px 0 20px 0;
+    margin: 20px 0 25px 0;
 }
 
 .hidden {

@@ -232,6 +232,8 @@ class M_NextGen_Admin extends C_Base_Module
         $notices->add($review_notice_3->get_name(), $review_notice_3);
 
         $notices->add('nextgen.beginner.gallery_creation_igw', 'C_NextGen_First_Run_Notification_Wizard');
+
+        $notices->add('mailchimp_opt_in', 'C_Mailchimp_OptIn_Notice');
     }
 
     /**
@@ -736,11 +738,12 @@ class M_NextGen_Admin extends C_Base_Module
             'C_Admin_Requirements_Manager'            => 'class.admin_requirements_manager.php',
             'C_Form'                                  => 'class.form.php',
             'C_Form_Manager'                          => 'class.form_manager.php',
+            'C_Mailchimp_OptIn_Notice'                => 'class.mailchimp_optin_notice.php',
             'C_NextGEN_Wizard_Manager'                => 'class.nextgen_wizard_manager.php',
             'C_NextGen_Admin_Page_Manager'            => 'class.nextgen_admin_page_manager.php',
+            'C_NextGen_First_Run_Notification_Wizard' => 'class.nextgen_first_run_notification_wizard.php',
             'C_Nextgen_Admin_Installer'               => 'class.nextgen_admin_installer.php',
-            'C_Nextgen_Admin_Page_Controller'         => 'class.nextgen_admin_page_controller.php',
-            'C_NextGen_First_Run_Notification_Wizard' => 'class.nextgen_first_run_notification_wizard.php'
+            'C_Nextgen_Admin_Page_Controller'         => 'class.nextgen_admin_page_controller.php'
         );
     }
 }
