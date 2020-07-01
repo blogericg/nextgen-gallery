@@ -53,7 +53,22 @@ class C_Mailchimp_OptIn_Notice
         if (!C_NextGen_Admin_Page_Manager::is_requested())
             return FALSE;
 
-        return TRUE;
+        $settings = C_NextGen_Settings::get_instance();
+
+        try {
+            $time = time();
+
+            $install = new DateTime("@" . $settings->get('installDate'));
+            $now     = new DateTime("@" . $time);
+
+            $diff = (int)$install->diff($now)->format('%a days');
+            if ($diff >= 14)
+                return TRUE;
+        }
+        // we're returning FALSE right away anyway
+        catch (Exception $exception) {}
+
+        return FALSE;
     }
 
     /**
