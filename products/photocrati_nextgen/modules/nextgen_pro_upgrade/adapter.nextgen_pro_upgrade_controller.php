@@ -1,9 +1,7 @@
 <?php
 
 /**
- * Class A_NextGen_Pro_Upgrade_Controller
- * @mixin C_NextGen_Admin_Page_Controller
- * @adapts I_NextGen_Admin_Page_Controller using "ngg_pro_upgrade" context
+ * @property C_NextGen_Admin_Page_Controller|A_NextGen_Pro_Upgrade_Controller $object
  */
 class A_NextGen_Pro_Upgrade_Controller extends Mixin
 {
@@ -13,7 +11,7 @@ class A_NextGen_Pro_Upgrade_Controller extends Mixin
         wp_enqueue_style(
             'nextgen_pro_upgrade_page',
             $this->get_static_url('photocrati-nextgen_pro_upgrade#style.css'),
-            array(),
+            ['ngg_marketing_cards_style'],
             NGG_SCRIPT_VERSION
         );
     }
@@ -31,45 +29,89 @@ class A_NextGen_Pro_Upgrade_Controller extends Mixin
     function get_i18n_strings()
     {
         $i18n = new stdClass();
-
-        $i18n->plus_title           = __( 'Create Stunning Galleries with NextGEN Pro', 'nggallery');
-        $i18n->pro_title            = __( 'Sell Photos + Adobe Lightroom', 'nggallery');
-        $i18n->plus_desc_first      = __( 'Introducing the most powerful gallery system ever made for WordPress. Watch our 30 second video, or click below to learn more about NextGEN premium extensions and support.', 'nggallery' );
-        $i18n->pro_desc             = __( 'You\'re awesome! You\'ve already got NextGEN Plus. But why not go all the way? With NextGEN Pro, you can sell print and digital downloads, provide proofing galleries for clients, manage galleries directly from Adobe Lightroom, and more.', 'nggallery' );
-        $i18n->video          = __( 'Psst...watch the video ->', 'nggallery' );
-        $i18n->plus_button          = __( 'Get Premium Extensions', 'nggallery' );
-        $i18n->pro_button           = __( 'Learn More', 'nggallery' );
+        $i18n->page_title = $this->object->get_page_title();
 
         return $i18n;
+    }
+
+    /**
+     * @return C_Marketing_Card[]
+     */
+    public function get_marketing_blocks()
+    {
+        $retval = [];
+        $retval[] = new C_Marketing_Card(
+            'large',
+            __('Automatic Print Lab', 'nggallery'),
+            'https://enviragallery.com/wp-content/uploads/2015/10/dynamic-addon.png',
+            __('Sell Photos on WordPress with Automated Print Fulfillment! NextGen Pro is the ONLY WordPress plugin with automatic print lab fulfillment. Ship prints directly to customers with WHCC, a leader pro print lab.', 'nggallery'),
+            'addonspage',
+            'printlab'
+        );
+
+        $retval[] = new C_Marketing_Card(
+            'large',
+            __('Pro Tiled Gallery', 'nggallery'),
+            'https://enviragallery.com/wp-content/uploads/2015/10/dynamic-addon.png',
+            __('A beautiful tiled gallery', 'nggallery'),
+            'addonspage',
+            'tiledgallery'
+        );
+
+        $retval[] = new C_Marketing_Card(
+            'large',
+            __('Pro Lightbox', 'nggallery'),
+            'https://enviragallery.com/wp-content/uploads/2015/10/dynamic-addon.png',
+            __('The NextGEN Pro Lightbox is the most powerful and flexible lightbox ever made for WordPress, with highly customizable design, image commenting, image social sharing, image deep linking, and more.', 'nggallery'),
+            'addonspage',
+            'prolightbox'
+        );
+
+        $retval[] = new C_Marketing_Card(
+            'large',
+            __('PayPal Checkout', 'nggallery'),
+            'https://enviragallery.com/wp-content/uploads/2015/10/dynamic-addon.png',
+            __('Complete ecommerce for NextGEN Gallery, including Stripe payments, PayPal payments, coupons, taxes, digital downloads, unlimited price lists, and more.', 'nggallery'),
+            'addonspage',
+            'paypal'
+        );
+
+        $retval[] = new C_Marketing_Card(
+            'large',
+            __('Coupons', 'nggallery'),
+            'https://enviragallery.com/wp-content/uploads/2015/10/dynamic-addon.png',
+            __('Complete ecommerce for NextGEN Gallery, including Stripe payments, PayPal payments, coupons, taxes, digital downloads, unlimited price lists, and more.', 'nggallery'),
+            'addonspage',
+            'coupons'
+        );
+
+        $retval[] = new C_Marketing_Card(
+            'large',
+            __('Automatic sales tax with TaxJar', 'nggallery'),
+            'https://enviragallery.com/wp-content/uploads/2015/10/dynamic-addon.png',
+            __('Complete ecommerce for NextGEN Gallery, including Stripe payments, PayPal payments, coupons, taxes, digital downloads, unlimited price lists, and more.', 'nggallery'),
+            'addonspage',
+            'salestax'
+        );
+
+        return $retval;
     }
 
     function index_action()
     {
         $this->object->enqueue_backend_resources();
-	    $key = C_Photocrati_Transient_Manager::create_key('nextgen_pro_upgrade_page', 'html');
-        if (($html = C_Photocrati_Transient_Manager::fetch($key, FALSE))) {
-            echo $html;
-        }
-        else {
 
-            // Get template and page content
-            $template = 'photocrati-nextgen_pro_upgrade#plus';
-            if (defined('NGG_PLUS_PLUGIN_BASENAME'))
-                $template = 'photocrati-nextgen_pro_upgrade#pro';
+        $router   = C_Router::get_instance();
+        $template = 'photocrati-nextgen_pro_upgrade#upgrade';
 
-            $html = $this->render_view(
-                $template,
-                array(
-                    'i18n'      =>  $this->get_i18n_strings()
-                ),
-                TRUE
-            );
-
-            // Cache it
-	        C_Photocrati_Transient_Manager::update($key, $html);
-
-            // Render it
-            echo $html;
-        }
+        print $this->object->render_view(
+            $template,
+            [
+                'i18n'             => $this->get_i18n_strings(),
+                'header_image_url' => $router->get_static_url('photocrati-nextgen_admin#imagely_icon.png'),
+                'marketing_blocks' => $this->object->get_marketing_blocks()
+            ],
+            TRUE
+        );
     }
 }
