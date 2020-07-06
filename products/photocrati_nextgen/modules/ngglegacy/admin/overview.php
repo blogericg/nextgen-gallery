@@ -193,7 +193,7 @@ function nggallery_admin_overview()
             ||  defined('NGG_PLUS_PLUGIN_BASENAME'))
                 $found = TRUE;
             if (!$found) { ?>
-                <a href="javascript:void(0)" data-id="pro-link"><?php _e( 'Upgrade to Pro' ); ?></a>
+                <a href="javascript:void(0)" data-id="pro-link"><?php _e('Extensions'); ?></a>
             <?php } ?>
             <a href="javascript:void(0)" data-id="genesis-link"><?php _e( 'Imagely Themes' ); ?></a>
             <a href="javascript:void(0)" data-id="ambassador-link"><?php _e( 'Ambassadors' ); ?></a>
