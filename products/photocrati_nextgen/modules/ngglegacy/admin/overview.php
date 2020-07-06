@@ -197,10 +197,6 @@ function nggallery_admin_overview()
             <?php } ?>
             <a href="javascript:void(0)" data-id="genesis-link"><?php _e( 'Imagely Themes' ); ?></a>
             <a href="javascript:void(0)" data-id="ambassador-link"><?php _e( 'Ambassadors' ); ?></a>
-            <?php if (!is_multisite() || is_super_admin()) { ?>
-                 <a href="javascript:void(0)" data-id="details-link"><?php _e( 'Site Details' ); ?></a>
-            <?php } ?>
-            <a href="javascript:void(0)" data-id="freedoms-link"><?php _e( 'Freedoms' ); ?></a>
         </div>
 
         <div class='ngg_page_content_main'>
@@ -373,48 +369,6 @@ function nggallery_admin_overview()
                     <div class="col"></div>
                     <div class="col"></div>
                 </div>
-
-            </div>
-
-            <?php if (!is_multisite() || is_super_admin()) { ?>
-                <div data-id="details-link">
-                    <h2><?php _e( 'Site Details' ); ?></h2>
-                    <p class="about-text"><?php _e( 'When contacting support, consider copying and pasting this information in your support request. It helps us troubleshoot more quickly.', 'nggallery' ); ?>
-                    </p>
-                    <div class="two-col">
-                        <div class="col">
-                            <p><strong><?php print __('Server Settings', 'nggallery'); ?></strong></p>
-                            <ul>
-                                <?php $NGG_Admin_Overview->server_info(); ?>
-                            </ul>
-                        </div>
-                        <div class="col">
-                            <p><strong><?php print __('Graphic Library', 'nggallery'); ?></strong></p>
-                            <ul>
-                                <?php $NGG_Admin_Overview->gd_info(); ?>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="two-col">
-                        <div class="col">
-                            <?php if (is_multisite()) $NGG_Admin_Overview->dashboard_quota(); ?>
-                        </div>
-                    </div>
-                </div>
-            <?php } ?>
-            
-            <div data-id="freedoms-link">
-
-                <p class="about-text"><?php printf( __( 'NextGEN Gallery is Free and open source software, built by a small but dedicated team as well as community code contributions. It comes with awesome rights courtesy of its <a href="%s" target="_blank">license</a>, the GPL.' ), 'https://wordpress.org/about/license/' ); ?></p>
-
-                <ol start="0">
-                    <li><p><?php _e( 'You have the freedom to run the program, for any purpose.' ); ?></p></li>
-                    <li><p><?php _e( 'You have access to the source code, the freedom to study how the program works, and the freedom to change it to make it do what you wish.' ); ?></p></li>
-                    <li><p><?php _e( 'You have the freedom to redistribute copies of the original program so you can help your neighbor.' ); ?></p></li>
-                    <li><p><?php _e( 'You have the freedom to distribute copies of your modified versions to others. By doing this you can give the whole community a chance to benefit from your changes.' ); ?></p></li>
-                </ol>
-
-                <p><?php _e( 'NextGEN Gallery grows because people like you tell your friends and website visitors about it. We thank you for doing so.' ); ?></p>
 
             </div>
 
