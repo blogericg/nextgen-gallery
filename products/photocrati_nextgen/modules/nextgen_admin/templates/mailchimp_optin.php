@@ -24,6 +24,13 @@
     #ngg_mailchimp_optin_response_wrapper {
     }
     #ngg_mailchimp_optin_submit {
+        background: #9dbd1b;
+        border: none;
+        padding: 10px;
+        color: #fff;
+    }
+    #ngg_mailchimp_optin_submit:hover {
+        cursor: pointer;
     }
     #ngg_mailchimp_optin_response {
     }

@@ -81,9 +81,9 @@ class C_Mailchimp_OptIn_Notice
         $view = new C_MVC_View('photocrati-nextgen_admin#mailchimp_optin', [
             'dismiss_url' => $manager->_dismiss_url . '&name=mailchimp_opt_in&code=1',
             'i18n' => [
-                'headline'     => __('Thank you for using NextGen Gallery!', 'nggallery'),
-                'message'      => __('Get NextGen updates, blog posts, tinned meat products, and free kittens right in your mailbox.', 'nggallery'),
-                'submit'       => __('GIMME', 'nggallery'),
+                'headline'     => __('Thank you for using NextGEN Gallery!', 'nggallery'),
+                'message'      => __('Get NextGEN updates, blog posts, tinned meat products, and free kittens right in your mailbox.', 'nggallery'),
+                'submit'       => __('Yes, Please!', 'nggallery'),
                 'confirmation' => __('Thank you for subscribing!', 'nggallery'),
                 'email_placeholder' => __('Email Address', 'nggallery'),
                 'name_placeholder'  => __('First Name', 'nggallery'),
