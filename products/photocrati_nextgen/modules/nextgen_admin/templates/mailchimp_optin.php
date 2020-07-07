@@ -69,6 +69,11 @@
                            name="b_72d9b6ebbed08185011c3d642_25fbdfefaf"
                            tabindex="-1"
                            value="">
+                    <input type="hidden"
+                           id=""
+                           name="group[14349][256]"
+                           value="1"
+                           checked>
                 </div>
                 <input type="submit"
                        value="<?php print esc_attr($i18n['submit']); ?>"
