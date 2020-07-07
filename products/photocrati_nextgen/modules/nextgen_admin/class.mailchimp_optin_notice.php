@@ -85,7 +85,7 @@ class C_Mailchimp_OptIn_Notice
             'dismiss_url' => $manager->_dismiss_url . '&name=mailchimp_opt_in&code=1',
             'i18n' => [
                 'headline'     => __('Thank you for using NextGEN Gallery!', 'nggallery'),
-                'message'      => __('Get NextGEN updates, blog posts, tinned meat products, and free kittens right in your mailbox.', 'nggallery'),
+                'message'      => __('Get NextGEN Gallery updates, photography tips, business tips, tutorials, and resources straight to your mailbox.', 'nggallery'),
                 'submit'       => __('Yes, Please!', 'nggallery'),
                 'confirmation' => __('Thank you for subscribing!', 'nggallery'),
                 'email_placeholder' => __('Email Address', 'nggallery'),
