@@ -53,6 +53,9 @@ class C_Mailchimp_OptIn_Notice
         if (!C_NextGen_Admin_Page_Manager::is_requested())
             return FALSE;
 
+        if (defined('NEXTGEN_GALLERY_PRO_PLUGIN_BASENAME') || defined('NGG_PRO_PLUGIN_BASENAME'))
+            return FALSE;
+
         $settings = C_NextGen_Settings::get_instance();
 
         try {
