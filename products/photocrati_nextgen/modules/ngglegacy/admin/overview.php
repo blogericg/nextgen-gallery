@@ -194,9 +194,10 @@ function nggallery_admin_overview()
                 $found = TRUE;
             if (!$found) { ?>
                 <a href="javascript:void(0)" data-id="pro-link"><?php _e( 'Upgrade to Pro' ); ?></a>
+                <a href="javascript:void(0)" data-id="ngg-vs-pro-link"><?php _e( 'NextGen vs Pro'); ?></a>
             <?php } ?>
-            <a href="javascript:void(0)" data-id="genesis-link"><?php _e( 'Imagely Themes' ); ?></a>
-            <a href="javascript:void(0)" data-id="ambassador-link"><?php _e( 'Ambassadors' ); ?></a>
+            <a href="javascript:void(0)" data-id="genesis-link"><?php _e( 'Imagely Themes'); ?></a>
+            <a href="javascript:void(0)" data-id="ambassador-link"><?php _e( 'Ambassadors'); ?></a>
         </div>
 
         <div class='ngg_page_content_main'>
@@ -253,13 +254,117 @@ function nggallery_admin_overview()
             </div>
 
             <div data-id="pro-link">
-
                 <h2><?php _e( 'Upgrade to NextGEN Pro!' ); ?></h2>
                 <p class="about-text"><span style="font-weight: bold;"><?php _e( 'The most powerful gallery system ever built for WordPress. ', 'nggallery' ); ?></span><br><?php _e( 'Gorgeous new gallery displays, image protection, full screen lightbox, commenting and social sharing for individual images, proofing, ecommerce, digital downloads, and more.', 'nggallery' ); ?></p>
                 <p class="about-text"><a href='https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/?utm_source=ngg&utm_medium=ngguser&utm_campaign=ngpro' target='_blank' class="button-primary ngg-pro-upgrade"><?php _e( 'Get NextGEN Pro Now', 'nggallery' ); ?></a></p>
                 <div class="feature-section">
                     <iframe src="https://www.youtube.com/embed/ePnYGQX0Lf8" frameborder="0" allowfullscreen></iframe>
                 </div>
+            </div>
+
+            <div data-id="ngg-vs-pro-link" id="ngg-basic-vs-pro">
+                <style>
+                    #ngg-basic-vs-pro {
+                        width: 100%;
+                    }
+                    #ngg_page_content #ngg-basic-vs-pro h2 {
+                        margin-top: 0;
+                    }
+                    #ngg-basic-vs-pro table {
+                        width: 100%;
+                    }
+
+                    #ngg-basic-vs-pro th {
+                        text-align: left;
+                        font-weight: 600;
+                        font-size: 18px;
+                        line-height: 36px;
+                        padding: 20px 0 20px 30px;
+                        border: 1px solid #DDDDDD;
+                        border-bottom: none;
+                        vertical-align: middle;
+                        background-color: rgb(241,241,241);
+                    }
+
+                    #ngg-basic-vs-pro td {
+                        border: 1px solid #DDDDDD;
+                        padding: 30px;
+                        vertical-align: top;
+                        width: 33%;
+                        font-size: 18px;
+                        line-height: 24px;
+                    }
+
+                    #ngg-basic-vs-pro th:nth-of-type(2),
+                    #ngg-basic-vs-pro td:nth-of-type(2) {
+                        border-left: none;
+                        border-right: none;
+                    }
+
+                    #ngg-basic-vs-pro td:nth-of-type(3) {
+                        background-color: rgb(243, 249, 254);
+                    }
+
+                    #ngg-basic-vs-pro td p {
+                        margin: 0;
+                        padding: 0;
+                        font-size: 18px;
+                        line-height: 24px;
+                    }
+
+                    #ngg-basic-vs-pro td i {
+                    }
+                    #ngg-basic-vs-pro i.ngg-features-partial {
+                        color: gray;
+                    }
+                    #ngg-basic-vs-pro i.ngg-features-none {
+                        color: #ce5656;
+                    }
+                    #ngg-basic-vs-pro i.ngg-features-full {
+                        color: green;
+                    }
+                </style>
+                <h2><?php print __('NextGEN Basic vs Pro'); ?></h2>
+
+                <p>
+                    <?php print __('Get the most out of NextGEN Gallery by upgrading to Pro and unlocking all the powerful features.', 'nggallery'); ?>
+                </p>
+
+                <table cellspacing="0" cellpadding="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Basic</th>
+                            <th>Pro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lightbox Features</td>
+                            <td>
+                                <i class="fa fa-times ngg-features-partial"></i>
+                                SimpleLightbox
+                            </td>
+                            <td>
+                                <i class="fa fa-check ngg-features-full"></i>
+                                <strong>Awesome Pro Lightbox</strong>
+                                <p>Fully customizable with image sharing, linking, commenting; it is also responsive and touch friendly.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Customer Support</td>
+                            <td>
+                                <i class="fa fa-times ngg-features-none"></i>
+                                Limited customer support
+                            </td>
+                            <td>
+                                <i class="fa fa-check ngg-features-full"></i>
+                                <strong>Dedicated customer support</strong>
+                                <p>Dedicated prompt service from dedicated specialists around the world.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
             </div>
 
