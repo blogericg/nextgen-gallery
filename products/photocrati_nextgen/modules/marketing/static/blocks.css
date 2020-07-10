@@ -1,0 +1,14 @@
+.upsell {
+    padding: 40px !important;
+    border: 1px solid #eee;
+}
+.upsell .fas {
+    font-size: 150px;
+}
+.ngg-marketing-block-wrapper {
+    clear: both;
+    margin-top: 50px;
+}
+.ngg-marketing-block-wrapper ul {
+    list-style: disc;
+}

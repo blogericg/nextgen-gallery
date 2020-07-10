@@ -46,7 +46,7 @@ class C_Marketing_Card
 
     public function get_upgrade_link()
     {
-        $url = 'https://imagely.com/?utm_source=' . $this->source;
+        $url = 'https://www.imagely.com/nextgen-gallery/?utm_source=' . $this->source;
         $url .= '&utm_medium=' . $this->medium;
         $url .= '&utm_campaign=' . $this->campaign;
 
