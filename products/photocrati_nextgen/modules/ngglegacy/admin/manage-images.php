@@ -576,6 +576,11 @@ function nggallery_picturelist($controller)
 
                     <br class="clear"/>
 
+                    <?php
+                    // Allows for additional content to be injected underneath the primary display
+                    do_action('ngg_manage_images_page_content_main_final');
+                    ?>
+
                 </div><!-- /div.ngg_page_content_main -->
 
     </div><!-- /#wrap -->
