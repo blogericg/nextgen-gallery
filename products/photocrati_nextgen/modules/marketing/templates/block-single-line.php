@@ -1,6 +1,6 @@
 <?php
 /**
- * @var C_Marketing_Single_Line $block
+ * @var C_Marketing_Block_Single_Line $block
  * @var string $link_text
  */
 ?>

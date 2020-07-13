@@ -64,7 +64,7 @@ class M_Marketing extends C_Base_Module
             $title    = __('Want to sell your images online?', 'nggallery');
             $campaign = 'TODO';
             $source   = 'TODO';
-            $block    = new C_Marketing_Single_Line($title, $campaign, $source);
+            $block    = new C_Marketing_Block_Single_Line($title, $campaign, $source);
             print $block->render();
         });
     }
@@ -93,15 +93,9 @@ class M_Marketing extends C_Base_Module
     function initialize()
     {
         wp_register_style(
-            'ngg_marketing_cards_style',
-            C_Router::get_instance()->get_static_url('photocrati-marketing#cards.css'),
-            [],
-            NGG_SCRIPT_VERSION
-        );
-        wp_register_style(
             'ngg_marketing_blocks_style',
             C_Router::get_instance()->get_static_url('photocrati-marketing#blocks.css'),
-            [],
+            ['wp-block-library'],
             NGG_SCRIPT_VERSION
         );
 
@@ -179,7 +173,6 @@ class M_Marketing extends C_Base_Module
 
     public static function enqueue_blocks_style()
     {
-        wp_enqueue_style('wp-block-library');
         wp_enqueue_style('ngg_marketing_blocks_style');
     }
 
@@ -191,8 +184,8 @@ class M_Marketing extends C_Base_Module
             'C_Marketing_Block_Base'            => 'class.block_base.php',
             'C_Marketing_Block_Large'           => 'class.block_large.php',
             'C_Marketing_Block_Two_Columns'     => 'class.block_two_columns.php',
-            'C_Marketing_Card'                  => 'class.card.php',
-            'C_Marketing_Single_Line'           => 'class.single_line.php'
+            'C_Marketing_Block_Card'            => 'class.block_card.php',
+            'C_Marketing_Block_Single_Line' => 'class.single_line.php'
         ];
     }
 }

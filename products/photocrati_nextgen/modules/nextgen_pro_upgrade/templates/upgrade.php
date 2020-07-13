@@ -17,7 +17,7 @@
     <div id="ngg_upgrade_to_pro_page_wrapper">
         <?php
         foreach ($marketing_blocks as $block) {
-            /** @var C_Marketing_Card $block */
+            /** @var C_Marketing_Block_Card $block */
             print $block->render();
         } ?>
     </div>

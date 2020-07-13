@@ -1,6 +1,6 @@
 <?php
 
-class C_Marketing_Card extends C_Marketing_Block_Base
+class C_Marketing_Block_Card extends C_Marketing_Block_Base
 {
     public $title       = '';
     public $thumb_url   = '';
@@ -10,7 +10,7 @@ class C_Marketing_Card extends C_Marketing_Block_Base
      * @param string $title Card title
      * @param string $thumb Full URL to the thumbnail
      * @param string $desc Card description
-     * @return C_Marketing_Card
+     * @return C_Marketing_Block_Card
      */
     public function __construct($title, $thumb, $desc, $medium, $campaign, $src = 'nggallery')
     {

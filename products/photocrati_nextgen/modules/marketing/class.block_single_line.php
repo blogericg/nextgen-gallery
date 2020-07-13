@@ -1,6 +1,6 @@
 <?php
 
-class C_Marketing_Single_Line extends C_Marketing_Block_Base
+class C_Marketing_Block_Single_Line extends C_Marketing_Block_Base
 {
     public $title       = '';
     public $source      = '';
@@ -8,11 +8,11 @@ class C_Marketing_Single_Line extends C_Marketing_Block_Base
     public $campaign    = '';
 
     /**
-     * @var string $title
-     * @var string $medium
+     * @return C_Marketing_Block_Single_Line
+     *@var string $medium
      * @var string $campaign
      * @var string $src (optional) Defaults to 'nggallery'
-     * @return C_Marketing_Single_Line
+     * @var string $title
      */
     public function __construct($title, $medium, $campaign, $src = 'nggallery')
     {
