@@ -576,6 +576,8 @@ function nggallery_picturelist($controller)
 
                     <br class="clear"/>
 
+                    <?php do_action('ngg_manage_images_marketing_block'); ?>
+
                 </div><!-- /div.ngg_page_content_main -->
 
     </div><!-- /#wrap -->

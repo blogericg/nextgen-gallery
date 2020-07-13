@@ -1,31 +1,22 @@
 <?php
 
-class C_Marketing_Card
+class C_Marketing_Single_Line
 {
-    public $size        = 'large';
     public $title       = '';
-    public $thumb_url   = '';
-    public $description = '';
     public $source      = '';
     public $medium      = '';
     public $campaign    = '';
 
     /**
-     * @param string $size Currently only 'large' is accepted
-     * @param string $title Card title
-     * @param string $thumb Full URL to the thumbnail
-     * @param string $desc Card description
+     * @var string $title
+     * @var string $medium
+     * @var string $campaign
+     * @var string $src (optional) Defaults to 'nggallery'
      * @return string
      */
-    public function __construct($size, $title, $thumb, $desc, $medium, $campaign, $src = 'nggallery')
+    public function __construct($title, $medium, $campaign, $src = 'nggallery')
     {
-        if (!in_array($size, ['large']))
-            $size = 'large';
-
-        $this->size        = $size;
         $this->title       = $title;
-        $this->thumb_url   = $thumb;
-        $this->description = $desc;
         $this->source      = $src;
         $this->medium      = $medium;
         $this->campaign    = $campaign;
@@ -34,9 +25,9 @@ class C_Marketing_Card
     public function render($return = TRUE)
     {
         $view = new C_MVC_View(
-            "photocrati-marketing#card-{$this->size}",
+            "photocrati-marketing#single-line",
             [
-                'card'      => $this,
+                'line'      => $this,
                 'link_text' => __('Upgrade Now', 'nggallery')
             ]
         );

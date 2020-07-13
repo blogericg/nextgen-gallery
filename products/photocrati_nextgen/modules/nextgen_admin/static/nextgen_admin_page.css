@@ -469,6 +469,10 @@ table.nextgen_settings_position {
     width: 100%;
 }
 
+#ngg_page_content .ngg_gallery_sort .ngg_page_content_main {
+    min-height: 0;
+}
+
 .gallery_page_nggallery-manage-gallery #ngg_page_content .ngg_page_content_main,
 .gallery_page_nggallery-manage-album #ngg_page_content .ngg_page_content_main {
     padding: 0 10px 30px;
