@@ -1,14 +1,14 @@
 <?php
 /**
- * @var C_Marketing_Single_Line $line
+ * @var C_Marketing_Single_Line $block
  * @var string $link_text
  */
 ?>
 <div class="ngg-marketing-single-line">
     <p>
-       <?php print $line->title; ?>
+       <?php print $block->title; ?>
         <a class="ngg-marketing-single-line-link"
-           href="<?php print esc_attr($line->get_upgrade_link()); ?>"
+           href="<?php print esc_attr($block->get_upgrade_link()); ?>"
            target="_blank"
            rel="noreferrer noopener">
             <?php print $link_text; ?>
