@@ -186,12 +186,12 @@ class M_Marketing extends C_Base_Module
     function get_type_list()
     {
         return [
-            'C_Marketing_Single_Line'           => 'class.marketing_single_line.php',
-            'C_Marketing_Card'                  => 'class.marketing_card.php',
-            'C_Marketing_Block_Large'           => 'class.marketing_block_large.php',
-            'C_Marketing_Block_Two_Columns'     => 'class.marketing_block_two_columns.php',
-            'A_Marketing_Admin_MVC_Injector'    => 'adapter.marketing_admin_mvc_injector.php',
-            'A_Marketing_Display_Settings_Form' => 'adapter.marketing_display_settings_form.php'
+            'C_Marketing_Single_Line'           => 'class.single_line.php',
+            'C_Marketing_Card'                  => 'class.card.php',
+            'C_Marketing_Block_Large'           => 'class.block_large.php',
+            'C_Marketing_Block_Two_Columns'     => 'class.block_two_columns.php',
+            'A_Marketing_Admin_MVC_Injector'    => 'adapter.admin_mvc_injector.php',
+            'A_Marketing_Display_Settings_Form' => 'adapter.display_settings_form.php'
         ];
     }
 }
