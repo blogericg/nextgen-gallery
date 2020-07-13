@@ -37,7 +37,7 @@ class M_Marketing extends C_Base_Module
 
     function _register_hooks()
     {
-        if (self::is_plus_or_pro_enabled())
+        if (self::is_plus_or_pro_enabled() || !is_admin())
             return;
 
         add_action('ngg_manage_albums_marketing_block', function() {
@@ -67,6 +67,15 @@ class M_Marketing extends C_Base_Module
             $block    = new C_Marketing_Block_Single_Line($title, $campaign, $source);
             print $block->render();
         });
+
+        add_action('init', function() {
+            $forms = C_Form_Manager::get_instance();
+            foreach (self::$display_setting_blocks as $block) {
+                $forms->add_form(NGG_DISPLAY_SETTINGS_SLUG, "photocrati-marketing_display_settings_{$block}");
+            }
+
+            $forms->add_form(NGG_OTHER_OPTIONS_SLUG, 'marketing');
+        });
     }
 
     function _register_utilities()
@@ -79,6 +88,7 @@ class M_Marketing extends C_Base_Module
         {
             $registry = $this->get_registry();
             $registry->add_adapter('I_MVC_View', 'A_Marketing_Admin_MVC_Injector');
+            $registry->add_adapter('I_Form', 'A_Marketing_Other_Options_Form', 'marketing');
 
             foreach (self::$display_setting_blocks as $block) {
                 $registry->add_adapter(
@@ -98,14 +108,6 @@ class M_Marketing extends C_Base_Module
             ['wp-block-library'],
             NGG_SCRIPT_VERSION
         );
-
-        if (!self::is_plus_or_pro_enabled() && is_admin())
-        {
-            $forms = C_Form_Manager::get_instance();
-            foreach (self::$display_setting_blocks as $block) {
-                $forms->add_form(NGG_DISPLAY_SETTINGS_SLUG, "photocrati-marketing_display_settings_{$block}");
-            }
-        }
     }
 
     /**
@@ -181,11 +183,12 @@ class M_Marketing extends C_Base_Module
         return [
             'A_Marketing_Admin_MVC_Injector'    => 'adapter.admin_mvc_injector.php',
             'A_Marketing_Display_Settings_Form' => 'adapter.display_settings_form.php',
+            'A_Marketing_Other_Options_Form'    => 'adapter.other_options_form.php',
             'C_Marketing_Block_Base'            => 'class.block_base.php',
             'C_Marketing_Block_Large'           => 'class.block_large.php',
             'C_Marketing_Block_Two_Columns'     => 'class.block_two_columns.php',
             'C_Marketing_Block_Card'            => 'class.block_card.php',
-            'C_Marketing_Block_Single_Line' => 'class.single_line.php'
+            'C_Marketing_Block_Single_Line'     => 'class.block_single_line.php'
         ];
     }
 }

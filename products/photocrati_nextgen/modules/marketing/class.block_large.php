@@ -14,7 +14,7 @@ class C_Marketing_Block_Large extends C_Marketing_Block_Base
      * @param string $title
      * @param string $description
      * @param string $footer
-     * @param string $thumbnail_url
+     * @param string $thumbnail_url Either a full HTTPS path or a FontAwesome icon (must begin with fa-)
      * @param string $demo_url
      * @param string $medium
      * @param string $campaign

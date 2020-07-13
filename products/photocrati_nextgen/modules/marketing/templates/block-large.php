@@ -8,14 +8,23 @@
     <div class="wp-block-group__inner-container">
         <div class="wp-block-columns">
             <div class="wp-block-column" style="flex-basis:33.33%">
-                <div class="wp-block-image">
-                    <figure class="aligncenter size-large">
-                        <picture class="wp-image-52320">
-                            <img src="<?php print esc_attr($block->thumbnail_url); ?>"
-                                 alt="<?php print esc_attr($block->title); ?>">
-                        </picture>
-                    </figure>
-                </div>
+
+                <?php
+                // Detect if we're using a FontAwesome icon. If the string begins with 'fas' it's not a URL anyway..
+                if (strpos($block->thumbnail_url, 'fa-') === 0) { ?>
+                    <div style="text-align: center;">
+                        <i class="fas <?php print $block->thumbnail_url; ?>"></i>
+                    </div>
+                <?php } else { ?>
+                    <div class="wp-block-image">
+                        <figure class="aligncenter size-large">
+                            <picture class="wp-image-52320">
+                                <img src="<?php print esc_attr($block->thumbnail_url); ?>"
+                                     alt="<?php print esc_attr($block->title); ?>">
+                            </picture>
+                        </figure>
+                    </div>
+                <?php } ?>
             </div>
             <div class="wp-block-column" style="flex-basis:66.66%">
                 <h2 class="has-very-dark-gray-color has-text-color">
