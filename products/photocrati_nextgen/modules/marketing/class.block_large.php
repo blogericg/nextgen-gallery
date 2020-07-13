@@ -23,7 +23,7 @@ class C_Marketing_Block_Large extends C_Marketing_Block_Base
      */
     public function __construct($title, $description, $footer, $thumbnail_url, $demo_url, $demo_text, $campaign, $src, $medium = 'ngg')
     {
-        parent::__construct('block-large', $medium, $campaign, $src);
+        parent::__construct('large', $medium, $campaign, $src);
 
         $this->title         = $title;
         $this->description   = $description;

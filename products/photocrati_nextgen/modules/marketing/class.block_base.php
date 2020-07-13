@@ -29,7 +29,7 @@ abstract class C_Marketing_Block_Base
     public function render($return = TRUE)
     {
         $view = new C_MVC_View(
-            'photocrati-marketing#' . $this->template,
+            'photocrati-marketing#block-' . $this->template,
             [
                 'block'     => $this,
                 'link_text' => $this->link_text
