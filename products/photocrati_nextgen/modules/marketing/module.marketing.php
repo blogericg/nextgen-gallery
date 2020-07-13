@@ -25,6 +25,8 @@ class M_Marketing extends C_Base_Module
     public static $big_hitters_block_one_cache = NULL;
     public static $big_hitters_block_two_cache = NULL;
 
+    protected static $display_setting_blocks = ['tile', 'mosaic', 'masonry'];
+
     public function is_plus_or_pro_enabled()
     {
         if (defined('NGG_PRO_PLUGIN_BASENAME') || defined('NGG_PLUS_PLUGIN_BASENAME'))
@@ -77,6 +79,14 @@ class M_Marketing extends C_Base_Module
         {
             $registry = $this->get_registry();
             $registry->add_adapter('I_MVC_View', 'A_Marketing_Admin_MVC_Injector');
+
+            foreach (self::$display_setting_blocks as $block) {
+                $registry->add_adapter(
+                    'I_Form',
+                    'A_Marketing_Display_Settings_Form',
+                    "photocrati-marketing_display_settings_{$block}"
+                );
+            }
         }
     }
 
@@ -94,6 +104,14 @@ class M_Marketing extends C_Base_Module
             [],
             NGG_SCRIPT_VERSION
         );
+
+        if (!self::is_plus_or_pro_enabled() && is_admin())
+        {
+            $forms = C_Form_Manager::get_instance();
+            foreach (self::$display_setting_blocks as $block) {
+                $forms->add_form(NGG_DISPLAY_SETTINGS_SLUG, "photocrati-marketing_display_settings_{$block}");
+            }
+        }
     }
 
     /**
@@ -168,10 +186,12 @@ class M_Marketing extends C_Base_Module
     function get_type_list()
     {
         return [
-            'C_Marketing_Single_Line'        => 'class.marketing_single_line.php',
-            'C_Marketing_Card'               => 'class.marketing_card.php',
-            'C_Marketing_Block_Two_Columns'  => 'class.marketing_block_two_columns.php',
-            'A_Marketing_Admin_MVC_Injector' => 'adapter.marketing_admin_mvc_injector.php'
+            'C_Marketing_Single_Line'           => 'class.marketing_single_line.php',
+            'C_Marketing_Card'                  => 'class.marketing_card.php',
+            'C_Marketing_Block_Large'           => 'class.marketing_block_large.php',
+            'C_Marketing_Block_Two_Columns'     => 'class.marketing_block_two_columns.php',
+            'A_Marketing_Admin_MVC_Injector'    => 'adapter.marketing_admin_mvc_injector.php',
+            'A_Marketing_Display_Settings_Form' => 'adapter.marketing_display_settings_form.php'
         ];
     }
 }
