@@ -887,6 +887,10 @@ div .progressbar span {
     width: 100%;
 }
 
+.ngg_manage_albums .widget:last-of-type {
+	margin-right: 0;
+}
+
 .container {
 	margin-top: 10px;
 }
