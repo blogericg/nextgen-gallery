@@ -416,10 +416,7 @@ function nggallery_manage_gallery_main()
                 </div>
             </form>
 
-            <?php
-            // Allows for additional content to be injected underneath the primary display
-            do_action('ngg_manage_galleries_page_content_main_final');
-            ?>
+            <?php do_action('ngg_manage_galleries_marketing_block'); ?>
 
         </div> <!-- /.ngg_page_content_main -->
     </div> <!-- /.wrap -->

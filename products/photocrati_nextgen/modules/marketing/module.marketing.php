@@ -38,12 +38,17 @@ class M_Marketing extends C_Base_Module
         if (self::is_plus_or_pro_enabled())
             return;
 
-        add_action('ngg_manage_galleries_page_content_main_final', function() {
+        add_action('ngg_manage_galleries_marketing_block', function() {
             self::enqueue_blocks_style();
             print self::get_big_hitters_block_two();
         });
 
-        add_action('ngg_manage_images_page_content_main_final', function() {
+        add_action('ngg_manage_images_marketing_block', function() {
+            self::enqueue_blocks_style();
+            print self::get_big_hitters_block_two();
+        });
+
+        add_action('ngg_sort_images_marketing_block', function() {
             self::enqueue_blocks_style();
             print self::get_big_hitters_block_two();
         });
