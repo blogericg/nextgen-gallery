@@ -100,6 +100,15 @@ class M_Marketing extends C_Base_Module
             $registry->add_adapter('I_Form', 'A_Marketing_Other_Options_Form', 'marketing_image_protection');
             $registry->add_adapter('I_Form', 'A_Marketing_Lightbox_Options_Form', 'marketing_lightbox');
 
+            // If we call find_all() before init/admin_init an exception is thrown due to is_user_logged_in() being
+            // called too early. Don't remove this action hook.
+            add_action('admin_init', function() {
+                foreach (C_Display_type_Mapper::get_instance()->find_all() as $display_type) {
+                    $registry = $this->get_registry();
+                    $registry->add_adapter('I_Form', 'A_Marketing_Display_Type_Settings_Form', $display_type->name);
+                }
+            });
+
             foreach (self::$display_setting_blocks as $block) {
                 $registry->add_adapter(
                     'I_Form',
@@ -162,6 +171,9 @@ class M_Marketing extends C_Base_Module
         return self::$big_hitters_block_one_cache;
     }
 
+    /**
+     * @return string
+     */
     public static function get_big_hitters_block_two()
     {
         if (!empty(self::$big_hitters_block_two_cache))
@@ -188,18 +200,22 @@ class M_Marketing extends C_Base_Module
         wp_enqueue_style('ngg_marketing_blocks_style');
     }
 
+    /**
+     * @return array
+     */
     function get_type_list()
     {
         return [
-            'A_Marketing_Lightbox_Options_Form' => 'adapter.lightbox_options_form.php',
-            'A_Marketing_Admin_MVC_Injector'    => 'adapter.admin_mvc_injector.php',
-            'A_Marketing_Display_Settings_Form' => 'adapter.display_settings_form.php',
-            'A_Marketing_Other_Options_Form'    => 'adapter.other_options_form.php',
-            'C_Marketing_Block_Base'            => 'class.block_base.php',
-            'C_Marketing_Block_Large'           => 'class.block_large.php',
-            'C_Marketing_Block_Two_Columns'     => 'class.block_two_columns.php',
-            'C_Marketing_Block_Card'            => 'class.block_card.php',
-            'C_Marketing_Block_Single_Line'     => 'class.block_single_line.php'
+            'A_Marketing_Admin_MVC_Injector'         => 'adapter.admin_mvc_injector.php',
+            'A_Marketing_Display_Settings_Form'      => 'adapter.display_settings_form.php',
+            'A_Marketing_Display_Type_Settings_Form' => 'adapter.display_type_settings_form.php',
+            'A_Marketing_Lightbox_Options_Form'      => 'adapter.lightbox_options_form.php',
+            'A_Marketing_Other_Options_Form'         => 'adapter.other_options_form.php',
+            'C_Marketing_Block_Base'                 => 'class.block_base.php',
+            'C_Marketing_Block_Card'                 => 'class.block_card.php',
+            'C_Marketing_Block_Large'                => 'class.block_large.php',
+            'C_Marketing_Block_Single_Line'          => 'class.block_single_line.php',
+            'C_Marketing_Block_Two_Columns'          => 'class.block_two_columns.php'
         ];
     }
 }
