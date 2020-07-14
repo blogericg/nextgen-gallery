@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var string $lightbox_library_label
+ * @var C_NGG_Lightbox[] $libs
+ * @var string $selected
+ * @var string[] $sub_fields
+ * @var string $lightbox_global
+ */
+?>
 <table>
 	<!-- Lightbox Library Name -->
 	<tr>
@@ -21,18 +30,6 @@
         </td>
     </tr>
 
-    <?php foreach ($sub_fields as $name => $form) { ?>
-        <tbody class="lightbox_library_settings hidden" id="lightbox_library_<?php echo esc_attr($name); ?>">
-            <?php echo $form; ?>
-        </tbody>
-    <?php } ?>
-    <?php if ( !defined('NGG_PRO_PLUGIN_VERSION') && !defined('NGG_PLUS_PLUGIN_VERSION') && !is_multisite() ) { ?>
-        <tr>
-            <td colspan="2" class="ngg_options_promo">
-                <?php esc_html_e('Want a stunning, full screen, lightbox with customization options?', 'nggallery'); ?><a href="https://www.imagely.com/wordpress-gallery-plugin/pro-lightbox-demo/?utm_source=ngg&utm_medium=ngguser&utm_campaign=pro_lightbox" target="_blank"><?php esc_html_e('Get the Pro Lightbox!', 'nggallery'); ?></a>
-            </td>
-        </tr>
-    <?php } ?>
 	<tr>
 		<td class="column1">
 			<label for="lightbox_global"><?php esc_html_e('What must the lightbox be applied to?', 'nggallery')?></label>
@@ -46,5 +43,10 @@
             </select>
         </td>
     </tr>
-    </tbody>
+
+    <?php foreach ($sub_fields as $name => $form) { ?>
+        <tbody class="lightbox_library_settings hidden" id="lightbox_library_<?php echo esc_attr($name); ?>">
+            <?php echo $form; ?>
+        </tbody>
+    <?php } ?>
 </table>

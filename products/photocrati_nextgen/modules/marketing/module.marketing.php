@@ -40,6 +40,14 @@ class M_Marketing extends C_Base_Module
         if (self::is_plus_or_pro_enabled() || !is_admin())
             return;
 
+        add_filter('ngg_manage_lightbox_select_options', function($libraries) {
+            $marketing = new stdClass();
+            $marketing->name = 'marketing_lightbox';
+            $marketing->title = __('NextGEN Pro Lightbox', 'nggallery');
+            $libraries[] = $marketing;
+            return $libraries;
+        });
+
         add_action('ngg_manage_albums_marketing_block', function() {
             self::enqueue_blocks_style();
             print self::get_big_hitters_block_two();
@@ -68,13 +76,14 @@ class M_Marketing extends C_Base_Module
             print $block->render();
         });
 
-        add_action('init', function() {
+        add_action('admin_init', function() {
             $forms = C_Form_Manager::get_instance();
             foreach (self::$display_setting_blocks as $block) {
                 $forms->add_form(NGG_DISPLAY_SETTINGS_SLUG, "photocrati-marketing_display_settings_{$block}");
             }
 
-            $forms->add_form(NGG_OTHER_OPTIONS_SLUG, 'marketing');
+            $forms->add_form(NGG_OTHER_OPTIONS_SLUG, 'marketing_image_protection');
+            $forms->add_form(NGG_LIGHTBOX_OPTIONS_SLUG, 'marketing_lightbox');
         });
     }
 
@@ -88,7 +97,8 @@ class M_Marketing extends C_Base_Module
         {
             $registry = $this->get_registry();
             $registry->add_adapter('I_MVC_View', 'A_Marketing_Admin_MVC_Injector');
-            $registry->add_adapter('I_Form', 'A_Marketing_Other_Options_Form', 'marketing');
+            $registry->add_adapter('I_Form', 'A_Marketing_Other_Options_Form', 'marketing_image_protection');
+            $registry->add_adapter('I_Form', 'A_Marketing_Lightbox_Options_Form', 'marketing_lightbox');
 
             foreach (self::$display_setting_blocks as $block) {
                 $registry->add_adapter(
@@ -181,6 +191,7 @@ class M_Marketing extends C_Base_Module
     function get_type_list()
     {
         return [
+            'A_Marketing_Lightbox_Options_Form' => 'adapter.lightbox_options_form.php',
             'A_Marketing_Admin_MVC_Injector'    => 'adapter.admin_mvc_injector.php',
             'A_Marketing_Display_Settings_Form' => 'adapter.display_settings_form.php',
             'A_Marketing_Other_Options_Form'    => 'adapter.other_options_form.php',

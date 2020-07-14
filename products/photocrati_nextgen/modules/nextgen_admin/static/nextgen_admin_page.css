@@ -751,46 +751,6 @@ table.nextgen_settings_position {
     letter-spacing: 1.5px;
 }
 
-.ngg_options_promo {
-    background: black;
-    color: #fff;
-    font-family: Lato, sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    background: #9ebc1b;
-    line-height: 50px !important;
-    display: none;
-}
-
-#attach_to_post_tabs #displayed_tab .ngg_options_promo {
-    display: table-cell;
-}
-
-.ngg_options_promo a {
-    text-decoration: none;
-    font-weight: 600;
-    margin-left: 10px;
-    background: black;
-    color: #fff !important;
-    padding: 10px 20px;
-    font-size: 12px !important;
-    text-transform: uppercase;
-}
-
-.ngg_options_promo a:after {
-    content: "\f345";
-    font: normal 13px dashicons;
-    color: white !important;
-    display: inline-block;
-    position: relative;
-    top: 2px;
-    left: 6px;
-}
-
-.gallery_page_ngg_other_options #ngg_page_content .ngg_page_content_main tbody tr td.ngg_options_promo {
-    width: 100% !important;
-}
-
 #tr_photocrati-nextgen_basic_imagebrowser_ngg_triggers_display,
 #tr_photocrati-nextgen_basic_slideshow_ngg_triggers_display {
     display:none;
@@ -1136,8 +1096,7 @@ table.nextgen_settings_position {
 /* 8) NGG Admin CSS: Media Queries */
 
 @media (max-width: 1240px) {
-    #ngg_page_content .ngg_page_content_header p,
-    .ngg_options_promo {
+    #ngg_page_content .ngg_page_content_header p {
         display: none !important;
     }
 }
@@ -1202,13 +1161,6 @@ table.nextgen_settings_position {
     }
     #ngg_page_content.ngg_settings_page .ngg_page_content_main table.nextgen_settings_position tr td {
         display: table-cell;
-    }
-    #ngg_page_content.ngg_settings_page td.ngg_options_promo {
-        line-height: 20px !important;
-        padding: 20px !important;
-    }
-    .ngg_options_promo a {
-        margin-left: 0;
     }
     #ngg_page_content.ngg_settings_page .ngg_page_content_main h2,
     #ngg_page_content.ngg_settings_page .ngg_page_content_main h3 {
