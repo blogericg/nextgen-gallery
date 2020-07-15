@@ -65,3 +65,8 @@
     cursor: pointer;
     background-color: #81990c;
 }
+.ngg-block-popup .wp-block-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

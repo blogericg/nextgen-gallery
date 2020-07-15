@@ -189,11 +189,9 @@ jQuery(function($) {
         
         var id = $(this).attr('data-id');
         if (id == "choose_display") { 
-            $(".ngg_igw_promo").css("visibility","visible"); 
             $("#displayed_tab .ngg_igw_video_open").css("display", "block");
         }
         else { 
-            $(".ngg_igw_promo").css("visibility","hidden"); 
             $("#displayed_tab .ngg_igw_video_open").css("display", "none");
             $("#displayed_tab .ngg_igw_video_inner").css("display", "none");
         }

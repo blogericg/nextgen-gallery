@@ -439,7 +439,7 @@ class Mixin_Attach_To_Post extends Mixin
 		wp_dequeue_script('debug-bar-js');
 		wp_dequeue_style('debug-bar-css');
 		
-		$this->enqueue_display_tab_js();
+		$this->object->enqueue_display_tab_js();
 
 		do_action('ngg_igw_enqueue_scripts');
 		do_action('ngg_igw_enqueue_styles');

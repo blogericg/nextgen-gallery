@@ -219,7 +219,13 @@ gulp.task('copybuild', function() {
 		'!./{build,build/**}',
 		'!./{tests,tests/**}',
 		'!./{zips,zips/**}',
-		'!./{autoupdate_config,autoupdate_config/**}'])
+		'!./{autoupdate_config,autoupdate_config/**}',
+		'!./README.md',
+		'!./{config,config/**}',
+		'!./docker-compose.yml',
+		'!./export.sh',
+		'!./{wp-data,wp-data/**}',
+		'!./{wp-app,wp-app/**}'])
 		.pipe(gulp.dest('./build/' + product));
 });
 

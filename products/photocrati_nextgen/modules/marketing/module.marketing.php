@@ -96,6 +96,11 @@ class M_Marketing extends C_Base_Module
         if (!self::is_plus_or_pro_enabled() && is_admin())
         {
             $registry = $this->get_registry();
+
+            // Add display type upsells in the IGW
+            $registry->add_adapter('I_Attach_To_Post_Controller', 'A_IGW_Display_Type_Upsells');
+
+            // Add upsell blocks to NGG pages
             $registry->add_adapter('I_MVC_View', 'A_Marketing_Admin_MVC_Injector');
             $registry->add_adapter('I_Form', 'A_Marketing_Other_Options_Form', 'marketing_image_protection');
             $registry->add_adapter('I_Form', 'A_Marketing_Lightbox_Options_Form', 'marketing_lightbox');
