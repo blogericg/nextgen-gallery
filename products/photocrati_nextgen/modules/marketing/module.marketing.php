@@ -217,6 +217,7 @@ class M_Marketing extends C_Base_Module
             'A_Marketing_IGW_Display_Type_Upsells'   => 'adapter.igw_display_type_upsells.php',
             'A_Marketing_Lightbox_Options_Form'      => 'adapter.lightbox_options_form.php',
             'A_Marketing_Other_Options_Form'         => 'adapter.other_options_form.php',
+            'C_Marketing_Block_Popup'                => 'class.block_popup.php',
             'C_Marketing_Block_Base'                 => 'class.block_base.php',
             'C_Marketing_Block_Card'                 => 'class.block_card.php',
             'C_Marketing_Block_Large'                => 'class.block_large.php',
