@@ -70,3 +70,8 @@
     justify-content: center;
     align-items: center;
 }
+
+.ngg-block-popup .fas {
+    font-size: 100px;
+    color: #9fbb1a;
+}

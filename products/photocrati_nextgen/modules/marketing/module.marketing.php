@@ -35,6 +35,45 @@ class M_Marketing extends C_Base_Module
             return FALSE;
     }
 
+    /**
+     * @return stdClass
+     */
+    static function get_i18n()
+    {
+        $i18n = new stdClass;
+        $i18n->lite_coupon              = __('NextGEN Lite users get a discount code for 30% off regular price', 'nggallery');
+        $i18n->bonus                    = __('Bonus', 'nggallery');
+        $i18n->feature_not_available    = __("We're sorry, but %s is not available in the lite version of NextGEN Gallery. Please upgrade to NextGEN Pro to unlock these awesome features.", 'nggallery');
+
+        return $i18n;
+    }
+
+    /**
+     * @return string
+     */
+    static function get_i18n_fragment($msg)
+    {
+        $params = func_get_args();
+        array_shift($params);
+
+        $i18n = self::get_i18n();
+
+        switch($msg) {
+            case 'lite_coupon':
+                $params = [
+                    "<strong>%s</strong> %s",
+                    $i18n->bonus,
+                    $i18n->lite_coupon
+                ];
+                break;
+            case 'feature_not_available':
+                array_unshift($params, $i18n->feature_not_available);
+                break;
+        }
+
+        return call_user_func_array('sprintf', $params);
+    }
+
     function _register_hooks()
     {
         if (self::is_plus_or_pro_enabled() || !is_admin())
