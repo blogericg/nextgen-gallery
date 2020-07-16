@@ -16,11 +16,11 @@ class A_Marketing_Display_Settings_Form extends Mixin_Display_Type_Form
         $context = $this->get_context();
         switch ($context) {
             case 'tile':
-                return __('NextGEN Pro Tile', 'nggallery');
+                return __('Tiled Gallery', 'nggallery');
             case 'mosaic':
-                return __('NextGEN Pro Mosaic', 'nggallery');
+                return __('Mosaic Gallery', 'nggallery');
             case 'masonry':
-                return __('NextGen Pro Masonry', 'nggallery');
+                return __('Masonry Gallery', 'nggallery');
             default:
                 return '';
         }

@@ -22,8 +22,8 @@ class M_Marketing extends C_Base_Module
         );
     }
 
-    public static $big_hitters_block_one_cache = NULL;
-    public static $big_hitters_block_two_cache = NULL;
+    public static $big_hitters_block_one_cache    = NULL;
+    public static $big_hitters_block_two_cache    = NULL;
 
     protected static $display_setting_blocks = ['tile', 'mosaic', 'masonry'];
 
@@ -50,7 +50,7 @@ class M_Marketing extends C_Base_Module
 
         add_action('ngg_manage_albums_marketing_block', function() {
             self::enqueue_blocks_style();
-            print self::get_big_hitters_block_two();
+            print self::get_big_hitters_block_albums();
         });
 
         add_action('ngg_manage_galleries_marketing_block', function() {
@@ -155,6 +155,36 @@ class M_Marketing extends C_Base_Module
         ]];
     }
 
+    public static function get_big_hitters_block_base()
+    {
+        return [
+            'title'       => __('Want to make your gallery workflow and presentation even better?', 'nggallery'),
+            'description' => __('By upgrading to NextGEN Pro, you can get access to numerous other features, including:', 'nggallery'),
+            'links'       => self::get_big_hitters_links(),
+            'footer'      => __('<strong>Bonus:</strong> NextGEN Gallery users get a discount code for 30% off regular price.', 'nggallery'),
+            'campaign'    => 'clickheretoupgrade',
+            'source'      => 'galleryworkflow',
+        ];
+    }
+
+    public static function get_big_hitters_block_albums()
+    {
+        $base = self::get_big_hitters_block_base();
+
+        $base['title'] = __('Want to do even more with your albums?', 'nggallery');
+
+        $block = new C_Marketing_Block_Two_Columns(
+            $base['title'],
+            $base['description'],
+            $base['links'],
+            $base['footer'],
+            $base['campaign'],
+            $base['source']
+        );
+
+        return $block->render();
+    }
+
     /**
      * @return string
      */
@@ -163,14 +193,17 @@ class M_Marketing extends C_Base_Module
         if (!empty(self::$big_hitters_block_one_cache))
             return self::$big_hitters_block_one_cache;
 
-        $title       = __('Want to make your gallery workflow and presentation even better?', 'nggallery');
-        $description = __('By upgrading to NextGEN Pro, you can get access to numerous other features, including:', 'nggallery');
-        $links       = self::get_big_hitters_links();
-        $footer      = __('<strong>Bonus:</strong> NextGEN Gallery users get a discount code for 30% off regular price.', 'nggallery');
-        $campaign    = 'clickheretoupgrade';
-        $source      = 'galleryworkflow';
+        $base = self::get_big_hitters_block_base();
 
-        $block = new C_Marketing_Block_Two_Columns($title, $description, $links, $footer, $campaign, $source);
+        $block = new C_Marketing_Block_Two_Columns(
+            $base['title'],
+            $base['description'],
+            $base['links'],
+            $base['footer'],
+            $base['campaign'],
+            $base['source']
+        );
+
         self::$big_hitters_block_one_cache = $block->render();
 
         return self::$big_hitters_block_one_cache;
@@ -184,17 +217,23 @@ class M_Marketing extends C_Base_Module
         if (!empty(self::$big_hitters_block_two_cache))
             return self::$big_hitters_block_two_cache;
 
-        $title       = __('Want to do even more with your gallery display?', 'nggallery');
-        $description = [
+        $base = self::get_big_hitters_block_base();
+
+        $base['title']       = __('Want to do even more with your gallery display?', 'nggallery');
+        $base['description'] = [
             __('We know that you will truly love NextGEN Pro. It has 2,600+ five star ratings and is active on over 900,000 websites.', 'nggallery'),
             __('By upgrading to NextGEN Pro, you can get access to numerous other features, including:', 'nggallery')
         ];
-        $links       = self::get_big_hitters_links();
-        $footer      = __('<strong>Bonus:</strong> NextGEN Gallery users get a discount code for 30% off regular price.', 'nggallery');
-        $campaign    = 'doevenmore';
-        $source      = 'galleryworkflow';
 
-        $block = new C_Marketing_Block_Two_Columns($title, $description, $links, $footer, $campaign, $source);
+        $block = new C_Marketing_Block_Two_Columns(
+            $base['title'],
+            $base['description'],
+            $base['links'],
+            $base['footer'],
+            $base['campaign'],
+            $base['source']
+        );
+
         self::$big_hitters_block_two_cache = $block->render();
 
         return self::$big_hitters_block_two_cache;
