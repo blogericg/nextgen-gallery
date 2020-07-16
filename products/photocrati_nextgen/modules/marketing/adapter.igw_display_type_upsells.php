@@ -1,6 +1,6 @@
 <?php
 
-class A_IGW_Display_Type_Upsells extends Mixin
+class A_Marketing_IGW_Display_Type_Upsells extends Mixin
 {
     function index_action($return=FALSE)
     {
