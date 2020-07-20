@@ -22,8 +22,7 @@ class M_Marketing extends C_Base_Module
         );
     }
 
-    public static $big_hitters_block_one_cache    = NULL;
-    public static $big_hitters_block_two_cache    = NULL;
+    public static $big_hitters_block_two_cache = NULL;
 
     protected static $display_setting_blocks = ['tile', 'mosaic', 'masonry'];
 
