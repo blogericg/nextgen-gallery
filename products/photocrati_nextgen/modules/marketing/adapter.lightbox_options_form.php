@@ -22,8 +22,8 @@ class A_Marketing_Lightbox_Options_Form extends Mixin
             'fa-expand',
             'https://www.imagely.com/wordpress-gallery-plugin/pro-lightbox-demo?utm_medium=ngg&utm_source=otheroptions&utm_campaign=prolightbox',
             __('View the Pro Lightbox Demo', 'nggallery'),
-            'prolightbox',
-            'otheroptions'
+            'otheroptions',
+            'prolightbox'
         );
         $retval .= $block->render();
         $retval .= '</td></tr>';

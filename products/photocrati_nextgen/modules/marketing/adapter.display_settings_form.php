@@ -51,8 +51,8 @@ class A_Marketing_Display_Settings_Form extends Mixin_Display_Type_Form
                     'https://www.imagely.com/wp-content/uploads/2020/06/tile.jpg',
                     'https://www.imagely.com/wordpress-gallery-plugin/pro-tiled-gallery/',
                     __('View the Pro Tiled Demo', 'nggallery'),
-                    'TODO',
-                    'TODO'
+                    'gallerysettings',
+                    'protiledgallery'
                 );
                 break;
             case 'mosaic':
@@ -63,8 +63,8 @@ class A_Marketing_Display_Settings_Form extends Mixin_Display_Type_Form
                     'https://www.imagely.com/wp-content/uploads/2020/06/mosaic.jpg',
                     'https://www.imagely.com/wordpress-gallery-plugin/pro-mosaic-gallery',
                     __('View the Mosaic Demo', 'nggallery'),
-                    'TODO',
-                    'TODO'
+                    'gallerysettings',
+                    'mosaicgallery'
                 );
                 break;
             case 'masonry':
@@ -75,8 +75,8 @@ class A_Marketing_Display_Settings_Form extends Mixin_Display_Type_Form
                     'https://www.imagely.com/wp-content/uploads/2020/06/masonry.jpg',
                     'https://www.imagely.com/wordpress-gallery-plugin/pro-masonry-gallery',
                     __('View the Masonry Demo', 'nggallery'),
-                    'TODO',
-                    'TODO'
+                    'gallerysettings',
+                    'masonrygallery'
                 );
                 break;
             default:

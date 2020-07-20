@@ -15,7 +15,7 @@ abstract class C_Marketing_Block_Base
      * @param string $src
      * @return C_Marketing_Block_Base
      */
-    public function __construct($template, $medium, $campaign, $src = 'nggallery')
+    public function __construct($template, $medium, $campaign, $src = 'ngg')
     {
         $this->template  = $template;
         $this->source    = $src;

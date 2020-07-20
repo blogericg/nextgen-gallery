@@ -20,8 +20,8 @@ class A_Marketing_Other_Options_Form extends Mixin
             'fa-lock-open',
             'https://www.imagely.com/docs/turn-image-protection/?utm_medium=ngg&utm_source=otheroptions&utm_campaign=imageprotection',
             __('Learn more', 'nggallery'),
-            'imageprotection',
-            'otheroptions'
+            'otheroptions',
+            'imageprotection'
 
         );
         return $card->render();

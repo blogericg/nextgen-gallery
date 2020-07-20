@@ -16,12 +16,13 @@ class C_Marketing_Block_Large extends C_Marketing_Block_Base
      * @param string $footer
      * @param string $thumbnail_url Either a full HTTPS path or a FontAwesome icon (must begin with fa-)
      * @param string $demo_url
-     * @param string $medium
+     * @param string $demo_text
      * @param string $campaign
+     * @param string $medium
      * @param string $src
      * @return C_Marketing_Block_Large
      */
-    public function __construct($title, $description, $footer, $thumbnail_url, $demo_url, $demo_text, $campaign, $src, $medium = 'ngg')
+    public function __construct($title, $description, $footer, $thumbnail_url, $demo_url, $demo_text, $medium, $campaign, $src = 'ngg')
     {
         parent::__construct('large', $medium, $campaign, $src);
 

@@ -14,14 +14,15 @@
         </h3>
     </div>
 
-    <h3>Unlock More Features</h3>
+    <h3><?php print __('Unlock More Features', 'nggallery'); ?></h3>
     <p>
-        <strong>Want even more features?</strong>
-        <a href="https://www.imagely.com/nextgen-gallery/?utm_medium=ngg&utm_source=upgradetopro&utm_campaign=wantevenmorefeatures"
+        <strong><?php print __('Want even more features', 'nggallery'); ?></strong>
+        <a href="https://www.imagely.com/nextgen-gallery/?utm_medium=upgradetopro&utm_source=ngg&utm_campaign=wantevenmorefeatures"
            target="_blank"
            rel="noreferrer noopener">
-            Upgrade your NextGEN Gallery account</a>
-        and unlock the following awesome features.
+            <?php print __('Upgrade your NextGEN Gallery account', 'nggallery'); ?>
+        </a>
+        <?php print __('and unlock the following awesome features.'); ?>
     </p>
 
     <div id="ngg_upgrade_to_pro_page_wrapper">

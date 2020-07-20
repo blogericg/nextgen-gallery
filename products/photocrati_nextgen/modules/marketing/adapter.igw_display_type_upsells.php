@@ -59,7 +59,7 @@ class A_Marketing_IGW_Display_Type_Upsells extends Mixin
             $coupon_notice,
             $this->get_static_url('photocrati-marketing#pro-tile-preview.jpg'),
             'igw',
-            'pro-tile'
+            'tiledgallery'
         );
 
         $pro_masonry = new C_Marketing_Block_Popup(
@@ -68,16 +68,16 @@ class A_Marketing_IGW_Display_Type_Upsells extends Mixin
             $coupon_notice,
             $this->get_static_url('photocrati-marketing#pro-masonry-preview.jpg'),
             'igw',
-            'pro-masonry'
+            'masonrygallery'
         );
 
         $pro_mosiac = new C_Marketing_Block_Popup(
-            __('Pro Mosiac Gallery', 'nggallery'),
+            __('Pro Mosaic Gallery', 'nggallery'),
             __("We're sorry, but the Pro Mosiac Gallery is not available in the lite version of NextGEN Gallery. Please upgrade to NextGEN Pro to unlock these awesome features.", 'nggallery'),
             $coupon_notice,
             $this->get_static_url('photocrati-marketing#pro-mosiac-preview.jpg'),
             'igw',
-            'pro-masonry'
+            'mosaicgallery'
         );
 
         return [

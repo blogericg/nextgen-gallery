@@ -163,7 +163,7 @@ class M_Marketing extends C_Base_Module
             'links'       => self::get_big_hitters_links(),
             'footer'      => __('<strong>Bonus:</strong> NextGEN Gallery users get a discount code for 30% off regular price.', 'nggallery'),
             'campaign'    => 'clickheretoupgrade',
-            'source'      => 'galleryworkflow',
+            'medium'      => 'galleryworkflow',
         ];
     }
 
@@ -179,34 +179,10 @@ class M_Marketing extends C_Base_Module
             $base['links'],
             $base['footer'],
             $base['campaign'],
-            $base['source']
+            $base['medium']
         );
 
         return $block->render();
-    }
-
-    /**
-     * @return string
-     */
-    public static function get_big_hitters_block_one()
-    {
-        if (!empty(self::$big_hitters_block_one_cache))
-            return self::$big_hitters_block_one_cache;
-
-        $base = self::get_big_hitters_block_base();
-
-        $block = new C_Marketing_Block_Two_Columns(
-            $base['title'],
-            $base['description'],
-            $base['links'],
-            $base['footer'],
-            $base['campaign'],
-            $base['source']
-        );
-
-        self::$big_hitters_block_one_cache = $block->render();
-
-        return self::$big_hitters_block_one_cache;
     }
 
     /**
@@ -231,7 +207,7 @@ class M_Marketing extends C_Base_Module
             $base['links'],
             $base['footer'],
             $base['campaign'],
-            $base['source']
+            $base['medium']
         );
 
         self::$big_hitters_block_two_cache = $block->render();

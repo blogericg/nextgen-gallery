@@ -19,7 +19,7 @@ class C_Marketing_Block_Popup extends C_Marketing_Block_Base
      * @param string $src
      * @return C_Marketing_Block_Popup
      */
-    public function __construct($title, $description, $footer, $thumbnail_url, $campaign, $src, $medium = 'ngg')
+    public function __construct($title, $description, $footer, $thumbnail_url, $medium, $campaign, $src = 'ngg')
     {
         parent::__construct('popup', $medium, $campaign, $src);
 

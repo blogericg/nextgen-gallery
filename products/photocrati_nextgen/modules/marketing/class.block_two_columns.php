@@ -17,7 +17,7 @@ class C_Marketing_Block_Two_Columns extends C_Marketing_Block_Base
      * @param string $src
      * @return C_Marketing_Block_Two_Columns
      */
-    public function __construct($title, $description, $links, $footer, $campaign, $src, $medium = 'ngg')
+    public function __construct($title, $description, $links, $footer, $medium, $campaign, $src = 'ngg')
     {
         parent::__construct('two-columns', $medium, $campaign, $src);
 
