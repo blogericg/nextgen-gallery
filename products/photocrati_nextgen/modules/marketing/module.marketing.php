@@ -27,12 +27,9 @@ class M_Marketing extends C_Base_Module
 
     protected static $display_setting_blocks = ['tile', 'mosaic', 'masonry'];
 
-    public function is_plus_or_pro_enabled()
+    public static function is_plus_or_pro_enabled()
     {
-        if (defined('NGG_PRO_PLUGIN_BASENAME') || defined('NGG_PLUS_PLUGIN_BASENAME'))
-            return TRUE;
-        else
-            return FALSE;
+        return defined('NGG_PRO_PLUGIN_BASENAME') || defined('NGG_PLUS_PLUGIN_BASENAME') || is_multisite();
     }
 
     /**
