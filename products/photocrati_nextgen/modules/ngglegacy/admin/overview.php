@@ -301,7 +301,7 @@ function nggallery_admin_overview()
                         border-right: none;
                     }
 
-                    #ngg-basic-vs-pro td:nth-of-type(3) {
+                    #ngg-basic-vs-pro td:nth-of-type(2) {
                         background-color: rgb(243, 249, 254);
                     }
 
@@ -313,15 +313,20 @@ function nggallery_admin_overview()
                     }
 
                     #ngg-basic-vs-pro td i {
-                    }
-                    #ngg-basic-vs-pro i.ngg-features-partial {
-                        color: gray;
+                        margin-right: 3px;
                     }
                     #ngg-basic-vs-pro i.ngg-features-none {
-                        color: #ce5656;
+                        color: gray;
                     }
                     #ngg-basic-vs-pro i.ngg-features-full {
-                        color: green;
+                        color: rgb(158, 188, 27);
+                    }
+
+                    #ngg-basic-vs-pro table h1, #ngg-basic-vs-pro table h2,
+                    #ngg-basic-vs-pro table h3, #ngg-basic-vs-pro table h4,
+                    #ngg-basic-vs-pro table h5, #ngg-basic-vs-pro table h6 {
+                        margin: 0;
+                        padding: 0;
                     }
                 </style>
                 <h2><?php print __('NextGEN Basic vs Pro'); ?></h2>
@@ -330,40 +335,197 @@ function nggallery_admin_overview()
                     <?php print __('Get the most out of NextGEN Gallery by upgrading to Pro and unlocking all the powerful features.', 'nggallery'); ?>
                 </p>
 
+                <?php
+                M_Marketing::enqueue_blocks_style();
+                $stupid = [
+                    __('Interface', 'nggallery') => [
+                        __('WordPress Block',       'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('Gallery Management',    'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('Drag and Drop Sorting', 'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('Default Settings',      'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('Responsive Galleries',  'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('Hover Captions',        'nggallery') => [FALSE, TRUE, TRUE],
+                        __('Pagination',            'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('Lazy Loading',          'nggallery') => [FALSE, TRUE, TRUE],
+                        __('Infinite Scroll',       'nggallery') => [FALSE, TRUE, TRUE],
+                        __('Tagging/Keywords',      'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('Dynamic Galleries',     'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('Custom CSS',            'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('Breadcrumbs',           'nggallery') => [TRUE,  TRUE, TRUE]
+                    ],
+                    __('Image Upload / Processing', 'nggallery') => [
+                        __('Drag and Drop Uploader', 'nggallery') => [TRUE,  TRUE,  TRUE],
+                        __('Zip Importer',           'nggallery') => [TRUE,  TRUE,  TRUE],
+                        __('Folder Scanning',        'nggallery') => [TRUE,  TRUE,  TRUE],
+                        __('Lightroom Plugin',       'nggallery') => [FALSE, FALSE, TRUE]
+                    ],
+                    __('Gallery Types', 'nggallery') => [
+                        __('Thumbnail Gallery',     'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('Image Browser Gallery', 'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('Slideshow Gallery',     'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('Filmstrip Gallery',     'nggallery') => [FALSE, TRUE, TRUE],
+                        __('Masonry Gallery',       'nggallery') => [FALSE, TRUE, TRUE],
+                        __('Mosaic Gallery',        'nggallery') => [FALSE, TRUE, TRUE],
+                        __('Tiled Gallery',         'nggallery') => [FALSE, TRUE, TRUE],
+                        __('Film Gallery',          'nggallery') => [FALSE, TRUE, TRUE],
+                        __('Blogstyle Gallery',     'nggallery') => [FALSE, TRUE, TRUE],
+                        __('Grid Album',            'nggallery') => [TRUE,  TRUE, TRUE],
+                        __('List Album',            'nggallery') => [TRUE,  TRUE, TRUE]
+                    ],
+                    __('Ecommerce', 'nggallery') => [
+                        __('Ecommerce',                   'nggallery') => [FALSE, FALSE, TRUE],
+                        __('Paid Digital Downloads',      'nggallery') => [FALSE, FALSE, TRUE],
+                        __('Coupons',                     'nggallery') => [FALSE, FALSE, TRUE],
+                        __('Price Lists',                 'nggallery') => [FALSE, FALSE, TRUE],
+                        __('Automated Tax Calculations',  'nggallery') => [FALSE, FALSE, TRUE],
+                        __('Automated Print Fulfillment', 'nggallery') => [FALSE, FALSE, TRUE],
+                        __('Proofing',                    'nggallery') => [FALSE, FALSE, TRUE]
+                    ],
+                    __('Other', 'nggallery') => [
+                        __('Digital Downloads',         'nggallery') => [FALSE, FALSE, TRUE],
+                        __('Watermarking',              'nggallery') => [TRUE,  TRUE,  TRUE],
+                        __('Image Protection',          'nggallery') => [FALSE, TRUE,  TRUE],
+                        __('Multiple Lightbox Choices', 'nggallery') => [TRUE,  TRUE,  TRUE],
+                        __('Image Commenting',          'nggallery') => [FALSE, TRUE,  TRUE],
+                        __('Image Deeplinking',         'nggallery') => [FALSE, TRUE,  TRUE],
+                        __('Full-Screen Lightbox',      'nggallery') => [FALSE, TRUE,  TRUE],
+                        __('Image Social Sharing',      'nggallery') => [FALSE, TRUE,  TRUE],
+                        __('Lightbox Slideshow',        'nggallery') => [FALSE, TRUE,  TRUE]
+                    ]
+                ]; ?>
+
                 <table cellspacing="0" cellpadding="0" border="0">
                     <thead>
                         <tr>
-                            <th>Feature</th>
-                            <th>Basic</th>
-                            <th>Pro</th>
+                            <th>
+                                <h2><?php print __('NextGEN Gallery', 'nggallery'); ?></h2>
+                                <div class="wp-block-buttons">
+                                    <div class="wp-block-button">
+                                        <a class="wp-block-button__link has-background no-border-radius"
+                                           href="https://wordpress.org/plugins/nextgen-gallery/"
+                                           style="background-color:#9ebc1b; color: white"
+                                           target="_blank"
+                                           rel="noreferrer noopener">
+                                            <?php print __('Download Now', 'nggallery'); ?>
+                                        </a>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <h2><?php print __('NextGEN Plus', 'nggallery'); ?></h2>
+
+                                <div class="wp-block-buttons">
+                                    <div class="wp-block-button">
+                                        <a class="wp-block-button__link has-background no-border-radius"
+                                           href="https://www.imagely.com/wordpress-gallery-plugin/nextgen-plus/#pricing"
+                                           style="background-color:#9ebc1b; color: white"
+                                           target="_blank"
+                                           rel="noreferrer noopener">
+                                            Buy NextGEN Plus
+                                        </a>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <h2><?php print __('NextGEN Pro', 'nggallery'); ?></h2>
+                                <div class="wp-block-buttons">
+                                    <div class="wp-block-button">
+                                        <a class="wp-block-button__link has-background no-border-radius"
+                                           href="https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/#pricing"
+                                           target="_blank"
+                                           rel="noreferrer noopener"
+                                           style="background-color:#9ebc1b; color: white">
+                                            <?php print __('Buy NextGEN Pro', 'nggallery'); ?>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </th>
                         </tr>
                     </thead>
-                    <tbody>
+
+                    <?php foreach ($stupid as $block_label => $block) { ?>
+                        <tbody>
+                            <tr>
+                                <td><h3><?php print $block_label; ?></h3></td>
+                                <td><h3><?php print $block_label; ?></h3></td>
+                                <td><h3><?php print $block_label; ?></h3></td>
+                            </tr>
+                            <?php foreach ($block as $label => $supports) { ?>
+                                <tr>
+                                    <td>
+                                        <?php if ($supports[0]) { ?>
+                                            <i class="fa fa-check ngg-features-full"></i>
+                                        <?php } else { ?>
+                                            <i class="fa fa-times ngg-features-none"></i>
+                                        <?php } ?>
+                                        <?php print $label; ?>
+                                    </td>
+                                    <td>
+                                        <?php if ($supports[1]) { ?>
+                                            <i class="fa fa-check ngg-features-full"></i>
+                                        <?php } else { ?>
+                                            <i class="fa fa-times ngg-features-none"></i>
+                                        <?php } ?>
+                                        <?php print $label; ?>
+                                    </td>
+                                    <td>
+                                        <?php if ($supports[2]) { ?>
+                                            <i class="fa fa-check ngg-features-full"></i>
+                                        <?php } else { ?>
+                                            <i class="fa fa-times ngg-features-none"></i>
+                                        <?php } ?>
+                                        <?php print $label; ?>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    <?php } ?>
+
+                    <tfoot>
                         <tr>
-                            <td>Lightbox Features</td>
-                            <td>
-                                <i class="fa fa-times ngg-features-partial"></i>
-                                SimpleLightbox
-                            </td>
-                            <td>
-                                <i class="fa fa-check ngg-features-full"></i>
-                                <strong>Awesome Pro Lightbox</strong>
-                                <p>Fully customizable with image sharing, linking, commenting; it is also responsive and touch friendly.</p>
-                            </td>
+                            <th>
+                                <div class="wp-block-buttons">
+                                    <div class="wp-block-button">
+                                        <a class="wp-block-button__link has-background no-border-radius"
+                                           href="https://wordpress.org/plugins/nextgen-gallery/"
+                                           style="background-color:#9ebc1b; color: white"
+                                           target="_blank"
+                                           rel="noreferrer noopener">
+                                            <?php print __('Download Now', 'nggallery'); ?>
+                                        </a>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="wp-block-buttons">
+                                    <div class="wp-block-button">
+                                        <a class="wp-block-button__link has-background no-border-radius"
+                                           href="https://www.imagely.com/wordpress-gallery-plugin/nextgen-plus/#pricing"
+                                           style="background-color:#9ebc1b; color: white"
+                                           target="_blank"
+                                           rel="noreferrer noopener">
+                                            Buy NextGEN Plus
+                                        </a>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="wp-block-buttons">
+                                    <div class="wp-block-button">
+                                        <a class="wp-block-button__link has-background no-border-radius"
+                                           href="https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/#pricing"
+                                           target="_blank"
+                                           rel="noreferrer noopener"
+                                           style="background-color:#9ebc1b; color: white">
+                                            <?php print __('Buy NextGEN Pro', 'nggallery'); ?>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </th>
                         </tr>
-                        <tr>
-                            <td>Customer Support</td>
-                            <td>
-                                <i class="fa fa-times ngg-features-none"></i>
-                                Limited customer support
-                            </td>
-                            <td>
-                                <i class="fa fa-check ngg-features-full"></i>
-                                <strong>Dedicated customer support</strong>
-                                <p>Dedicated prompt service from dedicated specialists around the world.</p>
-                            </td>
-                        </tr>
-                    </tbody>
+                    </tfoot>
                 </table>
 
             </div>
