@@ -220,12 +220,13 @@ gulp.task('copybuild', function() {
 		'!./{tests,tests/**}',
 		'!./{zips,zips/**}',
 		'!./{autoupdate_config,autoupdate_config/**}',
-		'!./README.md',
+		'!.env',
+		'!README.md',
 		'!./{config,config/**}',
-		'!./docker-compose.yml',
-		'!./export.sh',
-		'!./{wp-data,wp-data/**}',
-		'!./{wp-app,wp-app/**}'])
+		'!docker-compose.yml',
+		'!export.sh',
+		'!./{wp-app,wp-app/**}',
+		'!./{wp-data,wp-data/**'])
 		.pipe(gulp.dest('./build/' + product));
 });
 

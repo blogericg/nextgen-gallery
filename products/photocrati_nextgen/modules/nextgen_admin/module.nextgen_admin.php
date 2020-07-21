@@ -134,6 +134,13 @@ class M_NextGen_Admin extends C_Base_Module
             // enqueue calls
             do_action($enqueue_action, $slug);
         }
+
+        // Have the toplevel "NextGEN Gallery" link to the Manage Galleries page 
+        wp_add_inline_script('common', "jQuery(function($){
+            var parent = $('.toplevel_page_nextgen-gallery');
+            var manageGalleryUrl = parent.find('a[href*=\"manage-gallery\"]').attr('href');
+            parent.attr('href', manageGalleryUrl);
+        })");
     }
 
     // Enqueues static resources that should be enqueued in the FOOTER on a NextGEN Admin Page
