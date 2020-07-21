@@ -1,0 +1,28 @@
+.upsell {
+    padding: 40px !important;
+    border: 1px solid #eee;
+}
+
+.upsell .fas {
+    font-size: 150px;
+}
+
+.ngg-marketing-block-wrapper {
+    clear: both;
+    margin-top: 50px;
+}
+
+.ngg-marketing-block-wrapper ul {
+    list-style: disc;
+}
+
+.ngg-marketing-block-wrapper div.wp-block-button:hover,
+.ngg-marketing-block-wrapper div.wp-block-button a.wp-block-button__link:hover {
+    background-color: #81990c !important;
+}
+
+.ngg-block-popup .wp-block-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

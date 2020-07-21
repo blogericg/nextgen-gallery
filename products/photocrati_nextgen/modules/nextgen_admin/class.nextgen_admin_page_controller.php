@@ -1,7 +1,6 @@
 <?php
 
 /**
- * Class C_NextGen_Admin_Page_Controller
  * @mixin Mixin_NextGen_Admin_Page_Instance_Methods
  * @implements I_NextGen_Admin_Page
  */
@@ -33,6 +32,9 @@ class C_NextGen_Admin_Page_Controller extends C_MVC_Controller
 	}
 }
 
+/**
+ * @property Mixin_NextGen_Admin_Page_Instance_Methods|C_MVC_Controller|A_MVC_Validation $object
+ */
 class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
 {
 	/**
@@ -144,20 +146,11 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
 	 */
 	function get_header_message()
 	{
-		if ( defined('NGG_PRO_PLUGIN_VERSION') || defined('NGG_PLUS_PLUGIN_VERSION') ) {
+	    $message = '';
+
+		if (defined('NGG_PRO_PLUGIN_VERSION') || defined('NGG_PLUS_PLUGIN_VERSION'))
 			$message = '<p>' . __("Good work. Keep making the web beautiful.", 'nggallery') . '</p>';
-		} else {
-			// Experiment
-			$currentDate = date('Y-m-d');
-			$currentDate = date('Y-m-d', strtotime($currentDate));
-			$bf_sale_start = date('Y-m-d', strtotime("12/02/2019"));
-			$bf_sale_end = date('Y-m-d', strtotime("12/05/2019"));
-			if (($currentDate >= $bf_sale_start) && ($currentDate <= $bf_sale_end)) {
-			    $message = '<p class="ngg-header-promo black-friday"><span>' . __('Cyber Monday Sale!') . '</span><br>' . __('40% Off NextGEN Pro!') . '<a href="https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/?utm_source=ngg&utm_medium=ngguser&utm_campaign=ngpro" class="button-primary" target="_blank">' . __('Upgrade to NextGEN Pro') . '</a></p>';
-			} else {
-				$message = '<p class="ngg-header-promo">' . __('Tip: Want more beautiful galleries, a stunning lightbox, image social sharing, ecommerce, PRO support, and more?') . '<a href="https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/?utm_source=ngg&utm_medium=ngguser&utm_campaign=ngpro" class="button-primary" target="_blank">' . __('Upgrade to NextGEN Pro') . '</a></p>';
-			}
-		}
+
 		return $message;
 	}
 
@@ -200,7 +193,7 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
 		$forms = array();
         $form_manager = C_Form_Manager::get_instance();
 		foreach ($form_manager->get_forms($this->object->get_form_type()) as $form) {
-			$forms[] = $this->get_registry()->get_utility('I_Form', $form);
+			$forms[] = $this->object->get_registry()->get_utility('I_Form', $form);
 		}
 		return $forms;
 	}
@@ -257,13 +250,13 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
 			$tabs			= array();
 			$errors			= array();
 			$action 		= $this->object->_get_action();
-			$success		= $this->param('message');
+			$success		= $this->object->param('message');
 			if ($success)	$success = $this->object->get_success_message();
 			else 			$success = $this->object->is_post_request() ?
 										$this->object->get_success_message() : '';
 
 			// First, process the Post request
-			if ($this->object->is_post_request() && $this->has_method($action)) {
+			if ($this->object->is_post_request() && $this->object->has_method($action)) {
 				$this->object->$action($this->object->param($this->context));
 			}
 
@@ -308,17 +301,17 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
 				'header_message'	=>	$this->object->get_header_message(),
 				'nonce'				=>  M_Security::create_nonce($this->object->get_required_permission()),
 				'show_save_button'  =>  $this->object->show_save_button(),
-				'model'				=>	$this->object->has_method('get_model') ? $this->get_model() : NULL,
-				'logo'				=>	$this->get_router()->get_static_url('photocrati-nextgen_admin#imagely_icon.png')
+				'model'				=>	$this->object->has_method('get_model') ? $this->object->get_model() : NULL,
+				'logo'				=>	$this->object->get_router()->get_static_url('photocrati-nextgen_admin#imagely_icon.png')
 			);
 
 			$index_params= array_merge($index_params, $this->object->get_index_params());
-			$this->render_partial($index_template, $index_params);
+			$this->object->render_partial($index_template, $index_params);
 		}
 
 		// The user is not authorized to view this page
 		else {
-			$this->render_view('photocrati-nextgen_admin#not_authorized', array(
+			$this->object->render_view('photocrati-nextgen_admin#not_authorized', array(
 				'name'	=>	$this->object->name,
 				'title'	=>	$this->object->get_page_title()
 			));
