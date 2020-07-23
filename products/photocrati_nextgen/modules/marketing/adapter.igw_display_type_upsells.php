@@ -51,12 +51,10 @@ class A_Marketing_IGW_Display_Type_Upsells extends Mixin
 
     function get_marketing_cards()
     {
-        $coupon_notice = __('<strong>Bonus:</strong> NextGEN Lite users get a discount code for 30% off regular price.', 'nggallery');
-
         $pro_tile = new C_Marketing_Block_Popup(
             __('Pro Tiled Gallery', 'nggallery'),
-            __("We're sorry, but the Pro Tiled Gallery is not available in the lite version of NextGEN Gallery. Please upgrade to NextGEN Pro to unlock these awesome features.", 'nggallery'),
-            $coupon_notice,
+            M_Marketing::get_i18n_fragment('feature_not_available', __('the Pro Tiled Gallery', 'nggallery')),
+            M_Marketing::get_i18n_fragment('lite_coupon'),
             $this->get_static_url('photocrati-marketing#pro-tile-preview.jpg'),
             'igw',
             'tiledgallery'
@@ -64,17 +62,17 @@ class A_Marketing_IGW_Display_Type_Upsells extends Mixin
 
         $pro_masonry = new C_Marketing_Block_Popup(
             __('Pro Masonry Gallery', 'nggallery'),
-            __("We're sorry, but the Pro Masonry Gallery is not available in the lite version of NextGEN Gallery. Please upgrade to NextGEN Pro to unlock these awesome features.", 'nggallery'),
-            $coupon_notice,
+            M_Marketing::get_i18n_fragment('feature_not_available', __('the Pro Masonry Gallery', 'nggallery')),
+            M_Marketing::get_i18n_fragment('lite_coupon'),
             $this->get_static_url('photocrati-marketing#pro-masonry-preview.jpg'),
             'igw',
             'masonrygallery'
         );
 
         $pro_mosiac = new C_Marketing_Block_Popup(
-            __('Pro Mosaic Gallery', 'nggallery'),
-            __("We're sorry, but the Pro Mosiac Gallery is not available in the lite version of NextGEN Gallery. Please upgrade to NextGEN Pro to unlock these awesome features.", 'nggallery'),
-            $coupon_notice,
+            __('Pro Mosiac Gallery', 'nggallery'),
+            M_Marketing::get_i18n_fragment('feature_not_available', __('the Pro Mosiac Gallery', 'nggallery')),
+            M_Marketing::get_i18n_fragment('lite_coupon'),
             $this->get_static_url('photocrati-marketing#pro-mosiac-preview.jpg'),
             'igw',
             'mosaicgallery'
