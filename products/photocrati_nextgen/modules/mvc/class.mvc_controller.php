@@ -249,14 +249,14 @@ class Mixin_MVC_Controller_Instance_Methods extends Mixin
      */
     function render_partial($template, $params=array(), $return=FALSE, $context=NULL)
     {
-        // We'll use the name of the view as the context if one hasn't been provided
-        if (is_null($context)) $context = $template;
         $view = $this->object->create_view($template, $params, $context);
         return $view->render($return);
     }
     
     function create_view($template, $params=array(), $context=NULL)
     {
+        xdebug_break();
+        if (!$context) $context = $this->object->context;
         $factory = C_Component_Factory::get_instance();
         $view    = $factory->create('mvc_view', $template, $params, NULL, $context);
     	

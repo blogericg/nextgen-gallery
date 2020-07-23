@@ -100,7 +100,7 @@ class M_Marketing extends C_Base_Module
             $registry->add_adapter('I_Attach_To_Post_Controller', 'A_Marketing_IGW_Display_Type_Upsells');
 
             // Add upsell blocks to NGG pages
-            $registry->add_adapter('I_MVC_View', 'A_Marketing_Admin_MVC_Injector');
+            $registry->add_adapter('I_MVC_View', 'A_AddGallery_Upsell', 'ngg_addgallery');
             $registry->add_adapter('I_Form', 'A_Marketing_Other_Options_Form', 'marketing_image_protection');
             $registry->add_adapter('I_Form', 'A_Marketing_Lightbox_Options_Form', 'marketing_lightbox');
 
@@ -225,7 +225,7 @@ class M_Marketing extends C_Base_Module
     function get_type_list()
     {
         return [
-            'A_Marketing_Admin_MVC_Injector'         => 'adapter.admin_mvc_injector.php',
+            'A_AddGallery_Upsell'                    => 'adapter.addgallery_upsell.php',
             'A_Marketing_Display_Settings_Form'      => 'adapter.display_settings_form.php',
             'A_Marketing_Display_Type_Settings_Form' => 'adapter.display_type_settings_form.php',
             'A_Marketing_IGW_Display_Type_Upsells'   => 'adapter.igw_display_type_upsells.php',
