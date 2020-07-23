@@ -7,7 +7,6 @@ class A_AddGallery_Upsell extends Mixin
     function render_object()
     {
         $root_element = $this->call_parent('render_object');
-        return $root_element;
 
         M_Marketing::enqueue_blocks_style();
 

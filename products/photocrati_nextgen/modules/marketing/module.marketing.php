@@ -103,7 +103,7 @@ class M_Marketing extends C_Base_Module
             print self::get_big_hitters_block_two();
         });
 
-        add_action('ngg_manage_galleries_above_table', function() {
+        add_action('ngg_manage_galleries_above_table', function() { 
             $title    = __('Want to sell your images online?', 'nggallery');
             $campaign = 'TODO';
             $source   = 'TODO';

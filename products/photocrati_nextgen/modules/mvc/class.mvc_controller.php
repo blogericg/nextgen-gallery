@@ -255,7 +255,6 @@ class Mixin_MVC_Controller_Instance_Methods extends Mixin
     
     function create_view($template, $params=array(), $context=NULL)
     {
-        xdebug_break();
         if (!$context) $context = $this->object->context;
         $factory = C_Component_Factory::get_instance();
         $view    = $factory->create('mvc_view', $template, $params, NULL, $context);
