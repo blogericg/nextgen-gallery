@@ -1,6 +1,6 @@
 <?php
 
-class A_AddGallery_Upsell extends Mixin
+class A_Marketing_AddGallery_Upsell extends Mixin
 {
     protected static $block_one_cache = NULL;
 
@@ -12,7 +12,7 @@ class A_AddGallery_Upsell extends Mixin
 
         if (empty(self::$block_one_cache))
         {
-            $base = M_Marketing::get_big_hitters_block_base();
+            $base = M_Marketing::get_big_hitters_block_base('addgalleryimages');
             $block = new C_Marketing_Block_Two_Columns(
                 $base['title'],
                 $base['description'],

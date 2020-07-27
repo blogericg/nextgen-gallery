@@ -14,7 +14,7 @@ class C_Marketing_Block_Single_Line extends C_Marketing_Block_Base
      * @var string $src (optional) Defaults to 'nggallery'
      * @var string $title
      */
-    public function __construct($title, $medium, $campaign, $src = 'nggallery')
+    public function __construct($title, $medium, $campaign, $src = 'ngg')
     {
         parent::__construct('single-line', $medium, $campaign, $src);
 
