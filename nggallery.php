@@ -666,12 +666,23 @@ class C_NextGEN_Bootstrap
 		// Set the capabilities for the administrator
         $role = get_role('administrator');
 
+        if (!$role)
+        {
+            if (!class_exists('WP_Roles'))
+                include_once(ABSPATH.'/wp-includes/class-wp-roles.php');
+            $roles = new WP_Roles();
+            $roles->init_roles();
+        }
+
         // We need this role, no other chance
-        if (empty($role))
+        $role = get_role('administrator');
+        if (!$role)
         {
             update_option("ngg_init_check", __('Sorry, NextGEN Gallery works only with a role called administrator',"nggallery"));
             return;
         }
+
+        delete_option("ngg_init_check");
 
         $capabilities = array(
             'NextGEN Attach Interface',
