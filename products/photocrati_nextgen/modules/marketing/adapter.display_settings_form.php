@@ -49,7 +49,7 @@ class A_Marketing_Display_Settings_Form extends Mixin_Display_Type_Form
                     __('With this stunning display type, you can present your images large with no trouble. Choose the maximum width of the gallery, or let it automate. It will adjust incredibly on all devices.', 'nggallery'),
                     $footer,
                     'https://www.imagely.com/wp-content/uploads/2020/06/tile.jpg',
-                    'https://www.imagely.com/wordpress-gallery-plugin/pro-tiled-gallery/',
+                    'https://www.imagely.com/wordpress-gallery-plugin/pro-tiled-gallery/?utm_source=ngg&utm_medium=gallerysettings&utm_campaign=tiledgallery',
                     __('View the Pro Tiled Demo', 'nggallery'),
                     'gallerysettings',
                     'protiledgallery'
@@ -61,7 +61,7 @@ class A_Marketing_Display_Settings_Form extends Mixin_Display_Type_Form
                     __('With this stunning display type, you can present your images in a flexible grid. Choose the maximum height for your rows, and their margins, or use the default settings. It will adjust incredibly on all devices.', 'nggallery'),
                     $footer,
                     'https://www.imagely.com/wp-content/uploads/2020/06/mosaic.jpg',
-                    'https://www.imagely.com/wordpress-gallery-plugin/pro-mosaic-gallery',
+                    'https://www.imagely.com/wordpress-gallery-plugin/pro-mosaic-gallery/?utm_source=ngg&utm_medium=gallerysettings&utm_campaign=mosaicgallery',
                     __('View the Mosaic Demo', 'nggallery'),
                     'gallerysettings',
                     'mosaicgallery'
@@ -73,7 +73,7 @@ class A_Marketing_Display_Settings_Form extends Mixin_Display_Type_Form
                     __('With this stunning display type, you can present your images in a flexible grid. Choose the maximum width for your images, and their padding, or use the default settings. It will adjust incredibly on all devices.', 'nggallery'),
                     $footer,
                     'https://www.imagely.com/wp-content/uploads/2020/06/masonry.jpg',
-                    'https://www.imagely.com/wordpress-gallery-plugin/pro-masonry-gallery',
+                    'https://www.imagely.com/wordpress-gallery-plugin/pro-masonry-gallery/?utm_source=ngg&utm_medium=gallerysettings&utm_campaign=masonrygallery',
                     __('View the Masonry Demo', 'nggallery'),
                     'gallerysettings',
                     'masonrygallery'

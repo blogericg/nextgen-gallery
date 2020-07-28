@@ -19,9 +19,7 @@
         <strong><?php print __('Want even more features', 'nggallery'); ?></strong>
         <a href="https://www.imagely.com/nextgen-gallery/?utm_medium=upgradetopro&utm_source=ngg&utm_campaign=wantevenmorefeatures"
            target="_blank"
-           rel="noreferrer noopener">
-            <?php print __('Upgrade your NextGEN Gallery account', 'nggallery'); ?>
-        </a>
+           rel="noreferrer noopener"><?php print __('Upgrade your NextGEN Gallery account', 'nggallery'); ?></a>
         <?php print __('and unlock the following awesome features.'); ?>
     </p>
 
