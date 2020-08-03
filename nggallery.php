@@ -392,12 +392,6 @@ class C_NextGEN_Bootstrap
 		add_filter('pre_update_option_' . $this->_settings_option_name, array($this, 'persist_settings'));
 		add_filter('pre_update_site_option_' . $this->_settings_option_name, array($this, 'persist_settings'));
 
-		// This plugin uses jQuery extensively
-		if (NGG_FIX_JQUERY) {
-			add_action('wp_enqueue_scripts', array(&$this, 'fix_jquery'));
-			add_action('wp_print_scripts', array(&$this, 'fix_jquery'));
-		}
-
 		// If the selected stylesheet is using an unsafe path, then notify the user
 		add_action('all_admin_notices', array(&$this, 'display_stylesheet_notice'));
 
@@ -536,44 +530,6 @@ class C_NextGEN_Bootstrap
 			$settings = $settings->to_array();
 		}
 		return $settings;
-	}
-
-	/**
-	 * Ensures that the version of JQuery used is expected for NextGEN Gallery
-	 */
-	function fix_jquery()
-	{
-		global $wp_scripts;
-
-		// Determine which version of jQuery to include
-		$src = '/wp-includes/js/jquery/jquery.js';
-
-		// Ensure that jQuery is always set to the default
-		if (isset($wp_scripts->registered['jquery'])) {
-			$jquery = $wp_scripts->registered['jquery'];
-
-			// There's an exception to the rule. We'll allow the same
-			// version of jQuery as included with WP to be fetched from
-			// Google AJAX libraries, as we have a systematic means of verifying
-			// that won't cause any troubles
-			$version = preg_quote($jquery->ver, '#');
-			if (!preg_match("#ajax\\.googleapis\\.com/ajax/libs/jquery/{$version}/jquery\\.min\\.js#", $jquery->src)) {
-				$jquery->src = FALSE;
-				if (array_search('jquery-core', $jquery->deps) === FALSE) {
-					$jquery->deps[] = 'jquery-core';
-				}
-				if (array_search('jquery-migrate', $jquery->deps) === FALSE) {
-					$jquery->deps[] = 'jquery-migrate';
-				}
-			}
-		}
-
-		// Ensure that jquery-core is used, as WP intended
-		if (isset($wp_scripts->registered['jquery-core'])) {
-			$wp_scripts->registered['jquery-core']->src = $src;
-		}
-
-		wp_enqueue_script('jquery');
 	}
 
 	/**
@@ -767,11 +723,6 @@ class C_NextGEN_Bootstrap
 		// Don't enforce interfaces
 		if (!defined('EXTENSIBLE_OBJECT_ENFORCE_INTERFACES')) {
 			define('EXTENSIBLE_OBJECT_ENFORCE_INTERFACES', FALSE);
-		}
-
-		// Fix jquery
-		if (!defined('NGG_FIX_JQUERY')) {
-			define('NGG_FIX_JQUERY', TRUE);
 		}
 
 		// Use Pope's new caching mechanism?
