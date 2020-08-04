@@ -1,0 +1,1 @@
+post-thumbnail.min.js

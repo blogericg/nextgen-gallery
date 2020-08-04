@@ -42,7 +42,8 @@
             <div class="wp-block-button">
                 <a class="wp-block-button__link has-text-color has-background no-border-radius"
                    href="<?php print $block->get_upgrade_link(); ?>"
-                   style="background-color:#143650;color:#ffffff" target="_blank"
+                   style="background-color: #9ebc1b; color:#ffffff"
+                   target="_blank"
                    rel="noreferrer noopener">
                     <?php print $link_text; ?>
                 </a>

@@ -4,11 +4,20 @@
  * @var string $link_text
  */
 ?>
-<div class="wp-block-column upsell">
-    <h2><?php print $block->title; ?></h2>
+<div class="wp-block-column upsell ngg-block-card">
+
+    <div class="ngg-block-card-title">
+        <img src="<?php print esc_attr($block->icon); ?>"
+             alt="<?php print esc_attr($block->title); ?>"/>
+        <h2>
+            <?php print $block->title; ?>
+        </h2>
+    </div>
+
     <p>
         <?php print $block->description; ?>
     </p>
+
     <div class="wp-block-buttons">
         <div class="wp-block-button">
             <?php // Allow 'empty' cards to be generated to maintain two-column layouts ?>

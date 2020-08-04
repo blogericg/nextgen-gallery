@@ -3,7 +3,7 @@
  * @var C_Marketing_BLock_Two_Columns $block
  * @var string $link_text
  */ ?>
-<div class="ngg-marketing-block-wrapper">
+<div class="ngg-marketing-block-two-columns">
     <div class="wp-block-group has-background upsell" style="background-color:#fbfbfb">
         <div class="wp-block-group__inner-container">
             <h3><?php print $block->title; ?></h3>
