@@ -22,8 +22,8 @@ class A_Marketing_Display_Type_Settings_Form extends Mixin
             M_Marketing::get_i18n_fragment('feature_not_available', __('Ecommerce and Print Lab functionality', 'nggallery')),
             M_Marketing::get_i18n_fragment('lite_coupon'),
             'fa-shopping-cart',
-            'display_settings',
-            'enable_ecommerce'
+            'gallerysettings',
+            'enableecommerce'
         );
 
         $proofing = new C_Marketing_Block_Popup(
@@ -31,8 +31,8 @@ class A_Marketing_Display_Type_Settings_Form extends Mixin
             M_Marketing::get_i18n_fragment('feature_not_available', __('proofing', 'nggallery')),
             M_Marketing::get_i18n_fragment('lite_coupon'),
             'fa-star',
-            'display_settings',
-            'enable_proofing'
+            'gallerysettings',
+            'enableproofing'
         );
 
         return [

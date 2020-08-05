@@ -10,7 +10,7 @@ $name = esc_attr($display_type->name);
     <td colspan="2">
         <?php
         $title    = __('Want to sell your images online?', 'nggallery');
-        $block    = new C_Marketing_Block_Single_Line($title, 'manageimages', 'wanttosell');
+        $block    = new C_Marketing_Block_Single_Line($title, 'gallerysettings', 'wanttosell');
         print $block->render();
         ?>
     </td>
