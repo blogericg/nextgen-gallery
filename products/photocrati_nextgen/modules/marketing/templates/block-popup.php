@@ -4,7 +4,7 @@
  * @var string $link_text
  */ ?>
 <div class="wp-block-group has-very-dark-gray-color has-text-color has-background upsell ngg-block-popup"
-     style="background-color:#fbfbfb">
+     style="border: none">
     <div class="wp-block-group__inner-container">
         <div class="wp-block-columns">
             <div class="wp-block-column" style="flex-basis:33.33%">

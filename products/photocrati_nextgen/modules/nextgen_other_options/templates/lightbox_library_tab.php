@@ -7,8 +7,9 @@
  * @var string $lightbox_global
  */
 ?>
+<?php $this->start_element('admin_page.other_options_lightbox_libraries', 'container'); ?>
 <table>
-	<!-- Lightbox Library Name -->
+    <!-- Lightbox Library Name -->
 	<tr>
 		<td class="column1">
 			<label for="lightbox_library"><?php esc_html_e($lightbox_library_label)?></label>
@@ -52,3 +53,4 @@
         </tbody>
     <?php } ?>
 </table>
+<?php $this->end_element(); ?>

@@ -259,7 +259,8 @@ function nggallery_admin_overview()
             <div data-id="pro-link">
                 <h2><?php _e( 'Upgrade to NextGEN Pro!' ); ?></h2>
                 <p class="about-text"><span style="font-weight: bold;"><?php _e( 'The most powerful gallery system ever built for WordPress. ', 'nggallery' ); ?></span><br><?php _e( 'Gorgeous new gallery displays, image protection, full screen lightbox, commenting and social sharing for individual images, proofing, ecommerce, digital downloads, and more.', 'nggallery' ); ?></p>
-                <p class="about-text"><a href='https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/?utm_source=ngg&utm_medium=overviewupgradetoprotab&utm_campaign=getnextgenpro' target='_blank' class="button-primary ngg-pro-upgrade"><?php _e( 'Get NextGEN Pro Now', 'nggallery' ); ?></a></p>
+                <p class="about-text"><a style='background-color: #9ebc1b' href='https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/?utm_source=ngg&utm_medium=overviewupgradetoprotab&utm_campaign=getnextgenpro' target='_blank' class="button-primary ngg-pro-upgrade"><?php _e( 'Get NextGEN Pro Now', 'nggallery' ); ?></a></p>
+
                 <div class="feature-section">
                     <iframe src="https://www.youtube.com/embed/ePnYGQX0Lf8" frameborder="0" allowfullscreen></iframe>
                 </div>
@@ -305,9 +306,10 @@ function nggallery_admin_overview()
 
                     #ngg_page_content #ngg-basic-vs-pro th h2 {
                         text-align: center;
+                        text-transform: none;
                     }
 
-                    #ngg_page_content #ngg-basic-vs-pro thead th:nth-of-type(3) h2 {
+                    #ngg_page_content #ngg-basic-vs-pro thead th h2 {
                         margin: 0;
                         padding: 0;
                     }
@@ -400,17 +402,6 @@ function nggallery_admin_overview()
                             <th class="ngg-empty-th"></th>
                             <th>
                                 <h2><?php print __('NextGEN Pro', 'nggallery'); ?></h2>
-                                <div class="wp-block-buttons">
-                                    <div class="wp-block-button">
-                                        <a class="wp-block-button__link has-background no-border-radius"
-                                           href="https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/#pricing"
-                                           target="_blank"
-                                           rel="noreferrer noopener"
-                                           style="background-color:#9ebc1b; color: white">
-                                            <?php print __('Get NextGEN Pro', 'nggallery'); ?>
-                                        </a>
-                                    </div>
-                                </div>
                             </th>
                             <th>
                                 <h2><?php print __('NextGEN Basic', 'nggallery'); ?></h2>
@@ -449,22 +440,32 @@ function nggallery_admin_overview()
 
                     <tfoot>
                         <tr>
-                            <th class="ngg-empty-th"></th>
-                            <th>
-                                <div class="wp-block-buttons">
-                                    <div class="wp-block-button">
-                                        <a class="wp-block-button__link has-background no-border-radius"
-                                           href="https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/#pricing"
-                                           target="_blank"
-                                           rel="noreferrer noopener"
-                                           style="background-color:#9ebc1b; color: white">
-                                            <?php print __('Get NextGEN Pro', 'nggallery'); ?>
-                                        </a>
+                            <th colspan="3">
+                                <div class="wp-block-columns has-background">
+                                    <div class="wp-block-column is-vertically-aligned-center"
+                                         style="flex-basis:66.66%">
+                                        <h3>
+                                            <a href="https://www.imagely.com/nextgen-gallery/?utm_medium=nextgenbasicvspro&utm_source=ngg&utm_campaign=unlockpowerfulfeatures"
+                                               target="_blank"
+                                               rel="noreferrer noopener">Get NextGEN Pro Today and Unlock all the Powerful Features</a>
+                                        </h3>
+                                        <p>
+                                            <strong>Bonus:</strong> NextGEN Gallery users get 30% off the regular price using in the link above.
+                                        </p>
+                                    </div>
+                                    <div class="wp-block-column is-vertically-aligned-center"
+                                         style="flex-basis:33.33%">
+                                        <div class="wp-block-buttons">
+                                            <div class="wp-block-button">
+                                                <a class="wp-block-button__link has-text-color has-background no-border-radius"
+                                                   href="https://www.imagely.com/nextgen-gallery/?utm_medium=nextgenbasicvspro&utm_source=ngg&utm_campaign=getnextgenpro"
+                                                   style="background-color: #9ebc1b; color: #ffffff"
+                                                   target="_blank"
+                                                   rel="noreferrer noopener">Get NextGEN Pro</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </th>
-                            <th>
-                                <h2><?php print __('NextGEN Basic', 'nggallery'); ?></h2>
                             </th>
                         </tr>
                     </tfoot>

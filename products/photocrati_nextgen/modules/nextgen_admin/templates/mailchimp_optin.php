@@ -71,7 +71,7 @@
                            value="">
                     <input type="hidden"
                            id=""
-                           name="group[14349][256]"
+                           name="group[7113][72057594037927936]"
                            value="1"
                            checked>
                 </div>

@@ -16,11 +16,11 @@ class A_Marketing_Display_Settings_Form extends Mixin_Display_Type_Form
         $context = $this->get_context();
         switch ($context) {
             case 'tile':
-                return __('Tiled Gallery', 'nggallery');
+                return __('Pro Tiled', 'nggallery');
             case 'mosaic':
-                return __('Mosaic Gallery', 'nggallery');
+                return __('Pro Mosaic', 'nggallery');
             case 'masonry':
-                return __('Masonry Gallery', 'nggallery');
+                return __('Pro Masonry', 'nggallery');
             default:
                 return '';
         }
@@ -41,7 +41,7 @@ class A_Marketing_Display_Settings_Form extends Mixin_Display_Type_Form
     public function _render_marketing_block_field($thing)
     {
         $context = $this->get_context();
-        $footer = __('<strong>Bonus:</strong> NextGEN Gallery users get a discount code for 30% off regular price.', 'nggallery');
+        $footer = __('<strong>Bonus:</strong> NextGEN Gallery users get a discount of 30% off regular price.', 'nggallery');
         switch($context) {
             case 'tile':
                 $card = new C_Marketing_Block_Large(

@@ -61,8 +61,6 @@ class A_Lightbox_Manager_Form extends Mixin
         if (($id = $this->object->param('lightbox_library_id')))
         {
             $lightboxes = C_Lightbox_Library_Manager::get_instance();
-            if ($id === 'marketing_lightbox')
-                $id = 'simplelightbox';
             if (!$lightboxes->get($id)) {
                 $settings->add_error('Invalid lightbox effect selected');
             }

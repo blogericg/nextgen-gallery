@@ -7,6 +7,16 @@
 $name = esc_attr($display_type->name);
 ?>
 <tr>
+    <td colspan="2">
+        <?php
+        $title    = __('Want to sell your images online?', 'nggallery');
+        $block    = new C_Marketing_Block_Single_Line($title, 'manageimages', 'wanttosell');
+        print $block->render();
+        ?>
+    </td>
+</tr>
+
+<tr class="ngg-marketing-block-display-type-settings">
     <td>
         <label for="<?php print $name; ?>_ecommerce_marketing">
             <?php print $i18n->enable_ecommerce; ?>
@@ -35,7 +45,7 @@ $name = esc_attr($display_type->name);
     </td>
 </tr>
 
-<tr>
+<tr class="ngg-marketing-block-display-type-settings">
     <td>
         <label for="<?php print $name; ?>_proofing_marketing">
             <?php print $i18n->enable_proofing; ?>

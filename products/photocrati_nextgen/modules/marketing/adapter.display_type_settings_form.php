@@ -22,7 +22,6 @@ class A_Marketing_Display_Type_Settings_Form extends Mixin
             M_Marketing::get_i18n_fragment('feature_not_available', __('Ecommerce and Print Lab functionality', 'nggallery')),
             M_Marketing::get_i18n_fragment('lite_coupon'),
             'fa-shopping-cart',
-            'ngg',
             'display_settings',
             'enable_ecommerce'
         );
@@ -32,7 +31,6 @@ class A_Marketing_Display_Type_Settings_Form extends Mixin
             M_Marketing::get_i18n_fragment('feature_not_available', __('proofing', 'nggallery')),
             M_Marketing::get_i18n_fragment('lite_coupon'),
             'fa-star',
-            'ngg',
             'display_settings',
             'enable_proofing'
         );
@@ -47,8 +45,8 @@ class A_Marketing_Display_Type_Settings_Form extends Mixin
     {
         $i18n = new stdClass;
         $i18n->requires_pro             = __("Requires NextGEN Pro", "nggallery");
-        $i18n->enable_proofing          = __('Enable proofing?', 'nggallery');
-        $i18n->enable_ecommerce         = __('Enable ecommerce?', 'nggallery');
+        $i18n->enable_proofing          = __('Enable Proofing?', 'nggallery');
+        $i18n->enable_ecommerce         = __('Enable Ecommerce?', 'nggallery');
         $i18n->yes                      = __('Yes', 'nggallery');
         $i18n->no                       = __('No', 'nggallery');
         $i18n->ecommerce_and_print_lab  = __("Ecommerce and Print Lab Integration");

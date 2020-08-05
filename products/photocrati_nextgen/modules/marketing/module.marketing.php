@@ -37,7 +37,7 @@ class M_Marketing extends C_Base_Module
     static function get_i18n()
     {
         $i18n = new stdClass;
-        $i18n->lite_coupon           = __('NextGEN Lite users get a discount code for 30% off regular price', 'nggallery');
+        $i18n->lite_coupon           = __('NextGEN Basic users get a discount of 30% off regular price', 'nggallery');
         $i18n->bonus                 = __('Bonus', 'nggallery');
         $i18n->feature_not_available = __("We're sorry, but %s is not available in the lite version of NextGEN Gallery. Please upgrade to NextGEN Pro to unlock these awesome features.", 'nggallery');
 
@@ -75,14 +75,6 @@ class M_Marketing extends C_Base_Module
         if (self::is_plus_or_pro_enabled() || !is_admin())
             return;
 
-        add_filter('ngg_manage_lightbox_select_options', function($libraries) {
-            $marketing = new stdClass();
-            $marketing->name = 'marketing_lightbox';
-            $marketing->title = __('NextGEN Pro Lightbox', 'nggallery');
-            $libraries[] = $marketing;
-            return $libraries;
-        });
-
         add_action('ngg_manage_albums_marketing_block', function() {
             self::enqueue_blocks_style();
             print self::get_big_hitters_block_albums();
@@ -95,19 +87,17 @@ class M_Marketing extends C_Base_Module
 
         add_action('ngg_manage_images_marketing_block', function() {
             self::enqueue_blocks_style();
-            print self::get_big_hitters_block_two('managegallery');
+            print self::get_big_hitters_block_two('manageimages');
         });
 
         add_action('ngg_sort_images_marketing_block', function() {
             self::enqueue_blocks_style();
-            print self::get_big_hitters_block_two('managegallery');
+            print self::get_big_hitters_block_two('sortgallery');
         });
 
         add_action('ngg_manage_galleries_above_table', function() { 
             $title    = __('Want to sell your images online?', 'nggallery');
-            $campaign = 'TODO';
-            $source   = 'TODO';
-            $block    = new C_Marketing_Block_Single_Line($title, $campaign, $source);
+            $block    = new C_Marketing_Block_Single_Line($title, 'managegalleries', 'wanttosell');
             print $block->render();
         });
 
@@ -118,7 +108,6 @@ class M_Marketing extends C_Base_Module
             }
 
             $forms->add_form(NGG_OTHER_OPTIONS_SLUG, 'marketing_image_protection');
-            $forms->add_form(NGG_LIGHTBOX_OPTIONS_SLUG, 'marketing_lightbox');
         });
     }
 
@@ -136,9 +125,9 @@ class M_Marketing extends C_Base_Module
             $registry->add_adapter('I_Attach_To_Post_Controller', 'A_Marketing_IGW_Display_Type_Upsells');
 
             // Add upsell blocks to NGG pages
-            $registry->add_adapter('I_MVC_View', 'A_Marketing_AddGallery_Upsell', 'ngg_addgallery');
-            $registry->add_adapter('I_Form', 'A_Marketing_Other_Options_Form', 'marketing_image_protection');
-            $registry->add_adapter('I_Form', 'A_Marketing_Lightbox_Options_Form', 'marketing_lightbox');
+            $registry->add_adapter('I_MVC_View', 'A_Marketing_Lightbox_Options_MVC', 'lightbox_effects');
+            $registry->add_adapter('I_MVC_View', 'A_Marketing_AddGallery_Upsell',    'ngg_addgallery');
+            $registry->add_adapter('I_Form',     'A_Marketing_Other_Options_Form',   'marketing_image_protection');
 
             // If we call find_all() before init/admin_init an exception is thrown due to is_user_logged_in() being
             // called too early. Don't remove this action hook.
@@ -211,9 +200,9 @@ class M_Marketing extends C_Base_Module
             'title'       => __('Want to make your gallery workflow and presentation even better?', 'nggallery'),
             'description' => __('By upgrading to NextGEN Pro, you can get access to numerous other features, including:', 'nggallery'),
             'links'       => self::get_big_hitters_links($medium),
-            'footer'      => __('<strong>Bonus:</strong> NextGEN Gallery users get a discount code for 30% off regular price.', 'nggallery'),
+            'footer'      => __('<strong>Bonus:</strong> NextGEN Gallery users get a discount of 30% off regular price.', 'nggallery'),
             'campaign'    => 'clickheretoupgrade',
-            'medium'      => 'galleryworkflow',
+            'medium'      => $medium
         ];
     }
 
@@ -228,14 +217,15 @@ class M_Marketing extends C_Base_Module
             $base['description'],
             $base['links'],
             $base['footer'],
-            $base['campaign'],
-            $base['medium']
+            'managealbums',
+            $base['campaign']
         );
 
         return $block->render();
     }
 
     /**
+     * @param string $medium
      * @return string
      */
     public static function get_big_hitters_block_two($medium)
@@ -256,8 +246,8 @@ class M_Marketing extends C_Base_Module
             $base['description'],
             $base['links'],
             $base['footer'],
-            $base['campaign'],
-            $base['medium']
+            $base['medium'],
+            $base['campaign']
         );
 
         self::$big_hitters_block_two_cache[$medium] = $block->render();
@@ -280,7 +270,7 @@ class M_Marketing extends C_Base_Module
             'A_Marketing_Display_Settings_Form'      => 'adapter.display_settings_form.php',
             'A_Marketing_Display_Type_Settings_Form' => 'adapter.display_type_settings_form.php',
             'A_Marketing_IGW_Display_Type_Upsells'   => 'adapter.igw_display_type_upsells.php',
-            'A_Marketing_Lightbox_Options_Form'      => 'adapter.lightbox_options_form.php',
+            'A_Marketing_Lightbox_Options_MVC'       => 'adapter.lightbox_options_mvc.php',
             'A_Marketing_Other_Options_Form'         => 'adapter.other_options_form.php',
             'C_Marketing_Block_Base'                 => 'class.block_base.php',
             'C_Marketing_Block_Card'                 => 'class.block_card.php',

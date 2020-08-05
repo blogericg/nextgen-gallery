@@ -1,20 +1,13 @@
 <?php
 
-class A_Marketing_Lightbox_Options_Form extends Mixin
+class A_Marketing_Lightbox_Options_MVC extends Mixin
 {
-    public function get_model()
+    function render_object()
     {
-        return NULL;
-    }
+        $root_element = $this->call_parent('render_object');
 
-    public function is_valid()
-    {
-        return TRUE;
-    }
+        M_Marketing::enqueue_blocks_style();
 
-    function render()
-    {
-        $retval = '<tr><td colspan="2">';
         $block = new C_Marketing_Block_Large(
             __('Go big with the Pro Lightbox', 'nggallery'),
             __("The Pro Lightbox allows you to display images at full scale when opened. Your visitors will enjoy breathtaking views of your photos on any device. It's customizable, from colors to padding and more. Offer social sharing, deep linking, and individual image commenting. Turn your gallery lightbox view into a slideshow for your visitors. You can customize settings such as auto-playing and slideshow speed.", 'nggallery'),
@@ -25,9 +18,11 @@ class A_Marketing_Lightbox_Options_Form extends Mixin
             'otheroptions',
             'prolightbox'
         );
-        $retval .= $block->render();
-        $retval .= '</td></tr>';
-        return $retval;
-    }
 
+        foreach ($root_element->find('admin_page.other_options_lightbox_libraries', TRUE) as $container) {
+            $container->append($block->render());
+        }
+
+        return $root_element;
+    }
 }
