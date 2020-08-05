@@ -131,7 +131,7 @@ class M_Marketing extends C_Base_Module
 
             // If we call find_all() before init/admin_init an exception is thrown due to is_user_logged_in() being
             // called too early. Don't remove this action hook.
-            add_action('admin_init', function() {
+            add_action('init', function() {
                 foreach (C_Display_type_Mapper::get_instance()->find_all() as $display_type) {
                     $registry = $this->get_registry();
                     $registry->add_adapter('I_Form', 'A_Marketing_Display_Type_Settings_Form', $display_type->name);
