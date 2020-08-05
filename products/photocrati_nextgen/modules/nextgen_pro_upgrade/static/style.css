@@ -14,3 +14,12 @@
 #ngg_upgrade_to_pro_page_wrapper .wp-block-columns:last-of-type .wp-block-column:last-of-type {
     display: none;
 }
+
+#ngg_upgrade_to_pro_page_wrapper .wp-block-column.ngg-block-card {
+    display: flex;
+    flex-direction: column;
+}
+
+#ngg_upgrade_to_pro_page_wrapper .wp-block-column.ngg-block-card p {
+    flex-grow: 1;
+}
