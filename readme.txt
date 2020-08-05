@@ -180,11 +180,14 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.3.6.2 - 08.05.2020 =
+= V3.3.6.3 - 08.05.2020 =
 * NEW:     Added filter 'ngg_recent_images_sort_by_column' to control how recent images are sorted
 * Fixed:   Assigning a thumbnail to a custom post type page/post caused a fatal javsacript error
+* Fixed:   NextGEN would previously be completely unusable should it even once determine that it doesn't have the necessary roles it needs
 * Fixed:   Several SimpleLightbox issues caused by a recent version upgrade
 * Changed: Admin user interface modifications
+* Changed: Misc code improvements to take advantage of PHP 5.3+ features
+* Changed: Removed NGG_FIX_JQUERY constant
 
 = V3.3.6 - 06.24.2020 =
 * NEW:     Added a mechanism in Other Options > Misc to update page featured images assigned with NextGen version 1 that were broken by a WordPress 5.4 API change
