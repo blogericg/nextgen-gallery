@@ -58,9 +58,9 @@
 	width: auto;
 }
 
-#image_width,
-#image_height{
-	width: 40px;
+#ngg_page_content .ngg_page_content_main #image_width,
+#ngg_page_content .ngg_page_content_main #image_height{
+	width: 53px;
 }
 
 #ngg_page_content #thumbnail_dimensions_width,

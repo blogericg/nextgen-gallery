@@ -259,7 +259,7 @@ function nggallery_admin_overview()
             <div data-id="pro-link">
                 <h2><?php _e( 'Upgrade to NextGEN Pro!' ); ?></h2>
                 <p class="about-text"><span style="font-weight: bold;"><?php _e( 'The most powerful gallery system ever built for WordPress. ', 'nggallery' ); ?></span><br><?php _e( 'Gorgeous new gallery displays, image protection, full screen lightbox, commenting and social sharing for individual images, proofing, ecommerce, digital downloads, and more.', 'nggallery' ); ?></p>
-                <p class="about-text"><a style='background-color: #9ebc1b' href='https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/?utm_source=ngg&utm_medium=overviewupgradetoprotab&utm_campaign=getnextgenpro' target='_blank' class="button-primary ngg-pro-upgrade"><?php _e( 'Get NextGEN Pro Now', 'nggallery' ); ?></a></p>
+                <p class="about-text"><a style='background-color: #9ebc1b' href='https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/?utm_source=ngg&utm_medium=overviewunlockmore&utm_campaign=getnextgenpro' target='_blank' class="button-primary ngg-pro-upgrade"><?php _e( 'Get NextGEN Pro Now', 'nggallery' ); ?></a></p>
 
                 <div class="feature-section">
                     <iframe src="https://www.youtube.com/embed/ePnYGQX0Lf8" frameborder="0" allowfullscreen></iframe>
