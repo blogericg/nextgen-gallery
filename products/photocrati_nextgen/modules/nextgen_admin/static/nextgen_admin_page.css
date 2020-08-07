@@ -1267,3 +1267,8 @@ table.nextgen_settings_position {
         display:none;
     }
 }
+
+.ngg_admin_notice.notice-success,
+.ngg_admin_notice.updated {
+    border-left-color: #9dbd1b;
+}
