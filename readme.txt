@@ -180,7 +180,7 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.3.6.3 - 08.05.2020 =
+= V3.3.6.4 - 08.07.2020 =
 * NEW:     Added filter 'ngg_recent_images_sort_by_column' to control how recent images are sorted
 * Fixed:   Assigning a thumbnail to a custom post type page/post caused a fatal javsacript error
 * Fixed:   NextGEN would previously be completely unusable should it even once determine that it doesn't have the necessary roles it needs
