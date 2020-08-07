@@ -126,7 +126,7 @@ class M_Marketing extends C_Base_Module
 
             // Add upsell blocks to NGG pages
             $registry->add_adapter('I_MVC_View', 'A_Marketing_Lightbox_Options_MVC', 'lightbox_effects');
-            $registry->add_adapter('I_MVC_View', 'A_Marketing_AddGallery_Upsell',    'ngg_addgallery');
+            $registry->add_adapter('I_MVC_View', 'A_Marketing_AddGallery_MVC',       'ngg_addgallery');
             $registry->add_adapter('I_Form',     'A_Marketing_Other_Options_Form',   'marketing_image_protection');
 
             // If we call find_all() before init/admin_init an exception is thrown due to is_user_logged_in() being
@@ -266,7 +266,7 @@ class M_Marketing extends C_Base_Module
     function get_type_list()
     {
         return [
-            'A_Marketing_AddGallery_Upsell'          => 'adapter.addgallery_upsell.php',
+            'A_Marketing_AddGallery_MVC'             => 'adapter.addgallery_mvc.php',
             'A_Marketing_Display_Settings_Form'      => 'adapter.display_settings_form.php',
             'A_Marketing_Display_Type_Settings_Form' => 'adapter.display_type_settings_form.php',
             'A_Marketing_IGW_Display_Type_Upsells'   => 'adapter.igw_display_type_upsells.php',

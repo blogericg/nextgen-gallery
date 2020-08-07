@@ -18,7 +18,7 @@ class A_Marketing_Other_Options_Form extends Mixin
             __('Image protection disables the ability for visitors to right-click or drag to download your images in both the gallery display and Pro Lightbox views. It gives you complete freedom to display your work without worry. You can also choose to protect all images sitewide, even outside of NextGEN Gallery.', 'nggallery'),
             __('<strong>Bonus:</strong> NextGEN Gallery users get a discount of 30% off regular price.', 'nggallery'),
             'fa-lock-open',
-            'https://www.imagely.com/docs/turn-image-protection/?utm_medium=ngg&utm_source=otheroptions&utm_campaign=imageprotection',
+            'https://www.imagely.com/docs/turn-image-protection/?utm_medium=ngg&utm_source=otheroptions&utm_campaign=imageprotection-learnmore',
             __('Learn more', 'nggallery'),
             'otheroptions',
             'imageprotection'
