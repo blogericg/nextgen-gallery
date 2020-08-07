@@ -835,6 +835,10 @@ h3#preview_tab {
 	}
 }
 
+.ngg-marketing-popup {
+	font-family: "Lato", sans-serif;	
+}
+
 @media (max-width: 400px) {
 	#displayed_tab .display_type_preview {
     	float: none;

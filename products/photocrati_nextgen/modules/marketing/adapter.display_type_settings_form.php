@@ -36,8 +36,8 @@ class A_Marketing_Display_Type_Settings_Form extends Mixin
         );
 
         return [
-            'ecommerce' => '<div>'.$ecommerce->render().'</div>',
-            'proofing'  => '<div>'.$proofing->render().'</div>'
+            'ecommerce' => '<div class="ngg-marketing-popup">'.$ecommerce->render().'</div>',
+            'proofing'  => '<div class="ngg-marketing-popup">'.$proofing->render().'</div>'
         ];
     }
 
@@ -57,10 +57,26 @@ class A_Marketing_Display_Type_Settings_Form extends Mixin
 
     function enqueue_static_resources()
     {
+        wp_register_script(
+            'jquery-modal',
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js',
+            array('jquery'),
+            '0.9.1'
+        );
+
+        wp_register_style(
+            'jquery-modal',
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css',
+            [],
+            '0.9.1'
+        );
+
+        wp_enqueue_style('jquery-modal');
+
         wp_enqueue_script(
             'ngg_display_type_settings_marketing',
             M_Static_Assets::get_static_url('photocrati-marketing#display_type_settings.min.js'),
-            ['jquery-ui-dialog'],
+            ['jquery-modal'],
             NGG_SCRIPT_VERSION,
             TRUE
         );
