@@ -113,8 +113,7 @@ class A_Marketing_IGW_Display_Type_Upsells extends Mixin
 
         M_Marketing::enqueue_blocks_style();
 
-        wp_add_inline_style('ngg_attach_to_post', ".display_type_preview:nth-child(5) {clear: both;}");
+        wp_add_inline_style('ngg_attach_to_post', ".display_type_preview:nth-child(5) {clear: both;} .ngg-marketing-block-display-type-settings label {color: darkgray !important;}");
         $this->mark_script('igw_display_type_upsells');
-        $this->mark_script('jquery-ui-dialog');
     }
 }
