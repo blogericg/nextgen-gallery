@@ -7,14 +7,6 @@
     width: 100%;
 }
 
-#ngg_upgrade_to_pro_page_wrapper .wp-block-columns:last-of-type {
-    width: calc(50% - 15px);
-}
-
-#ngg_upgrade_to_pro_page_wrapper .wp-block-columns:last-of-type .wp-block-column:last-of-type {
-    display: none;
-}
-
 #ngg_upgrade_to_pro_page_wrapper .wp-block-column.ngg-block-card {
     display: flex;
     flex-direction: column;
