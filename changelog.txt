@@ -1,7 +1,7 @@
 NextGEN Gallery
 by Imagely
 
-= V3.3.7 - 08.07.2020 =
+= V3.3.8 - 08.12.2020 =
 * NEW:     Added filter 'ngg_recent_images_sort_by_column' to control how recent images are sorted
 * Fixed:   Assigning a thumbnail to a custom post type page/post caused a fatal javsacript error
 * Fixed:   NextGEN would previously be completely unusable should it even once determine that it doesn't have the necessary roles it needs
