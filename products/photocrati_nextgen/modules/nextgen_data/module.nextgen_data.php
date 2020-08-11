@@ -22,7 +22,7 @@ class M_NextGen_Data extends C_Base_Module
 			'photocrati-nextgen-data',
 			'NextGEN Data Tier',
 			"Provides a data tier for NextGEN gallery based on the DataMapper module",
-			'3.3.6',
+			'3.3.7',
 			'https://www.imagely.com/wordpress-gallery-plugin/nextgen-gallery/',
 			'Imagely',
 			'https://www.imagely.com'
@@ -208,8 +208,6 @@ class M_NextGen_Data extends C_Base_Module
 					$id = 'ngg_data_strip_html_placeholder';
 					$start = "<div id=\"{$id}\">";
 					$end = '</div>';
-					$start_length = strlen($start);
-					$end_length = strlen($end);
 
 					// Prevent attempted work-arounds using &lt; and &gt; or other html entities
 					$data = html_entity_decode($data);
@@ -223,22 +221,8 @@ class M_NextGen_Data extends C_Base_Module
 					// Invoke the actual work
 					self::strip_html($dom->documentElement, TRUE);
 
-					// Export back to text
-					//
-					// TODO: When PHP 5.2 support is dropped we can use the target parameter
-					// of the following saveHTML and rid ourselves of some of the nonsense
-					// workarounds to the fact that DOMDocument used to force the output to
-					// include full HTML/XML doctype and root elements.
-					$retval = $dom->saveXML();
-
-					// saveXML includes the full doctype and <html><body></body></html> wrappers
-					// so we first drop everything generated up to our wrapper and chop off the
-					// added end wrappers
-					$position = strpos($retval, $start);
-					$retval  = substr($retval, $position, -15);
-
-					// Lastly remove our wrapper
-					$retval = substr($retval, $start_length, -$end_length);
+                    $el = $dom->getElementById($id);
+                    $retval = implode(array_map([$dom, 'saveHTML'], iterator_to_array($el->childNodes)));
 				}
 				else {
 					$retval = '';

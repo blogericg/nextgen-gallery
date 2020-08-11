@@ -1,0 +1,1 @@
+ngg-post-thumbnail.min.js
