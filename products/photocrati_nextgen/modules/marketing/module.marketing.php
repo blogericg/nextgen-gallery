@@ -15,7 +15,7 @@ class M_Marketing extends C_Base_Module
             'photocrati-marketing',
             'Marketing',
             'Provides resources for encouraging users to upgrade to NextGen Plus/Pro',
-            '3.3.7',
+            '3.3.9',
             'https://www.imagely.com/wordpress-gallery-plugin/nextgen-gallery/',
             'Imagely',
             'https://www.imagely.com'

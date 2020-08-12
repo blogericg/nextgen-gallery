@@ -2,7 +2,7 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 4.0.0
-Stable tag: 3.3.8
+Stable tag: 3.3.9
 Tested up to: 5.5.0
 License: GPLv2
 Requires PHP: 5.4
@@ -180,7 +180,7 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.3.8 - 08.12.2020 =
+= V3.3.9 - 08.12.2020 =
 * NEW:     Added filter 'ngg_recent_images_sort_by_column' to control how recent images are sorted
 * Fixed:   Assigning a thumbnail to a custom post type page/post caused a fatal javsacript error
 * Fixed:   NextGEN would previously be completely unusable should it even once determine that it doesn't have the necessary roles it needs
