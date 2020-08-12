@@ -27,9 +27,9 @@
                 <?php } ?>
             </div>
             <div class="wp-block-column" style="flex-basis:66.66%">
-                <h2 class="has-very-dark-gray-color has-text-color">
+                <h3 class="has-very-dark-gray-color has-text-color">
                     <?php print $block->title; ?>
-                </h2>
+                </h3>
                 <p class="has-text-color has-very-dark-gray-color">
                     <?php print $block->description; ?>
                 </p>
