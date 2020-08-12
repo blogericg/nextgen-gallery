@@ -136,6 +136,13 @@ class M_Marketing extends C_Base_Module
                     $registry = $this->get_registry();
                     $registry->add_adapter('I_Form', 'A_Marketing_Display_Type_Settings_Form', $display_type->name);
                 }
+
+                wp_register_style(
+                    'ngg_marketing_blocks_style',
+                    C_Router::get_instance()->get_static_url('photocrati-marketing#blocks.css'),
+                    ['wp-block-library'],
+                    NGG_SCRIPT_VERSION
+                );
             });
 
             foreach (self::$display_setting_blocks as $block) {
@@ -150,12 +157,7 @@ class M_Marketing extends C_Base_Module
 
     function initialize()
     {
-        wp_register_style(
-            'ngg_marketing_blocks_style',
-            C_Router::get_instance()->get_static_url('photocrati-marketing#blocks.css'),
-            ['wp-block-library'],
-            NGG_SCRIPT_VERSION
-        );
+        
     }
 
     /**
