@@ -98,10 +98,12 @@ class A_Marketing_IGW_Display_Type_Upsells extends Mixin
             'igw_promo'     => $this->render_partial('photocrati-marketing#igw_promo', [], TRUE)
         ];
 
+        wp_enqueue_style('jquery-modal');
+
         wp_enqueue_script(
 			'igw_display_type_upsells',
 			$this->get_static_url('photocrati-marketing#igw_display_type_upsells.min.js'),
-			['ngg_display_tab', 'jquery-ui-dialog'],
+			['ngg_display_tab', 'jquery-modal'],
 			NGG_SCRIPT_VERSION
         );
 
