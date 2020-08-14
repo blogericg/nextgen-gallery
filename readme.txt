@@ -2,7 +2,7 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 4.0.0
-Stable tag: 3.3.10
+Stable tag: 3.3.11
 Tested up to: 5.5.0
 License: GPLv2
 Requires PHP: 5.4
@@ -179,6 +179,13 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 
 == Changelog ==
+
+= V3.3.11 - 08.14.2020 =
+* Fixed:   Fancybox lightbox not working with WordPress 5.5
+* Fixed:   Inability to upload images or create galleries in WordPress 5.5
+* Fixed:   Cannot crop images from Manage Galleries page
+* Fixed:   Removed use of jquery.size() and jquery.browser
+* Fixed:   Fixed iterator_to_array() PHP warning
 
 = V3.3.10 - 08.12.2020 =
 * NEW:     Added filter 'ngg_recent_images_sort_by_column' to control how recent images are sorted
