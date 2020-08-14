@@ -221,8 +221,10 @@ class M_NextGen_Data extends C_Base_Module
 					// Invoke the actual work
 					self::strip_html($dom->documentElement, TRUE);
 
-                    $el = $dom->getElementById($id);
-                    $retval = implode(array_map([$dom, 'saveHTML'], iterator_to_array($el->childNodes)));
+					$el = $dom->getElementById($id);
+					$retval = $el
+						? implode(array_map([$dom, 'saveHTML'], iterator_to_array($el->childNodes)))
+						: $dom->saveHTML();
 				}
 				else {
 					$retval = '';
