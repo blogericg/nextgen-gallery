@@ -1,6 +1,9 @@
 NextGEN Gallery
 by Imagely
 
+= V3.3.12 - 08.17.2020 =
+* Fixed:   Broken gallery displays in WP 5.5 with Classic Editor
+
 = V3.3.11 - 08.14.2020 =
 * Fixed:   Fancybox lightbox not working with WordPress 5.5
 * Fixed:   Inability to upload images or create galleries in WordPress 5.5
