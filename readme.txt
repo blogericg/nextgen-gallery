@@ -2,7 +2,7 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 4.0.0
-Stable tag: 3.3.14
+Stable tag: 3.3.15
 Tested up to: 5.5.0
 License: GPLv2
 Requires PHP: 5.4
@@ -180,8 +180,10 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.3.14 - 08.17.2020 =
+= V3.3.15 - 08.17.2020 =
 * Fixed:   Broken gallery displays in WP 5.5 with Classic Editor
+* Fixed:   HTML in Gallery & Image fields
+* Fixed:   Inability to save Gallery Settings or Other Options
 
 = V3.3.11 - 08.14.2020 =
 * Fixed:   Fancybox lightbox not working with WordPress 5.5
