@@ -22,7 +22,7 @@ class M_NextGen_Data extends C_Base_Module
 			'photocrati-nextgen-data',
 			'NextGEN Data Tier',
 			"Provides a data tier for NextGEN gallery based on the DataMapper module",
-			'3.3.12',
+			'3.3.14',
 			'https://www.imagely.com/wordpress-gallery-plugin/nextgen-gallery/',
 			'Imagely',
 			'https://www.imagely.com'
@@ -130,17 +130,9 @@ class M_NextGen_Data extends C_Base_Module
 
     static function strip_html($data, $just_scripts=FALSE)
 	{
-		// Remove all HTML elements
-		if (!$just_scripts) return strip_tags($data);
-
-		// Remove unsafe HTML
-		else if (class_exists('DOMDocument')) {
-			// This can generate a *lot* of warnings when given improper texts
-			libxml_use_internal_errors(true);
-			libxml_clear_errors();
-
-			// NGG 3.3.11 fix. Some of the data persisted with 3.3.11 didn't strip out all HTML
-			if (strpos($data, 'ngg_data_strip_html_placeholder') !== FALSE) {
+		// NGG 3.3.11 fix. Some of the data persisted with 3.3.11 didn't strip out all HTML
+		if (strpos($data, 'ngg_data_strip_html_placeholder') !== FALSE) {
+			if (class_exists('DomDocument')) {
 				$dom = new DOMDocument('1.0', 'UTF-8');
 				$dom->loadHTML($data);
 				$el = $dom->getElementById('ngg_data_strip_html_placeholder');
@@ -153,15 +145,25 @@ class M_NextGen_Data extends C_Base_Module
 				);
 				return self::strip_html(implode(" ", $parts), $just_scripts);
 			}
-			// An HTML fragment
-			else {
-				if (!class_exists("HTMLPurifier_Config")) {
-					require_once(NGG_PLUGIN_DIR."/vendor/ezyang/htmlpurifier/library/HTMLPurifier.auto.php");
-				}
-				$config = HTMLPurifier_Config::createDefault();
-				$purifier = new HTMLPurifier($config);
-				return $purifier->purify($data);
+			else return strip_tags($data);
+		}
+
+		// Remove all HTML elements
+		if (!$just_scripts) return strip_tags($data);
+
+		// Remove unsafe HTML
+		else if (class_exists('DOMDocument')) {
+			// This can generate a *lot* of warnings when given improper texts
+			libxml_use_internal_errors(true);
+			libxml_clear_errors();
+
+			if (!class_exists("HTMLPurifier_Config")) {
+				require_once(NGG_PLUGIN_DIR."vendor/ezyang/htmlpurifier/library/HTMLPurifier.auto.php");
 			}
+			$config = HTMLPurifier_Config::createDefault();
+			$config->set('Cache', 'DefinitionImpl', NULL);
+			$purifier = new HTMLPurifier($config);
+			return $purifier->purify($data);
 		}
 		else  {
 			// wp_strip_all_tags() is misleading in a way - it only removes <script> and <style>
