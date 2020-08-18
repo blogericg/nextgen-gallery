@@ -32,9 +32,9 @@ class A_Marketing_IGW_Display_Type_Upsells extends Mixin
             ),
             $this->new_pro_display_type_upsell(
                 -2,
-                'pro-mosiac',
-                __("Pro Mosiac", 'nggallery'),
-                'photocrati-marketing#pro-mosiac-preview.jpg'
+                'pro-mosaic',
+                __("Pro Mosaic", 'nggallery'),
+                'photocrati-marketing#pro-mosaic-preview.jpg'
             ),
             $this->new_pro_display_type_upsell(
                 -3,
@@ -69,11 +69,11 @@ class A_Marketing_IGW_Display_Type_Upsells extends Mixin
             'masonrygallery'
         );
 
-        $pro_mosiac = new C_Marketing_Block_Popup(
-            __('Pro Mosiac Gallery', 'nggallery'),
-            M_Marketing::get_i18n_fragment('feature_not_available', __('the Pro Mosiac Gallery', 'nggallery')),
+        $pro_mosaic = new C_Marketing_Block_Popup(
+            __('Pro Mosaic Gallery', 'nggallery'),
+            M_Marketing::get_i18n_fragment('feature_not_available', __('the Pro Mosaic Gallery', 'nggallery')),
             M_Marketing::get_i18n_fragment('lite_coupon'),
-            $this->get_static_url('photocrati-marketing#pro-mosiac-preview.jpg'),
+            $this->get_static_url('photocrati-marketing#pro-mosaic-preview.jpg'),
             'igw',
             'mosaicgallery'
         );
@@ -81,7 +81,7 @@ class A_Marketing_IGW_Display_Type_Upsells extends Mixin
         return [
             'pro-tile'      => '<div>'.$pro_tile->render().'</div>',
             'pro-masonry'   => '<div>'.$pro_masonry->render().'</div>',
-            'pro-mosiac'    => '<div>'.$pro_mosiac->render().'</div>'
+            'pro-mosaic'    => '<div>'.$pro_mosaic->render().'</div>'
         ];
     }
 
