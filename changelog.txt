@@ -1,7 +1,8 @@
 NextGEN Gallery
 by Imagely
 
-= V3.3.15 - 08.17.2020 =
+= V3.3.16 - 08.18.2020 =
+* Fixed:   Override Thumbnail Settings not configurable
 * Fixed:   Broken gallery displays in WP 5.5 with Classic Editor
 * Fixed:   HTML in Gallery & Image fields
 * Fixed:   Inability to save Gallery Settings or Other Options
