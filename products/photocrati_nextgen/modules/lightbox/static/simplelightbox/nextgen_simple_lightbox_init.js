@@ -19,7 +19,7 @@ jQuery(function($) {
 
     nextgen_simplelightbox_init();
 
-    $(window).bind('refreshed', function() {
+    $(window).on('refreshed', function() {
         if (typeof lightbox !== 'undefined') {
             lightbox.destroy();
         }
