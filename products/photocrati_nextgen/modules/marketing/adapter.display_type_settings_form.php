@@ -71,6 +71,8 @@ class A_Marketing_Display_Type_Settings_Form extends Mixin
            'ngg_display_type_settings_marketing',
            ['upsells' => $this->get_upsell_popups(), 'i18n' => (array)$this->get_i18n()]
         );
+
+        return $this->call_parent('enqueue_static_resources');
     }
 
     function _render_marketing_ecommerce_block_field($display_type)

@@ -30,5 +30,6 @@ class A_Marketing_Other_Options_Form extends Mixin
     function enqueue_static_resources()
     {
         M_Marketing::enqueue_blocks_style();
+        return $this->call_parent('enqueue_static_resources');
     }
 }
