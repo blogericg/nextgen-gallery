@@ -2,7 +2,7 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 4.0.0
-Stable tag: 3.3.16
+Stable tag: 3.3.17
 Tested up to: 5.5.0
 License: GPLv2
 Requires PHP: 5.4
@@ -180,7 +180,7 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.3.16 - 08.18.2020 =
+= V3.3.17 - 08.18.2020 =
 * Fixed:   Override Thumbnail Settings not configurable
 * Fixed:   Broken gallery displays in WP 5.5 with Classic Editor
 * Fixed:   HTML in Gallery & Image fields

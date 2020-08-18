@@ -912,7 +912,7 @@ if (typeof(NextGEN_Wizard_Manager) === 'undefined') {
 
 jQuery(function($){
 	if (typeof(NextGEN_Wizard_Manager) !== 'undefined') {
-		NextGEN_Wizard_Manager.on('ready', function () {
+		NextGEN_Wizard_Manager.bind('ready', function () {
 			NextGEN_Wizard_Manager.start();
 		});
 		
