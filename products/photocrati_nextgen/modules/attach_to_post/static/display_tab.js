@@ -335,8 +335,6 @@ jQuery(function($){
             obj.display_type = display_type.get_shortcode_value();
 
 
-            console.log("Rendering shortcode", obj);
-
             // Convert the displayed gallery to a shortcode
             var snippet = '[ngg';
             var val = null;
