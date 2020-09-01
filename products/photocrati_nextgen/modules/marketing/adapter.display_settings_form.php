@@ -89,5 +89,6 @@ class A_Marketing_Display_Settings_Form extends Mixin_Display_Type_Form
     function enqueue_static_resources()
     {
         M_Marketing::enqueue_blocks_style();
+        return $this->call_parent('enqueue_static_resources');
     }
 }

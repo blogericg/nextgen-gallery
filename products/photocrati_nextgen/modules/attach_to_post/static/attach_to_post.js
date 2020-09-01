@@ -109,7 +109,7 @@ jQuery(function($) {
     });
 
 	// If the preview area is being displayed, emit an event for that
-	$('.ngg_page_content_menu a').bind('click', function(){
+	$('.ngg_page_content_menu a').on('click', function(){
 		if ($(this).attr('data-id') === 'preview_tab') {
 			$('#preview_area').trigger('opened');
 		}

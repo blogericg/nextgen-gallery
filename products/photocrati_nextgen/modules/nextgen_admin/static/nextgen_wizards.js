@@ -698,7 +698,7 @@ if (typeof(NextGEN_Wizard_Manager) === 'undefined') {
 								if (doBind) {
 									this.condition_setup = true;
 									var tourStep = this;
-									$ob.bind(condValue, function () {
+									$ob.on(condValue, function () {
 										tourStep.condition_met = true;
 									});
 								}
@@ -711,7 +711,7 @@ if (typeof(NextGEN_Wizard_Manager) === 'undefined') {
 									this.condition_met = true;
 								else {
 									var tourStep = this;
-									jQuery(window.top.document).find('body').bind('nextgen_event', function (e, type) {
+									jQuery(window.top.document).find('body').on('nextgen_event', function (e, type) {
 										if (type == condValue)
 											tourStep.condition_met = true;
 									});
@@ -776,7 +776,7 @@ if (typeof(NextGEN_Wizard_Manager) === 'undefined') {
 					  view.currentWizard = tour.ngg_wizard_id;
 					  view.currentStep = this.ngg_step_id;
 					  view.setup();
-					  view.bind('done', this.onDone);
+					  view.on('done', this.onDone);
 					  view.enable();
 					}
 			  };
@@ -789,7 +789,7 @@ if (typeof(NextGEN_Wizard_Manager) === 'undefined') {
 						
 					if (view != null) {
 					  view.disable();
-					  view.unbind('done', this.onDone);
+					  view.off('done', this.onDone);
 					  view.reset();
 					}
 			  };
