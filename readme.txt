@@ -180,6 +180,9 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
+= V3.3.17.1 - 09.03.2020 =
+* Fixed:   Gutenberg block and featured image features were broken on wordpress.com hosting
+
 = V3.3.17 - 08.18.2020 =
 * Fixed:   Override Thumbnail Settings not configurable
 * Fixed:   Broken gallery displays in WP 5.5 with Classic Editor
