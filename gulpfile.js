@@ -231,13 +231,13 @@ gulp.task('copybuild', function() {
 });
 
 gulp.task('webpack-block', function() {
-  return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/block.min.js')
+  return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/block.jsx')
     .pipe(webpack({
 		mode: "production",
 		devtool: "source-map",	
 		module: {
 			rules: [
-				{ test: /\.js$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
+				{ test: /\.js[x]?$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
 			],
 		},
 		output: {
@@ -248,13 +248,13 @@ gulp.task('webpack-block', function() {
 });
 
 gulp.task('webpack-others', function() {
-	return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/post-thumbnail.min.js')
+	return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/post-thumbnail.jsx')
 	.pipe(webpack({
 		mode: "production",
 		devtool: "source-map",	
 		module: {
 			rules: [
-			{ test: /\.js$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
+			{ test: /\.js[x]?$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
 			],
 		},
 		output: {
