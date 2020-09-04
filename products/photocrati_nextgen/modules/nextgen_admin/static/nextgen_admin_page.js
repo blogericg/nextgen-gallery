@@ -76,18 +76,17 @@ jQuery(function($){
 
 
     // Toggle the advanced settings
-    $('.nextgen_advanced_toggle_link').on('click', function(e){
-        e.preventDefault();
-        var form_id = '#'+$(this).attr('rel');
-        var btn = $(this);
-        $(form_id).toggle(500, 'swing', function(){
+    $('.nextgen_advanced_toggle_link').on('click', function(event) {
+        event.preventDefault();
+        const $form = $('#' + $(this).attr('rel'));
+        const $btn = $(this);
+        $form.toggle(500, 'swing', function() {
             if ($(this).hasClass('hidden')) {
                 $(this).removeClass('hidden');
-                btn.text(btn.attr('active_label'));
-            }
-            else {
+                $btn.text($btn.attr('active_label'));
+            } else {
                 $(this).addClass('hidden');
-                btn.text(btn.attr('hidden_label'));
+                $btn.text($btn.attr('hidden_label'));
             }
         });
     });

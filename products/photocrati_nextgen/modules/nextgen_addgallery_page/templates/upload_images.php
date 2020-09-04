@@ -270,7 +270,7 @@
 								
 								// If we created a new gallery, ensure it's now in the drop-down list, and select it
 								if ($gallery_id.find('option[value="'+response.gallery_id+'"]').length == 0) {
-									var option = $('<option/>').attr('value', response.gallery_id).html(response.gallery_name);
+									var option = $('<option/>').val(response.gallery_id).html(response.gallery_name);
 									$gallery_id.append(option);
 									$gallery_id.val(response.gallery_id);
 									option.prop('selected', true);

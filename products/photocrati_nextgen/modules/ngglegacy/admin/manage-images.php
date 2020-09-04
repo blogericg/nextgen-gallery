@@ -605,7 +605,7 @@ function nggallery_picturelist($controller)
                         <input class="button-primary"
                                type="submit"
                                name="TB_EditTags"
-                               onClick="jQuery(this).attr('disabled', true); submit();"
+                               onClick="jQuery(this).attr('disabled', 'disabled'); submit();"
                                value="<?php _e("OK",'nggallery'); ?>"/>
                         <input class="button-primary dialog-cancel"
                                type="reset"
@@ -649,7 +649,7 @@ function nggallery_picturelist($controller)
                         <input type="submit"
                                class="button-primary"
                                name="TB_SelectGallery"
-                               onClick="jQuery(this).attr('disabled', true); submit();"
+                               onClick="jQuery(this).attr('disabled', 'disabled'); submit();"
                                value="<?php _e("OK",'nggallery'); ?>"/>
                         <input class="button-primary dialog-cancel"
                                type="reset"
@@ -693,7 +693,7 @@ function nggallery_picturelist($controller)
                         <input class="button-primary"
                                type="submit"
                                name="TB_ResizeImages"
-                               onClick="jQuery(this).attr('disabled', true); submit();"
+                               onClick="jQuery(this).attr('disabled', 'disabled'); submit();"
                                value="<?php _e('OK', 'nggallery'); ?>"/>
                         <input class="button-primary dialog-cancel"
                                type="reset"
@@ -740,7 +740,7 @@ function nggallery_picturelist($controller)
                         <input class="button-primary"
                                type="submit"
                                name="TB_NewThumbnail"
-                               onClick="jQuery(this).attr('disabled', true); submit();"
+                               onClick="jQuery(this).attr('disabled', 'disabled'); submit();"
                                value="<?php _e('OK', 'nggallery');?>"/>
                         <input class="button-primary dialog-cancel"
                                type="reset"

@@ -133,7 +133,7 @@ jQuery(function($) {
         $('.ui-tabs-nav a').removeClass("active_tab");
         $(this).addClass("active_tab");
 
-		var element = e.target ? e.target : e.srcElement;
+		var element = e.target;
 
 		// If the accordion tab is used to display an iframe, ensure when
 		// clicked that the original iframe content is always displayed

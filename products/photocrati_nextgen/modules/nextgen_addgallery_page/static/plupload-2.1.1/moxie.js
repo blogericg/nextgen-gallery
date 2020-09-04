@@ -6253,10 +6253,6 @@ define('moxie/core/utils/Events', [
 			func = function() {
 				var evt = window.event;
 
-				if (!evt.target) {
-					evt.target = evt.srcElement;
-				}
-
 				evt.preventDefault = preventDefault;
 				evt.stopPropagation = stopPropagation;
 
