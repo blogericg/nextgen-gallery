@@ -659,6 +659,7 @@ class M_NextGen_Admin extends C_Base_Module
         $router = C_Router::get_instance();
         
         // Wizards related scripts/styles
+        // We use CSS styles from Bootstrap but bootstrap.js is not used or included
         wp_register_style(
             'bootstrap-tooltip',
             $router->get_static_url('photocrati-nextgen_admin#bootstrap/css/bootstrap-tooltip.css'),
