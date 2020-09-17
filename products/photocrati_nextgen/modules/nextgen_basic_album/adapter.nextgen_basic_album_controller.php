@@ -377,19 +377,21 @@ class A_NextGen_Basic_Album_Controller extends Mixin_NextGen_Basic_Pagination
         wp_enqueue_style(
             'nextgen_basic_album_style',
             $this->object->get_static_url('photocrati-nextgen_basic_album#nextgen_basic_album.css'),
-            array(),
+            [],
             NGG_SCRIPT_VERSION
         );
+
         wp_enqueue_style(
             'nextgen_pagination_style',
             $this->get_static_url('photocrati-nextgen_pagination#style.css'),
-            array(),
+            [],
             NGG_SCRIPT_VERSION
         );
+
         wp_enqueue_script(
-            'jquery.dotdotdot',
-            $this->object->get_static_url('photocrati-nextgen_basic_album#jquery.dotdotdot-1.5.7-packed.js'),
-            array('jquery'),
+            'shave.js',
+            $this->object->get_static_url('photocrati-nextgen_gallery_display#shave.js'),
+            [],
             NGG_SCRIPT_VERSION
         );
 
