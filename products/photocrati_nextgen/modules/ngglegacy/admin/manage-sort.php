@@ -73,7 +73,7 @@ function nggallery_sortorder($galleryID = 0) {
 		$base_url = $clean_url;
     ?>
 	<script type="text/javascript">
-		jQuery(document).ready(function($) {
+        $(function() {
 			if ($(this).data('ready'))
 			    return;
 

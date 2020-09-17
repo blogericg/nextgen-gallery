@@ -307,7 +307,7 @@ function nggallery_picturelist($controller)
             return confirm('<?php echo sprintf(esc_js(__("You are about to start the bulk edit for %s images \n \n 'Cancel' to stop, 'OK' to proceed.",'nggallery')), "' + numchecked + '") ; ?>');
         }
 
-        $(document).ready(function($) {
+        $(function() {
             if ($(this).data('ready')) {
                 return;
             }
@@ -753,7 +753,7 @@ function nggallery_picturelist($controller)
     <!-- /#new_thumbnail -->
 
     <script type="text/javascript">
-        jQuery(document).ready(function($) {
+        $(function() {
             columns.init('nggallery-manage-images');
 
             // Ensure that thumb preview images are always up-to-date

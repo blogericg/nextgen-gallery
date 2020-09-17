@@ -3,8 +3,7 @@
  * navigating tabs on the NextGEN Overview page. 
  * 
  */ 
-
-jQuery(document).ready(function($) {
+$(function() {
     $('#ngg-tabs-wrapper').find('a').click(function() {
         $('#ngg-tabs-wrapper').find('a').removeClass('nav-tab-active');
         $('.ngg-tab').removeClass('active');
