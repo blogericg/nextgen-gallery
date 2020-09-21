@@ -389,6 +389,13 @@ class M_Gallery_Display extends C_Base_Module
 	        NGG_SCRIPT_VERSION
         );
 
+        wp_register_script(
+            'shave.js',
+            $this->object->get_static_url('photocrati-nextgen_gallery_display#shave.js'),
+            [],
+            NGG_SCRIPT_VERSION
+        );
+
         if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
         {
             wp_register_style(

@@ -388,12 +388,7 @@ class A_NextGen_Basic_Album_Controller extends Mixin_NextGen_Basic_Pagination
             NGG_SCRIPT_VERSION
         );
 
-        wp_enqueue_script(
-            'shave.js',
-            $this->object->get_static_url('photocrati-nextgen_gallery_display#shave.js'),
-            [],
-            NGG_SCRIPT_VERSION
-        );
+        wp_enqueue_script('shave.js');
 
         $ds = $displayed_gallery->display_settings;
         if ((!empty($ds['enable_breadcrumbs']) && $ds['enable_breadcrumbs'])
