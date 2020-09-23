@@ -308,7 +308,7 @@ class nggManageAlbum {
 
 <script type="text/javascript">
 
-$(function() {
+(function($) {
     if ($(this).data('ready')) return;
 
     if (window.Frame_Event_Publisher) {
@@ -401,7 +401,7 @@ $(function() {
     }
 
     $(this).data('ready', true);
-});
+})(jQuery);
 
 var toggleContent = function(e)
 {

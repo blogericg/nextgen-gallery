@@ -753,7 +753,7 @@ function nggallery_picturelist($controller)
     <!-- /#new_thumbnail -->
 
     <script type="text/javascript">
-        $(function() {
+        (function($) {
             columns.init('nggallery-manage-images');
 
             // Ensure that thumb preview images are always up-to-date
@@ -767,7 +767,7 @@ function nggallery_picturelist($controller)
                     $this.attr('src', src);
                 }
             })
-        });
+        })(jQuery);
     </script>
     <?php
 }

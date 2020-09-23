@@ -182,12 +182,12 @@ if ($thumbnail_crop_frame != null)
 </div>
 
 <script type="text/javascript">
-    $(function() {
-        jQuery('#imageToEdit').Jcrop({
+    (function($) {
+            jQuery('#imageToEdit').Jcrop({
             onChange: showPreview,
             onSelect: showPreview,
             <?php echo $default_crop_js_parameter; ?>
             aspectRatio: <?php echo str_replace(',', '.', round($WidthHtmlPrev/$HeightHtmlPrev, 3)); ?>
         });
-    });
+    })(jQuery);
 </script>

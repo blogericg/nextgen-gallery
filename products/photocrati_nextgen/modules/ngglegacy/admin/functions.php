@@ -738,10 +738,10 @@ class nggAdmin{
                 maxStep: Images.length
             };
 
-            $(function() {
-                nggProgressBar.init( nggAjaxOptions );
-                nggAjax.init( nggAjaxOptions );
-            });
+            (function($) {
+                nggProgressBar.init(nggAjaxOptions);
+                nggAjax.init(nggAjaxOptions);
+            })(jQuery);
         </script>
     <?php
         $script = ob_get_clean();

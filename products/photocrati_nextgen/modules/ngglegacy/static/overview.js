@@ -2,8 +2,8 @@
  * Overview Page JS for NextGEN Gallery: Provides JS for 
  * navigating tabs on the NextGEN Overview page. 
  * 
- */ 
-$(function() {
+ */
+(function($) {
     $('#ngg-tabs-wrapper').find('a').click(function() {
         $('#ngg-tabs-wrapper').find('a').removeClass('nav-tab-active');
         $('.ngg-tab').removeClass('active');
@@ -21,4 +21,4 @@ $(function() {
     $('#' + activeTab).addClass('active');
     $('#' + activeTab + '-tab').addClass('nav-tab-active');
     $('.nav-tab-active').click();
-});
+})(jQuery);

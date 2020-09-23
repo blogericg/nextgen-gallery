@@ -73,7 +73,7 @@ function nggallery_sortorder($galleryID = 0) {
 		$base_url = $clean_url;
     ?>
 	<script type="text/javascript">
-        $(function() {
+        (function($) {
 			if ($(this).data('ready'))
 			    return;
 
@@ -103,7 +103,7 @@ function nggallery_sortorder($galleryID = 0) {
 			}
 
 			$(this).data('ready', true);
-		});
+		})(jQuery);
 	</script>
 
 	<?php if ($action_status['message'] != '') { ?>

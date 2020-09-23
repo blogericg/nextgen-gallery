@@ -256,13 +256,13 @@ if ($nb_tags < $tag_count && $offset>0) {
 	</div> <!-- /.ngg_page_content_main -->
   	<script type="text/javascript">
         // Register initial event
-        $(function() {
+        (function($) {
             $('#taglist ul li span').on("click", function() {
                 addTag(this.innerHTML, "renametag_old");
                 addTag(this.innerHTML, "deletetag_name");
                 addTag(this.innerHTML, "tagname_match");
             });
-        });
+        })(jQuery);
 
         // Add tag into input
         function addTag(tag, name_element) {

@@ -1,4 +1,4 @@
-jQuery(function() {
+(function($) {
     $.each(window.galleries, function(index, gallery) {
         if (gallery.display_type === 'photocrati-nextgen_basic_slideshow') {
             var settings = gallery.display_settings;
@@ -15,4 +15,4 @@ jQuery(function() {
             });
         }
     });
-});
+})(jQuery);
