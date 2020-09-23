@@ -754,19 +754,21 @@ function nggallery_picturelist($controller)
 
     <script type="text/javascript">
         (function($) {
-            columns.init('nggallery-manage-images');
+            $(function() {
+                columns.init('nggallery-manage-images');
 
-            // Ensure that thumb preview images are always up-to-date
-            $('#ngg-listimages img.thumb').each(function() {
-                var $this       = $(this);
-                var src         = $this.attr('src');
-                var matchData   = src.match(/\?i=(\d+)$/);
-                if (matchData) {
-                    var i = parseInt(matchData[1]) + 1;
-                    src = src.replace(matchData[0], "?i=" + i.toString());
-                    $this.attr('src', src);
-                }
-            })
+                // Ensure that thumb preview images are always up-to-date
+                $('#ngg-listimages img.thumb').each(function () {
+                    var $this = $(this);
+                    var src = $this.attr('src');
+                    var matchData = src.match(/\?i=(\d+)$/);
+                    if (matchData) {
+                        var i = parseInt(matchData[1]) + 1;
+                        src = src.replace(matchData[0], "?i=" + i.toString());
+                        $this.attr('src', src);
+                    }
+                })
+            });
         })(jQuery);
     </script>
     <?php

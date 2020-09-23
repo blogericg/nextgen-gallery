@@ -307,104 +307,106 @@ class nggManageAlbum {
 </style>
 
 <script type="text/javascript">
-
 (function($) {
-    if ($(this).data('ready')) return;
+    $(function() {
+        if ($(this).data('ready')) {
+            return;
+        }
 
-    if (window.Frame_Event_Publisher) {
-        // Refresh when a new gallery has been added
-        Frame_Event_Publisher.listen_for('attach_to_post:manage_galleries attach_to_post:new_gallery', function(){
-            window.location.href = window.location.href.toString();
+        if (window.Frame_Event_Publisher) {
+            // Refresh when a new gallery has been added
+            Frame_Event_Publisher.listen_for('attach_to_post:manage_galleries attach_to_post:new_gallery', function () {
+                window.location.href = window.location.href.toString();
+            });
+
+            // Updates the thumbnail image when a previewpic has been modified
+            Frame_Event_Publisher.listen_for('attach_to_post:thumbnail_modified', function (data) {
+                var image_id = data.image[data.image.id_field];
+                var $image = $('img[rel="' + image_id + '"]');
+                if ($image.length > 0) {
+                    $image.attr('src', data.image.thumb_url);
+                }
+            });
+        }
+
+        // Select2 doesn't play nicely inside of jQuery-UI modals; this following block
+        // is necessary to allow the select2 search field to receive input focus
+        if ($.ui && $.ui.dialog && $.ui.dialog.prototype._allowInteraction) {
+            var allowInteraction = $.ui.dialog.prototype._allowInteraction;
+            $.ui.dialog.prototype._allowInteraction = function (e) {
+                if ($(e.target).closest('.select2-dropdown').length) {
+                    return true;
+                }
+                return allowInteraction.apply(this, arguments);
+            };
+        }
+
+        $("#previewpic").select2({
+            width: '100%'
         });
 
-        // Updates the thumbnail image when a previewpic has been modified
-        Frame_Event_Publisher.listen_for('attach_to_post:thumbnail_modified', function(data){
-            var image_id = data.image[data.image.id_field];
-            var $image = $('img[rel="'+image_id+'"]');
-            if ($image.length > 0) {
-                $image.attr('src', data.image.thumb_url);
-            }
+        jQuery('#selectContainer').sortable({
+            items: '.groupItem',
+            placeholder: 'sort_placeholder',
+            opacity: 0.7,
+            tolerance: 'intersect',
+            distance: 2,
+            forcePlaceholderSize: true,
+            connectWith: ['#galleryContainer']
         });
-    }
 
-    // Select2 doesn't play nicely inside of jQuery-UI modals; this following block
-    // is necessary to allow the select2 search field to receive input focus
-    if ($.ui && $.ui.dialog && $.ui.dialog.prototype._allowInteraction) {
-        var allowInteraction = $.ui.dialog.prototype._allowInteraction;
-        $.ui.dialog.prototype._allowInteraction = function(e) {
-            if ($(e.target).closest('.select2-dropdown').length) {
-                return true;
-            }
-            return allowInteraction.apply(this, arguments);
-        };
-    }
+        jQuery('#galleryContainer').sortable({
+            items: '.groupItem',
+            placeholder: 'sort_placeholder',
+            opacity: 0.7,
+            tolerance: 'intersect',
+            distance: 2,
+            forcePlaceholderSize: true,
+            connectWith: ['#selectContainer', '#albumContainer']
+        });
 
-    $("#previewpic").select2({
-        width: '100%'
+        jQuery('#albumContainer').sortable({
+            items: '.groupItem',
+            placeholder: 'sort_placeholder',
+            opacity: 0.7,
+            tolerance: 'intersect',
+            distance: 2,
+            forcePlaceholderSize: true,
+            connectWith: ['#galleryContainer']
+        });
+
+        jQuery('a.min').on('click', toggleContent);
+
+        // Hide used galleries
+        jQuery('a#toggle_used').click(function () {
+            jQuery('#selectContainer div.inUse').toggle();
+            return false;
+        });
+
+        // Maximize All Portlets (whole site, no differentiation)
+        jQuery('a#all_max').click(function () {
+            jQuery('div.itemContent:hidden').show();
+            return false;
+        });
+
+        // Minimize All Portlets (whole site, no differentiation)
+        jQuery('a#all_min').click(function () {
+            jQuery('div.itemContent:visible').hide();
+            return false;
+        });
+
+        // Auto Minimize if more than 4 (whole site, no differentiation)
+        if (jQuery('a.min').length > 4) {
+            jQuery('a.min').html('[+]');
+            jQuery('div.itemContent:visible').hide();
+            jQuery('#selectContainer div.inUse').toggle();
+        }
+
+        $(this).data('ready', true);
     });
-
-    jQuery('#selectContainer').sortable({
-        items: '.groupItem',
-        placeholder: 'sort_placeholder',
-        opacity: 0.7,
-        tolerance: 'intersect',
-        distance: 2,
-        forcePlaceholderSize: true ,
-        connectWith: ['#galleryContainer']
-    });
-
-    jQuery('#galleryContainer').sortable({
-        items: '.groupItem',
-        placeholder: 'sort_placeholder',
-        opacity: 0.7,
-        tolerance: 'intersect',
-        distance: 2,
-        forcePlaceholderSize: true ,
-        connectWith: ['#selectContainer', '#albumContainer']
-    });
-
-    jQuery('#albumContainer').sortable({
-        items: '.groupItem',
-        placeholder: 'sort_placeholder',
-        opacity: 0.7,
-        tolerance: 'intersect',
-        distance: 2,
-        forcePlaceholderSize: true ,
-        connectWith: ['#galleryContainer']
-    });
-
-    jQuery('a.min').on('click', toggleContent);
-
-    // Hide used galleries
-    jQuery('a#toggle_used').click(function() {
-        jQuery('#selectContainer div.inUse').toggle();
-        return false;
-    });
-
-    // Maximize All Portlets (whole site, no differentiation)
-    jQuery('a#all_max').click(function() {
-        jQuery('div.itemContent:hidden').show();
-        return false;
-    });
-
-    // Minimize All Portlets (whole site, no differentiation)
-    jQuery('a#all_min').click(function() {
-        jQuery('div.itemContent:visible').hide();
-        return false;
-    });
-
-    // Auto Minimize if more than 4 (whole site, no differentiation)
-    if (jQuery('a.min').length > 4) {
-        jQuery('a.min').html('[+]');
-        jQuery('div.itemContent:visible').hide();
-        jQuery('#selectContainer div.inUse').toggle();
-    }
-
-    $(this).data('ready', true);
 })(jQuery);
 
-var toggleContent = function(e)
-{
+var toggleContent = function(e) {
 	var targetContent = jQuery('div.itemContent', this.parentNode.parentNode);
 	if (targetContent.css('display') == 'none') {
 		targetContent.slideDown(300);
@@ -416,8 +418,7 @@ var toggleContent = function(e)
 	return false;
 };
 
-function ngg_serialize(s)
-{
+function ngg_serialize(s) {
 	//serial = jQuery.SortSerialize(s);
 	serial = jQuery('#galleryContainer').sortable('serialize');
 	jQuery('input[name=sortorder]').val(serial);

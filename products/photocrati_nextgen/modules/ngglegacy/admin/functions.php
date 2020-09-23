@@ -739,8 +739,10 @@ class nggAdmin{
             };
 
             (function($) {
-                nggProgressBar.init(nggAjaxOptions);
-                nggAjax.init(nggAjaxOptions);
+                $(function() {
+                    nggProgressBar.init(nggAjaxOptions);
+                    nggAjax.init(nggAjaxOptions);
+                });
             })(jQuery);
         </script>
     <?php

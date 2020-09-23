@@ -4,21 +4,23 @@
  * 
  */
 (function($) {
-    $('#ngg-tabs-wrapper').find('a').click(function() {
-        $('#ngg-tabs-wrapper').find('a').removeClass('nav-tab-active');
-        $('.ngg-tab').removeClass('active');
+    $(function() {
+        $('#ngg-tabs-wrapper').find('a').click(function () {
+            $('#ngg-tabs-wrapper').find('a').removeClass('nav-tab-active');
+            $('.ngg-tab').removeClass('active');
 
-        var id = jQuery(this).attr('id').replace('-link', '');
-        $('#' + id).addClass('active');
-        $(this).addClass('nav-tab-active');
+            var id = jQuery(this).attr('id').replace('-link', '');
+            $('#' + id).addClass('active');
+            $(this).addClass('nav-tab-active');
+        });
+
+        var activeTab = window.location.hash.replace('#top#', '');
+        if ('' === activeTab) {
+            activeTab = $('.ngg-tab').attr('id');
+        }
+
+        $('#' + activeTab).addClass('active');
+        $('#' + activeTab + '-tab').addClass('nav-tab-active');
+        $('.nav-tab-active').click();
     });
-
-    var activeTab = window.location.hash.replace('#top#', '');
-    if ('' === activeTab) {
-        activeTab = $('.ngg-tab').attr('id');
-    }
-
-    $('#' + activeTab).addClass('active');
-    $('#' + activeTab + '-tab').addClass('nav-tab-active');
-    $('.nav-tab-active').click();
 })(jQuery);

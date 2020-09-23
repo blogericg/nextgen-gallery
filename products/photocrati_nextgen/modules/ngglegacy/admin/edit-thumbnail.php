@@ -183,11 +183,13 @@ if ($thumbnail_crop_frame != null)
 
 <script type="text/javascript">
     (function($) {
+        $(function() {
             jQuery('#imageToEdit').Jcrop({
-            onChange: showPreview,
-            onSelect: showPreview,
-            <?php echo $default_crop_js_parameter; ?>
-            aspectRatio: <?php echo str_replace(',', '.', round($WidthHtmlPrev/$HeightHtmlPrev, 3)); ?>
+                onChange: showPreview,
+                onSelect: showPreview,
+                <?php echo $default_crop_js_parameter; ?>
+                aspectRatio: <?php echo str_replace(',', '.', round($WidthHtmlPrev / $HeightHtmlPrev, 3)); ?>
+            });
         });
     })(jQuery);
 </script>
