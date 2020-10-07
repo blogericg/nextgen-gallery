@@ -560,14 +560,13 @@ class M_NextGen_Admin extends C_Base_Module
         $wizard->set_step_view('add_gallery_tab', '#attach_to_post_tabs a#ui-id-2');
         $wizard->set_step_context('add_gallery_tab', 'iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]');
         $wizard->set_step_lazy('add_gallery_tab', true);
-        $wizard->set_step_condition('add_gallery_tab', 'nextgen_event', 'plupload_init', null, 10000);
+        $wizard->set_step_condition('add_gallery_tab', 'nextgen_event', 'uppy_init', null, 10000);
         $wizard->add_step('input_gallery_name');
         $wizard->set_step_text('input_gallery_name', __('Select a name for your gallery.', 'nggallery'));
         $wizard->set_step_target('input_gallery_name', 'input#gallery_name:visible', 'bottom center', 'top center');
         $wizard->set_step_view('input_gallery_name', 'input#gallery_name');
         $wizard->set_step_context('input_gallery_name', array('iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]', 'iframe#ngg-iframe-create_tab'));
         $wizard->set_step_lazy('input_gallery_name', true);
-        // $wizard->set_step_condition('input_gallery_name', 'nextgen_event', 'plupload_init', null, 10000);
         $wizard->add_step('select_images');
         $wizard->set_step_text('select_images', __('Now click the "Add Files" button and select some images to add to the gallery.', 'nggallery'));
         $wizard->set_step_target('select_images', 'a#uploader_browse', 'bottom center', 'top center');
