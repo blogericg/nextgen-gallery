@@ -64,7 +64,6 @@ class A_Upload_Images_Form extends Mixin
         ];
         if (!empty($mapping[$locale]))
             $locale = $mapping[$locale];
-        return 'nl_NL';
         return $locale;
 
     }
