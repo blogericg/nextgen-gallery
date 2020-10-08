@@ -6,6 +6,10 @@
 
 /* Customize the overall block */
 
+div[data-type="imagely/nextgen-gallery"] {
+    z-index: 40;
+}
+
 div[data-type="imagely/nextgen-gallery"].is-selected>.editor-block-list__block-edit:before,
 div[data-type="imagely/nextgen-gallery"].is-hovered>.editor-block-list__block-edit:before {
 	outline: none !important;
