@@ -7,7 +7,7 @@
 /* Customize the overall block */
 
 div[data-type="imagely/nextgen-gallery"] {
-    z-index: 40;
+    z-index: 30;
 }
 
 div[data-type="imagely/nextgen-gallery"].is-selected>.editor-block-list__block-edit:before,
