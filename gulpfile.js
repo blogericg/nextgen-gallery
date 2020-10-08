@@ -37,6 +37,7 @@ const uglify 	= require('gulp-uglify');
 const cleancss  = require('gulp-clean-css');
 const rename 	= require('gulp-rename');
 const webpack 	= require('webpack-stream');
+const babel 	= require('gulp-babel');
 const exec 		= children.exec;
 
 const gutil = {
@@ -275,6 +276,9 @@ gulp.task('minify-css', function() {
 
 gulp.task('minify-js', function() {  
   return gulp.src(["./build/" + product + "/**/*.js", "!./build/"+product+"/**/*.min.js*", "!./build/"+product+"/**/*.packed.js*"])
+		.pipe(babel({
+			presets: ['@babel/env']
+		}))
 		.pipe(uglify())
 	  	.pipe(rename({
 		  	suffix: ".min"
