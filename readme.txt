@@ -5,7 +5,7 @@ Requires at least: 5.2.0
 Stable tag: 3.3.18
 Tested up to: 5.5.1
 License: GPLv3
-Requires PHP: 5.4
+Requires PHP: 5.6
 
 The most popular WordPress gallery plugin and one of the most popular plugins of all time with over 30 million downloads.
 
@@ -180,10 +180,12 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.3.18 - 09.30.2020 =
+= V3.3.18 - 10.13.2020 =
 * NEW:     PHP 5.6 is the minimum supported PHP version
+* NEW:     WordPress 5.2 is the minimum support PHP version
 * Fixed:   Block disappearing in Block Editor
 * Fixed:   Gutenberg block and featured image features were broken on wordpress.com hosting
+* Note:    NextGEN Gallery will soon be licensed under GPLv3.
 
 = V3.3.17.1 - 09.03.2020 =
 * Fixed:   Gutenberg block and featured image features were broken on wordpress.com hosting
