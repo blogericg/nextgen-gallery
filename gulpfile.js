@@ -37,6 +37,7 @@ const uglify 	= require('gulp-uglify');
 const cleancss  = require('gulp-clean-css');
 const rename 	= require('gulp-rename');
 const webpack 	= require('webpack-stream');
+// const babel 	= require('gulp-babel');
 const exec 		= children.exec;
 
 const gutil = {
@@ -231,13 +232,13 @@ gulp.task('copybuild', function() {
 });
 
 gulp.task('webpack-block', function() {
-  return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/block.min.js')
+  return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/block.jsx')
     .pipe(webpack({
 		mode: "production",
 		devtool: "source-map",	
 		module: {
 			rules: [
-				{ test: /\.js$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
+				{ test: /\.js[x]?$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
 			],
 		},
 		output: {
@@ -248,13 +249,13 @@ gulp.task('webpack-block', function() {
 });
 
 gulp.task('webpack-others', function() {
-	return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/post-thumbnail.min.js')
+	return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/post-thumbnail.jsx')
 	.pipe(webpack({
 		mode: "production",
 		devtool: "source-map",	
 		module: {
 			rules: [
-			{ test: /\.js$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
+			{ test: /\.js[x]?$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
 			],
 		},
 		output: {
@@ -275,6 +276,9 @@ gulp.task('minify-css', function() {
 
 gulp.task('minify-js', function() {  
   return gulp.src(["./build/" + product + "/**/*.js", "!./build/"+product+"/**/*.min.js*", "!./build/"+product+"/**/*.packed.js*"])
+		// .pipe(babel({
+		// 	presets: ['@babel/env']
+		// }))
 		.pipe(uglify())
 	  	.pipe(rename({
 		  	suffix: ".min"
@@ -292,6 +296,11 @@ gulp.task('compile', shell.task('php bin/compile_modules.php', {
 gulp.task('cleanbin', function() {
 	return del('./build/' + product + '/bin');
 });
+
+// Remove development related packages from Composer
+gulp.task('cleanvendor', shell.task('composer remove --dev nikic/php-parser', {
+	cwd: './build/' + product
+}));
 
 // If requested, push minifed/compiled files to local testing instance
 gulp.task('deploybuild', function() {
@@ -323,7 +332,7 @@ gulp.task('rdeploy', function(){
 /*
  * Finally, one command to do it all in sequence
  */
-var build_tasks 					= ['copybuild', 'webpack-block', 'webpack-others', 'minify', 'compile', 'cleanbin'];
+var build_tasks 					= ['copybuild', 'webpack-block', 'webpack-others', 'minify', 'compile', 'cleanbin', 'cleanvendor'];
 if (!do_keep_build)					build_tasks.unshift('delbuild');
 if (do_zip)							build_tasks.push('zip');
 if (do_deploy && !do_use_lftp)		build_tasks = build_tasks.concat(['deldeploy', 'deploy']);
