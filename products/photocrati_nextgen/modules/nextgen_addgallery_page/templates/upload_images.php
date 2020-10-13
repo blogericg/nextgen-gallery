@@ -78,8 +78,8 @@ $max_size_message = sprintf(__('You may select files up to %dMB', 'nggallery'), 
                                       .replace(/%20/g, '+');
     };
 
-    // Sets the plupload url with necessary parameters in the QS
-    window.set_plupload_url = function(gallery_id, gallery_name) {
+    // Sets the upload url with necessary parameters in the QS
+    window.set_ngg_upload_url = function(gallery_id, gallery_name) {
         var qs = "&action=upload_image&gallery_id=" + urlencode(gallery_id);
         qs += "&gallery_name=" + urlencode(gallery_name);
         qs += "&nonce=" + urlencode("<?php echo $nonce; ?>");
@@ -148,7 +148,7 @@ $max_size_message = sprintf(__('You may select files up to %dMB', 'nggallery'), 
                         }
                     }
             }).use(Uppy.XHRUpload, {
-                endpoint: set_plupload_url(0, ''),
+                endpoint: set_ngg_upload_url(0, ''),
                 fieldName: 'file',
                 limit: 6,
                 getResponseError: (text, response) => {
@@ -221,6 +221,10 @@ $max_size_message = sprintf(__('You may select files up to %dMB', 'nggallery'), 
                 gallery_create.classList.remove('hidden');
             });
 
+            // This is used by the NextGEN wizard to determine when the uploads process is complete
+            window.ngg_uppy = uppy;
+            top.window.ngg_uppy = uppy;
+
             function adjust_upload_button() {
                 const upload_btn = document.getElementsByClassName('uppy-StatusBar-actionBtn--upload')[0];
                 if ('undefined' === typeof upload_btn) {
@@ -237,7 +241,7 @@ $max_size_message = sprintf(__('You may select files up to %dMB', 'nggallery'), 
                 if (!chosen_name) {
                     chosen_name = parseInt(gallery_select.value) === 0 ? gallery_name.value : gallery_select.selectedOptions[0].dataset.originalValue;
                 }
-                const endpoint = set_plupload_url(gallery_select.value, chosen_name)
+                const endpoint = set_ngg_upload_url(gallery_select.value, chosen_name)
                 uppy.getPlugin('XHRUpload').setOptions({
                     endpoint: endpoint
                 });

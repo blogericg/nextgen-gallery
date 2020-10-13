@@ -287,7 +287,7 @@ class M_Attach_To_Post extends C_Base_Module
 		        $controller->index_action();
 	        }
 
-            throw new E_Clean_Exit;
+            exit();
         }
     }
 

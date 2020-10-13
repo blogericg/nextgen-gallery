@@ -685,16 +685,13 @@ if (typeof(NextGEN_Wizard_Manager) === 'undefined') {
 								break;
 							}
 							case 'event_bind':
-							case 'plupload_bind': {
+							case 'uppy_bind': {
 								var doBind = $ob.length > 0;
-							
-								if (condType == 'plupload_bind') {
-									if (typeof($ob.pluploadQueue) !== 'undefined')
-										$ob = $ob.pluploadQueue();
-									else
-										doBind = false;
+
+								if (condType === 'uppy_bind' && 'undefined' !== typeof window.ngg_uppy) {
+									$ob = window.ngg_uppy;
 								}
-								
+
 								if (doBind) {
 									this.condition_setup = true;
 									var tourStep = this;

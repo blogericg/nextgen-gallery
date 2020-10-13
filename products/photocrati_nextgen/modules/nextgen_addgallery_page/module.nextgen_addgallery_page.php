@@ -84,8 +84,6 @@ class M_NextGen_AddGallery_Page extends C_Base_Module
     {
         add_action('admin_init', array($this, 'register_requirements'));
         add_action('admin_init', array($this, 'register_scripts'));
-
-        add_filter('ngg_non_minified_files', array($this, 'do_not_minify'), 10, 2);
     }
 
     public function register_requirements()
@@ -177,15 +175,6 @@ class M_NextGen_AddGallery_Page extends C_Base_Module
                 NGG_SCRIPT_VERSION
             );
         }
-    }
-
-    // plupload i18n JS should not be minified
-    function do_not_minify($path, $module)
-    {
-        $retval = FALSE;
-        if ($module == 'photocrati-nextgen_addgallery_page' && strpos($path, '/i18n/') !== FALSE)
-            $retval = TRUE;
-        return $retval;
     }
 }
 new M_NextGen_AddGallery_Page();
