@@ -2,7 +2,7 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 5.2.0
-Stable tag: 3.3.20
+Stable tag: 3.3.20.1
 Tested up to: 5.5.1
 License: GPLv3
 Requires PHP: 5.6
@@ -179,6 +179,11 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 
 == Changelog ==
+
+= v3.3.20.1 - 10.14.2020 =
+* NEW:     Replaced plupload with a new uppy.js based uploader for faster uploading
+* Changed: Several changes have been made for future jQuery 3.0 compatibility
+* Fixed:   Gutenberg Block and Featured Image features on wordpress.com hosting
 
 = V3.3.20 - 10.13.2020 =
 * NEW:     PHP 5.6 is the minimum supported PHP version
