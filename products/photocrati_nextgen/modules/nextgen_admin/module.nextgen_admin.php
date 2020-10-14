@@ -496,91 +496,281 @@ class M_NextGen_Admin extends C_Base_Module
         $wizard = $wizards->add_wizard('nextgen.beginner.gallery_creation_igw');
         $wizard->add_step('start');
         $wizard->set_step_text('start', __('Hello, this wizard will guide you through creating a NextGEN gallery and inserting it into a page. Click "Next step" to proceed.', 'nggallery'));
+
         $wizard->add_step('pages_menu');
         $wizard->set_step_text('pages_menu', __('Click on "Pages" to access your WordPress pages.', 'nggallery'));
         $wizard->set_step_target('pages_menu', '#menu-pages a.menu-top', 'right center', 'left center');
         $wizard->set_step_view('pages_menu', '#menu-pages a.menu-top');
+
         $wizard->add_step('add_page_menu');
         $wizard->set_step_text('add_page_menu', __('Click "Add New" to create a new page.', 'nggallery'));
         $wizard->set_step_target('add_page_menu', '#menu-pages a[href*="post-new.php?post_type=page"]', 'right center', 'left center');
         $wizard->set_step_view('add_page_menu', '#menu-pages a[href*="post-new.php?post_type=page"]');
-        
+
+
+        //
+        // The following extra lines of whitespace between steps are intentional for readability while scrolling -- Benjamin
+        //
+
         if ($this->is_block_editor())
         {
             // Input page title
             $wizard->add_step('input_page_title');
-            $wizard->set_step_text('input_page_title', __('Type in a title for your page.', 'nggallery'));
-            $wizard->set_step_target('input_page_title', '.editor-post-title__input', 'bottom center', 'top center');
-            $wizard->set_step_view('input_page_title', '.editor-post-title__input');
+            $wizard->set_step_text(
+                'input_page_title',
+                __('Type in a title for your page.', 'nggallery')
+            );
+            $wizard->set_step_target(
+                'input_page_title',
+                '.editor-post-title__input',
+                'bottom center',
+                'top center'
+            );
+            $wizard->set_step_view(
+                'input_page_title',
+                '.editor-post-title__input'
+            );
+
+
 
             // Add NextGen block
-            $wizard->add_step('add_block');
-            $wizard->set_step_text('add_block', __('Now click the button to insert a block.', 'nggallery'));
-            $wizard->set_step_target('add_block', 'button.block-editor-inserter__toggle', 'right center', 'left center');
-            $wizard->set_step_view('add_block', 'button.block-editor-inserter__toggle');
-            $wizard->set_step_lazy('add_block', true);
+            $wizard->add_step('create_ngg_block');
+            $wizard->set_step_text(
+                'create_ngg_block',
+                __('Now click the button to insert a block.', 'nggallery')
+            );
+            $wizard->set_step_target(
+                'create_ngg_block',
+                'button.block-editor-inserter__toggle',
+                'right center',
+                'left center'
+            );
+            $wizard->set_step_view(
+                'create_ngg_block',
+                'button.block-editor-inserter__toggle'
+            );
+            $wizard->set_step_lazy('create_ngg_block', true);
+
+
 
             // Search for NextGen block
             $wizard->add_step('search_nextgen');
-            $wizard->set_step_text('search_nextgen', __('Type "nextgen" to search for the NextGEN block.', 'nggallery'));
-            $wizard->set_step_target( 'search_nextgen', 'input.block-editor-inserter__search', 'right center', 'left center');
-            $wizard->set_step_view( 'search_nextgen', 'input.block-editor-inserter__search');
+            $wizard->set_step_text(
+                'search_nextgen',
+                __('Type "nextgen" to search for the NextGEN block.', 'nggallery')
+            );
+            $wizard->set_step_target(
+                'search_nextgen',
+                'input.block-editor-inserter__search-input',
+                'left center',
+                'right center'
+            );
+            $wizard->set_step_view(
+                'search_nextgen',
+                'input.block-editor-inserter__search-input'
+            );
             $wizard->set_step_lazy('search_nextgen', true);
+
+
 
             // Select NextGen block
             $wizard->add_step('add_ngg_block');
-            $wizard->set_step_text( 'add_ngg_block', __('Click on the NextGEN block to add it.', 'nggallery'));
-            $wizard->set_step_target( 'add_ngg_block', 'button.editor-block-list-item-imagely-nextgen-gallery', 'right center', 'left center');
-            $wizard->set_step_view( 'add_ngg_block', 'button.editor-block-list-item-imagely-nextgen-gallery');
-            $wizard->set_step_lazy('add_ngg_block', true);
-            $wizard->set_step_condition( 'add_ngg_block', 'wait', '1500');
+            $wizard->set_step_text(
+                'add_ngg_block',
+                __('Click on the NextGEN block to add it.', 'nggallery')
+            );
+            $wizard->set_step_target(
+                'add_ngg_block',
+                'button.editor-block-list-item-imagely-nextgen-gallery',
+                'left center',
+                'right center'
+            );
+            $wizard->set_step_view(
+                'add_ngg_block',
+                'button.editor-block-list-item-imagely-nextgen-gallery'
+            );
+            $wizard->set_step_lazy(
+                'add_ngg_block',
+                true
+            );
+            $wizard->set_step_condition(
+                'add_ngg_block',
+                'wait',
+                '1500'
+            );
+
+
 
             // Insert a NextGen Gallery
             $wizard->add_step('add-ngg-gallery');
-            $wizard->set_step_text( 'add-ngg-gallery', __('Now click the "Add Gallery" button to open NextGEN\'s Insert Gallery Window.', 'nggallery'));
-            $wizard->set_step_target( 'add-ngg-gallery', '.add-ngg-gallery', 'bottom center', 'top center');
-            $wizard->set_step_view( 'add-ngg-gallery', '.add-ngg-gallery');
-            $wizard->set_step_lazy('add-ngg-gallery', true);            
+            $wizard->set_step_text(
+                'add-ngg-gallery',
+                __('Now click the "Add Gallery" button to open NextGEN\'s Insert Gallery Window.', 'nggallery')
+            );
+            $wizard->set_step_target(
+                'add-ngg-gallery',
+                '.add-ngg-gallery-button',
+                'bottom center',
+                'top center'
+            );
+            $wizard->set_step_view(
+                'add-ngg-gallery',
+                '.add-ngg-gallery-button'
+            );
+            $wizard->set_step_lazy('add-ngg-gallery', true);
         }
         else {
             $wizard->add_step('input_page_title');
             $wizard->set_step_text('input_page_title', __('Type in a title for your page.', 'nggallery'));
             $wizard->set_step_target('input_page_title', 'input#title', 'bottom center', 'top center');
             $wizard->set_step_view('input_page_title', 'input#title');
-            
+
+
+
             $wizard->add_step('add_gallery_button');
             $wizard->set_step_text('add_gallery_button', __('Now click the "Add Gallery" button to open NextGEN\'s Insert Gallery Window (IGW).', 'nggallery'));
             $wizard->set_step_target('add_gallery_button', 'a#ngg-media-button', 'right center', 'left center');
             $wizard->set_step_view('add_gallery_button', 'a#ngg-media-button');
         }
-        
+
+
+
+        // Begin add_gallery_tab step
         $wizard->add_step('add_gallery_tab');
-        $wizard->set_step_text('add_gallery_tab', __('Now click the "Upload Images" tab to add a new gallery.', 'nggallery'));
-        $wizard->set_step_target('add_gallery_tab', '#attach_to_post_tabs a#ui-id-2', 'right center', 'left center');
-        $wizard->set_step_view('add_gallery_tab', '#attach_to_post_tabs a#ui-id-2');
-        $wizard->set_step_context('add_gallery_tab', 'iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]');
-        $wizard->set_step_lazy('add_gallery_tab', true);
-        $wizard->set_step_condition('add_gallery_tab', 'nextgen_event', 'plupload_init', null, 10000);
+        $wizard->set_step_text(
+            'add_gallery_tab',
+            __('Now click the "Upload Images" tab to add a new gallery.', 'nggallery')
+        );
+        $wizard->set_step_target(
+            'add_gallery_tab',
+            '#attach_to_post_tabs a#ui-id-2',
+            'right center',
+            'left center'
+        );
+        $wizard->set_step_view(
+            'add_gallery_tab',
+            '#attach_to_post_tabs a#ui-id-2'
+        );
+        $wizard->set_step_context(
+            'add_gallery_tab',
+            'iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]'
+        );
+        $wizard->set_step_lazy(
+            'add_gallery_tab',
+            true
+        );
+        $wizard->set_step_condition(
+            'add_gallery_tab',
+            'nextgen_event',
+            'uppy_init',
+            null,
+            10000
+        );
+
+
+
+        // Begin input_gallery_name step
         $wizard->add_step('input_gallery_name');
-        $wizard->set_step_text('input_gallery_name', __('Select a name for your gallery.', 'nggallery'));
-        $wizard->set_step_target('input_gallery_name', 'input#gallery_name:visible', 'bottom center', 'top center');
-        $wizard->set_step_view('input_gallery_name', 'input#gallery_name');
-        $wizard->set_step_context('input_gallery_name', array('iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]', 'iframe#ngg-iframe-create_tab'));
+        $wizard->set_step_text(
+            'input_gallery_name',
+            __('Select a name for your gallery.', 'nggallery')
+        );
+        $wizard->set_step_target(
+            'input_gallery_name',
+            'input#gallery_name:visible',
+            'bottom center',
+            'top center'
+        );
+        $wizard->set_step_view(
+            'input_gallery_name',
+            'input#gallery_name'
+        );
+        $wizard->set_step_context(
+            'input_gallery_name',
+            array('iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]', 'iframe#ngg-iframe-create_tab')
+        );
         $wizard->set_step_lazy('input_gallery_name', true);
-        // $wizard->set_step_condition('input_gallery_name', 'nextgen_event', 'plupload_init', null, 10000);
+
+
+
+        // Begin create_and_select_gallery step
+        $wizard->add_step('create_and_select_gallery');
+        $wizard->set_step_text(
+            'create_and_select_gallery',
+            __("Now click the 'Create & Select' button to create your gallery and upload to it.", 'nggallery')
+        );
+        $wizard->set_step_target(
+            'create_and_select_gallery',
+            'button#gallery_create',
+            'bottom center',
+            'top center'
+        );
+        $wizard->set_step_view(
+            'create_and_select_gallery',
+            'button#gallery_create'
+        );
+        $wizard->set_step_context(
+            'create_and_select_gallery',
+            array('iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]', 'iframe#ngg-iframe-create_tab')
+        );
+        $wizard->set_step_lazy('create_and_select_gallery', true);
+
+
+
+        // Begin select_images step
         $wizard->add_step('select_images');
-        $wizard->set_step_text('select_images', __('Now click the "Add Files" button and select some images to add to the gallery.', 'nggallery'));
-        $wizard->set_step_target('select_images', 'a#uploader_browse', 'bottom center', 'top center');
-        $wizard->set_step_view('select_images', 'a#uploader_browse');
-        $wizard->set_step_context('select_images', array('iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]', 'iframe#ngg-iframe-create_tab'));
+        $wizard->set_step_text(
+            'select_images',
+            __('Now click the "Browse" button and select some images to add to the gallery.', 'nggallery')
+        );
+        $wizard->set_step_target(
+            'select_images',
+            'button.uppy-Dashboard-browse',
+            'bottom center',
+            'top center'
+        );
+        $wizard->set_step_view(
+            'select_images',
+            'button.uppy-Dashboard-browse'
+        );
+        $wizard->set_step_context(
+            'select_images',
+            array('iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]', 'iframe#ngg-iframe-create_tab')
+        );
         $wizard->set_step_lazy('select_images', true);
+
+
+
+        // Begin upload_images step
         $wizard->add_step('upload_images');
-        $wizard->set_step_text('upload_images', __('Now click the "Start Upload" button to begin the upload process.', 'nggallery'));
-        $wizard->set_step_target('upload_images', 'a#uploader_upload', 'bottom center', 'top center');
-        $wizard->set_step_view('upload_images', 'a#uploader_upload');
-        $wizard->set_step_context('upload_images', array('iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]', 'iframe#ngg-iframe-create_tab'));
+        $wizard->set_step_text(
+            'upload_images',
+            __('Now click the "Upload files" button to begin the upload process.', 'nggallery')
+        );
+        $wizard->set_step_target(
+            'upload_images',
+            'button.uppy-StatusBar-actionBtn--upload',
+            'bottom right',
+            'bottom left'
+        );
+        $wizard->set_step_view(
+            'upload_images',
+            'button.uppy-StatusBar-actionBtn--upload'
+        );
+        $wizard->set_step_context(
+            'upload_images',
+            array('iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]', 'iframe#ngg-iframe-create_tab')
+        );
         $wizard->set_step_lazy('upload_images', true);
-        $wizard->set_step_condition('upload_images', 'plupload_bind', 'UploadComplete', array('iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]', 'iframe#ngg-iframe-create_tab', '#uploader'));
+        $wizard->set_step_condition(
+            'upload_images',
+            'uppy_bind',
+            'complete',
+            array('iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]', 'iframe#ngg-iframe-create_tab', '#uploader')
+        );
+
+
+
         $wizard->add_step('display_gallery_tab');
         $wizard->set_step_text('display_gallery_tab', __('Congratulations! You just created your first gallery. Now let\'s insert it into the page. Click the "Insert into Page" tab.', 'nggallery'));
         $wizard->set_step_target('display_gallery_tab', '#attach_to_post_tabs a#ui-id-1', 'right center', 'left center');
@@ -588,18 +778,55 @@ class M_NextGen_Admin extends C_Base_Module
         $wizard->set_step_context('display_gallery_tab', 'iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]');
         $wizard->set_step_lazy('display_gallery_tab', true);
         $wizard->set_step_condition('display_gallery_tab', 'wait', '500');
+
+
+
         $wizard->add_step('display_type_select');
-        $wizard->set_step_text('display_type_select', __('Click on the "NextGEN Basic Slideshow" radio button to select the display type for the gallery.', 'nggallery'));
-        $wizard->set_step_target('display_type_select', '.display_type_preview input[value="photocrati-nextgen_basic_slideshow"]', 'bottom center', 'top center');
-        $wizard->set_step_view('display_type_select', '.display_type_preview input[type="radio"]');
-        $wizard->set_step_context('display_type_select', 'iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]');
+        $wizard->set_step_text(
+            'display_type_select',
+            __('Click on the "NextGEN Basic Slideshow" radio button to select the display type for the gallery.', 'nggallery')
+        );
+        $wizard->set_step_target(
+            'display_type_select',
+            '.display_type_preview input[value="photocrati-nextgen_basic_slideshow"]',
+            'bottom center',
+            'top center'
+        );
+        $wizard->set_step_view(
+            'display_type_select',
+            '.display_type_preview input[value="photocrati-nextgen_basic_slideshow"]'
+        );
+        $wizard->set_step_context(
+            'display_type_select',
+            'iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]'
+        );
         $wizard->set_step_lazy('display_type_select', true);
+
+
+
         $wizard->add_step('source_select');
-        $wizard->set_step_text('source_select', __('Now click inside the "Galleries" field and select your gallery.', 'nggallery'));
-        $wizard->set_step_target('source_select', '#source_configuration .galleries_column .select2-container input', 'right center', 'left center');
-        $wizard->set_step_view('source_select', '#source_configuration .galleries_column select');
-        $wizard->set_step_context('source_select', 'iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]');
+        $wizard->set_step_text(
+            'source_select',
+            __('Now click inside the "Galleries" field and select your gallery.', 'nggallery')
+        );
+        $wizard->set_step_target(
+            'source_select',
+            '#source_configuration .galleries_column .select2-container input',
+            'right center',
+            'left center'
+        );
+        $wizard->set_step_view(
+            'source_select',
+            '#source_configuration .galleries_column .select2-container input'
+        );
+        $wizard->set_step_context(
+            'source_select',
+            'iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]'
+        );
         $wizard->set_step_lazy('source_select', true);
+
+
+
         $wizard->add_step('insert_gallery');
         $wizard->set_step_text('insert_gallery', __('Now click on the "Insert Gallery" button to insert the gallery in your page.', 'nggallery'));
         $wizard->set_step_target('insert_gallery', '#displayed_tab #save_displayed_gallery', 'top center', 'bottom left');
@@ -607,6 +834,7 @@ class M_NextGen_Admin extends C_Base_Module
         $wizard->set_step_context('insert_gallery', 'iframe[src*="' . NGG_ATTACH_TO_POST_SLUG . '"]');
         $wizard->set_step_lazy('insert_gallery', true);
         $wizard->set_step_condition('insert_gallery', 'wait', '1000');
+
         $wizard->add_step('finish');
         $wizard->set_step_text('finish', __('Congratulations! You just created your first gallery. You can now click the "Publish" button on the right to publish your page.', 'nggallery'));
     }
@@ -659,6 +887,7 @@ class M_NextGen_Admin extends C_Base_Module
         $router = C_Router::get_instance();
         
         // Wizards related scripts/styles
+        // We use CSS styles from Bootstrap but bootstrap.js is not used or included
         wp_register_style(
             'bootstrap-tooltip',
             $router->get_static_url('photocrati-nextgen_admin#bootstrap/css/bootstrap-tooltip.css'),

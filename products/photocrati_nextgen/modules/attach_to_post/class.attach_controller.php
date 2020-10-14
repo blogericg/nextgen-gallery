@@ -628,7 +628,7 @@ class Mixin_Attach_To_Post extends Mixin
 		// 	);
 		// }
 
-		return $retval;
+        return apply_filters('ngg_attach_to_post_main_tabs', $retval);
 	}
 
 	/**

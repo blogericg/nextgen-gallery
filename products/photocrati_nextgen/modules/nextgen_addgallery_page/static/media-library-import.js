@@ -195,10 +195,12 @@
         }
     };
 
-    $(document).ready(function() {
-        window.ngg_importml = ngg_importml;
-        ngg_importml.initialize();
-        window.Frame_Event_Publisher.broadcast();
-    });
+    (function($) {
+        $(function() {
+            window.ngg_importml = ngg_importml;
+            ngg_importml.initialize();
+            window.Frame_Event_Publisher.broadcast();
+        });
+    })(jQuery);
 
 })(jQuery);
