@@ -181,8 +181,11 @@ function nggallery_admin_overview()
             <h3><?php echo _e( 'Welcome to NextGEN Gallery', 'nggallery' ); ?></h3>
         </div>
 
-        <div class="about-text" id="ngg-gallery-wizard"><span><?php echo __("Need help getting started? ", 'nggallery')?></span><?php echo ' <a data-ngg-wizard="nextgen.beginner.gallery_creation_igw" class="ngg-wizard-invoker button-primary" href="' . esc_url(add_query_arg('ngg_wizard', 'nextgen.beginner.gallery_creation_igw')) . '">' . __('Launch Gallery Wizard', 'nggallery') . '</a>'; ?>
-        </div>
+        <?php /* Disabled 2020-10-16 - the wizard is broken and needs to be fixed or replaced
+        <div class="about-text" id="ngg-gallery-wizard">
+            <span><?php echo __("Need help getting started? ", 'nggallery')?></span>
+            <?php echo ' <a data-ngg-wizard="nextgen.beginner.gallery_creation_igw" class="ngg-wizard-invoker button-primary" href="' . esc_url(add_query_arg('ngg_wizard', 'nextgen.beginner.gallery_creation_igw')) . '">' . __('Launch Gallery Wizard', 'nggallery') . '</a>'; ?>
+        </div> */ ?>
 
         <div class='ngg_page_content_menu'>
             <a href="javascript:void(0)" data-id="welcome-link"><?php _e( 'Welcome', 'nggallery' ); ?></a>
@@ -211,7 +214,7 @@ function nggallery_admin_overview()
                 </div>
 
                 <div class="headline-feature feature-video">
-                    <iframe width="1050" height="590" src="https://www.youtube.com/embed/4Phvmm3etnw?rel=0" frameborder="0" allowfullscreen></iframe>
+                    <iframe width="1050" height="590" src="https://youtu.be/ZAYj6D5XXNk" frameborder="0" allowfullscreen></iframe>
                 </div>
 
             </div>

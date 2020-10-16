@@ -2,7 +2,6 @@
 
 class C_NextGen_First_Run_Notification_Wizard
 {
-    protected static $wizard = NULL;
     protected static $_instance = NULL;
 
     /**
@@ -10,7 +9,7 @@ class C_NextGen_First_Run_Notification_Wizard
      */
     public function is_renderable()
     {
-        return is_null(self::$wizard) ? FALSE : TRUE;
+        return TRUE;
     }
 
     /**
@@ -18,14 +17,27 @@ class C_NextGen_First_Run_Notification_Wizard
      */
     public function render()
     {
-        if (!self::$wizard)
-            return '';
+        $block = <<<EOT
+        <style>
+            div#ngg-wizard-video {
+                width: 710px;
+                max-width: 710px;
+            }
+        </style>
+        <div class="hidden" id="ngg-wizard-video" style="border: none">
+            <iframe width="640"
+                    height="480"
+                    src="https://www.youtube.com/embed/ZAYj6D5XXNk?autoplay=1"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media;"
+                    allowfullscreen></iframe>
+        </div>
+EOT;
 
-        $wizard = self::$wizard;
         return __('Thanks for installing NextGEN Gallery! Want help creating your first gallery?', 'nggallery')
-            . ' <a data-ngg-wizard="' . $wizard->get_id() . '" class="ngg-wizard-invoker" href="' . esc_url(add_query_arg('ngg_wizard', $wizard->get_id())) . '">' . __('Launch the Gallery Wizard', 'nggallery') . '</a>. '
+            . ' <a id="ngg-video-wizard-invoker" href="">' . __('Launch the Gallery Wizard', 'nggallery') . '</a>. '
             . __('If you close this message, you can also launch the Gallery Wizard at any time from the', 'nggallery')
-            . ' <a href="' . esc_url(admin_url('admin.php?page=nextgen-gallery')) . '">' . __('NextGEN Overview page', 'nggallery') . '</a>.';
+            . ' <a href="' . esc_url(admin_url('admin.php?page=nextgen-gallery')) . '">' . __('NextGEN Overview page', 'nggallery') . '</a>.' . $block;
     }
 
     public function get_css_class()
@@ -40,9 +52,19 @@ class C_NextGen_First_Run_Notification_Wizard
 
     public function dismiss($code)
     {
-        return array(
-            'handled' => TRUE
+        return ['handled' => TRUE];
+    }
+
+    public function enqueue_backend_resources()
+    {
+        wp_enqueue_script(
+            'nextgen_first_run_wizard',
+            C_Router::get_instance()->get_static_url('photocrati-nextgen_admin#first_run_wizard.js'),
+            ['jquery', 'jquery-modal'],
+            NGG_SCRIPT_VERSION,
+            TRUE
         );
+        wp_enqueue_style('jquery-modal');
     }
 
     /**
@@ -55,10 +77,5 @@ class C_NextGen_First_Run_Notification_Wizard
             self::$_instance = new $klass;
         }
         return self::$_instance;
-    }
-
-    static public function set_wizard($wizard)
-    {
-        self::$wizard = $wizard;
     }
 }

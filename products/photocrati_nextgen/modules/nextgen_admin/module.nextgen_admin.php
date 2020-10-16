@@ -162,10 +162,10 @@ class M_NextGen_Admin extends C_Base_Module
         // action if we want our resources to be used with the page builder.
         add_action('elementor/editor/before_enqueue_scripts', array($this, 'register_scripts'));
 
-        // Wizard-related hooks
-        add_action('admin_enqueue_scripts', array($this, 'enqueue_wizard_components'));
-        add_action('current_screen', array($this, 'init_wizards'), 20);
-        add_action('current_screen', array($this, 'handle_wizards'), 100);
+        // Disabled 2020-10-16: the wizard and broken and needs to be fixed or replaced
+        // add_action('admin_enqueue_scripts', array($this, 'enqueue_wizard_components'));
+        // add_action('current_screen', array($this, 'init_wizards'), 20);
+        // add_action('current_screen', array($this, 'handle_wizards'), 100);
 
         // Enqueue common static resources for NGG admin pages
         add_filter('ngg_admin_style_handles', array($this, 'get_common_admin_css_handlers'));
@@ -238,7 +238,7 @@ class M_NextGen_Admin extends C_Base_Module
         $notices->add($review_notice_2->get_name(), $review_notice_2);
         $notices->add($review_notice_3->get_name(), $review_notice_3);
 
-        $notices->add('nextgen.beginner.gallery_creation_igw', 'C_NextGen_First_Run_Notification_Wizard');
+        $notices->add('nextgen_first_run_notification', 'C_NextGen_First_Run_Notification_Wizard');
 
         $notices->add('mailchimp_opt_in', 'C_Mailchimp_OptIn_Notice');
     }
