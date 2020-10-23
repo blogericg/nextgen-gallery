@@ -210,11 +210,17 @@ function nggallery_admin_overview()
 
             <div data-id="welcome-link">
 
-                <div class="about-text"><strong><?php printf( __( "Congrats! You're now running the most popular WordPress gallery plugin of all time.")) ?></strong><br><?php printf( __( "To get started, watch our two minute intro below or click the Gallery Wizard button above.")) ?>
+                <div class="about-text"><strong><?php printf( __( "Congrats! You're now running the most popular WordPress gallery plugin of all time.")) ?></strong><br><?php printf( __( "To get started, watch our two minute intro below.")) ?>
                 </div>
 
                 <div class="headline-feature feature-video">
-                    <iframe width="1050" height="590" src="https://youtu.be/ZAYj6D5XXNk" frameborder="0" allowfullscreen></iframe>
+                <iframe width="1050"
+                    height="590"
+                    src="https://www.youtube.com/embed/ZAYj6D5XXNk"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media;"
+                    allowfullscreen></iframe>
+                    <!-- <iframe width="1050" height="590" src="https://youtu.be/ZAYj6D5XXNk" frameborder="0" allowfullscreen></iframe> -->
                 </div>
 
             </div>
