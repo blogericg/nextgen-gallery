@@ -27,7 +27,7 @@ class C_NextGen_First_Run_Notification_Wizard
         <div class="hidden" id="ngg-wizard-video" style="border: none">
             <iframe width="640"
                     height="480"
-                    src="https://www.youtube.com/embed/ZAYj6D5XXNk?autoplay=1"
+                    src="https://www.youtube.com/embed/ZAYj6D5XXNk"
                     frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media;"
                     allowfullscreen></iframe>
