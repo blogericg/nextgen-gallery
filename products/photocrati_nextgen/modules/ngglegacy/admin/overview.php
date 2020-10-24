@@ -220,7 +220,6 @@ function nggallery_admin_overview()
                     frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media;"
                     allowfullscreen></iframe>
-                    <!-- <iframe width="1050" height="590" src="https://youtu.be/ZAYj6D5XXNk" frameborder="0" allowfullscreen></iframe> -->
                 </div>
 
             </div>
