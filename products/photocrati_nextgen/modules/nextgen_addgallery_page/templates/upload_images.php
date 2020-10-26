@@ -52,6 +52,9 @@ if ($display_zips)
 else
     $message = __('Drag image files here or %{browse}', 'nggallery');
 
+$allowed_file_types = ['image/gif', 'image/jpg', 'image/jpeg', 'image/pjpeg', 'image/png'];
+if ($display_zips)
+    $allowed_file_types[] = 'application/zip';
 
 $max_size_megabytes = round((int)$max_size / (1024 * 1024));
 $max_size_message = sprintf(__('You may select files up to %dMB', 'nggallery'), $max_size_megabytes);
@@ -127,7 +130,7 @@ $max_size_message = sprintf(__('You may select files up to %dMB', 'nggallery'), 
                 locale: Uppy.locales[NggUploadImages_i18n.locale],
                 restrictions: {
                     maxFileSize: <?php print esc_attr($max_size); ?>,
-                    allowedFileTypes: ['image/gif', 'image/jpg', 'image/jpeg', 'image/pjpeg', 'image/png']
+                    allowedFileTypes: <?php print json_encode($allowed_file_types); ?>
                 },
                 onBeforeUpload: (files) => {
                     gallery_select.disabled = true;
