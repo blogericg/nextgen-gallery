@@ -61,13 +61,6 @@ $max_size_message = sprintf(__('You may select files up to %dMB', 'nggallery'), 
 ?>
 
 <script type="text/javascript">
-    // Listen for events emitted in other frames
-    if (window.Frame_Event_Publisher) {
-        // If a gallery has been deleted, reload the page ~~remove it from the drop-downs of available galleries~~
-        Frame_Event_Publisher.listen_for('attach_to_post:manage_galleries', () => {
-            window.location.href = window.location.href;
-        });
-    }
 
     window.urlencode = function(str) {
         str = (str + '').toString();
@@ -313,6 +306,18 @@ $max_size_message = sprintf(__('You may select files up to %dMB', 'nggallery'), 
                 set_XHR_endpoint();
                 gallery_create.disabled = gallery_name.value.length <= 0;
             });
+
+            // Listen for events emitted in other frames
+            if (window.Frame_Event_Publisher) {
+                Frame_Event_Publisher.listen_for('attach_to_post:new_gallery', (data) => {
+                    const option = document.createElement('option');
+                    option.value = data.gallery_id;
+                    option.text  = data.gallery_title;
+                    option.dataset.originalValue = data.gallery_title;
+                    gallery_select.add(option);
+                });
+
+            }
 
             window.Frame_Event_Publisher.broadcast();
 
