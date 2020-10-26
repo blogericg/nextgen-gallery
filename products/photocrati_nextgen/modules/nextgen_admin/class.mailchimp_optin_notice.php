@@ -50,6 +50,10 @@ class C_Mailchimp_OptIn_Notice
      */
     function is_renderable()
     {
+        if (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'attach_to_post') !== FALSE) {
+            return FALSE;
+        }
+
         if (!C_NextGen_Admin_Page_Manager::is_requested())
             return FALSE;
 

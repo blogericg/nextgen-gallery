@@ -187,7 +187,7 @@ jQuery(function($) {
 
 	// If the active display tab is clicked, then we assume that the user
 	// wants to display the original tab content
-	$('.ui-tabs-nav a').click(function(e) {
+	$('.ui-tabs-nav a').on('click', function(e) {
 
 		/* Add color to the active link */
         $('.ui-tabs-nav a').removeClass("active_tab");
@@ -224,20 +224,20 @@ jQuery(function($) {
 	});
 
 	/* Open and close IGW video tutorial */
-	$('#displayed_tab .ngg_igw_video_open').click( function(e) {
+	$('#displayed_tab .ngg_igw_video_open').on('click', function(e) {
         $('#displayed_tab .ngg_igw_video_inner').append('<iframe class="ngg_igw_video_iframe" width="1050" height="590" src="https://www.youtube.com/embed/mNEnY23i9DE?rel=0" frameborder="0" allowfullscreen></iframe>');
         $('#displayed_tab .ngg_igw_video_inner').css("display", "block");
         $('#displayed_tab .ngg_igw_video_open').css("display", "none");
     });
 
-    $('#displayed_tab .ngg_igw_video_close').click( function(e) {
+    $('#displayed_tab .ngg_igw_video_close').on('click', function(e) {
         $('#displayed_tab .ngg_igw_video_iframe').remove();
         $('#displayed_tab .ngg_igw_video_inner').css("display", "none");
         $('#displayed_tab .ngg_igw_video_open').css("display", "block");
     });
 
 	/* Show Pro gallery promo only on Choose Display tab */
-	$('.ngg_page_content_menu a').click( function(e) {
+	$('.ngg_page_content_menu a').on('click', function(e) {
 
         var id = $(this).attr('data-id');
         if (id == "choose_display") {

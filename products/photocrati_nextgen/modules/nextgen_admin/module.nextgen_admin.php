@@ -359,16 +359,6 @@ class M_NextGen_Admin extends C_Base_Module
             array(),
             '1.10.4'
         );
-        wp_register_script(
-            'iris',
-            $router->get_url('/wp-admin/js/iris.min.js', FALSE, TRUE),
-            array('jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch')
-        );
-        wp_register_script(
-            'wp-color-picker',
-            $router->get_url('/wp-admin/js/color-picker.js', FALSE, TRUE),
-            array('iris')
-        );
 
         wp_register_style(
             'nextgen_admin_css', 
@@ -376,10 +366,11 @@ class M_NextGen_Admin extends C_Base_Module
             array('wp-color-picker'), 
             NGG_SCRIPT_VERSION
         );
+
         wp_register_script(
             'nextgen_admin_js',
             $router->get_static_url('photocrati-nextgen_admin#nextgen_admin_page.js'),
-            array('wp-color-picker'),
+            array('wp-color-picker', 'jquery-ui-widget'),
             NGG_SCRIPT_VERSION
         );
 
