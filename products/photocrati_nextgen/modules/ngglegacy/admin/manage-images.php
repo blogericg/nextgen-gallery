@@ -124,7 +124,7 @@ function nggallery_picturelist($controller)
                 }
             });
 
-            $("#" + windowId + ' .dialog-cancel').click(function() {
+            $("#" + windowId + ' .dialog-cancel').on('click', function() {
                 $("#" + windowId).dialog("close");
             });
         }
@@ -159,7 +159,7 @@ function nggallery_picturelist($controller)
             });
 
             // load a content via ajax
-            $('a.ngg-dialog').click(function() {
+            $('a.ngg-dialog').on('click', function() {
                 var dialogs = $('.ngg-overlay-dialog:visible');
                 if (dialogs.length > 0) {
                     return false;

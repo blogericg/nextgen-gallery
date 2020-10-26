@@ -103,7 +103,7 @@ if (typeof(NextGEN_Wizard_Manager) === 'undefined') {
 				
 				var self = this;
 				
-				el.click(function (e) {
+				el.on('click', function (e) {
 					// here we only trigger done() if anchor is page-local (i.e. JS button) because for normal anchors this step is only "done" when reaching the new page
 					if (!el.is('a,button.ngg_save_settings_button,input.ngg_save_gallery_changes') || (el.attr("href").startsWith("#") || el.attr("href").startsWith("javascript:") || el.hasClass("thickbox"))) {
 						self.done(el);

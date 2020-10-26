@@ -378,19 +378,19 @@ class nggManageAlbum {
         jQuery('a.min').on('click', toggleContent);
 
         // Hide used galleries
-        jQuery('a#toggle_used').click(function () {
+        jQuery('a#toggle_used').on('click', function () {
             jQuery('#selectContainer div.inUse').toggle();
             return false;
         });
 
         // Maximize All Portlets (whole site, no differentiation)
-        jQuery('a#all_max').click(function () {
+        jQuery('a#all_max').on('click', function () {
             jQuery('div.itemContent:hidden').show();
             return false;
         });
 
         // Minimize All Portlets (whole site, no differentiation)
-        jQuery('a#all_min').click(function () {
+        jQuery('a#all_min').on('click', function () {
             jQuery('div.itemContent:visible').hide();
             return false;
         });
@@ -437,7 +437,7 @@ function showDialog() {
 			of:		window.parent
 		}
 	});
-    jQuery('#editalbum .dialog-cancel').click(function() { jQuery( "#editalbum" ).dialog("close"); });
+    jQuery('#editalbum .dialog-cancel').on('click', function() { jQuery( "#editalbum" ).dialog("close"); });
 }
 
 // Redirect to edit the chosen album when the ngg_select_album field changes

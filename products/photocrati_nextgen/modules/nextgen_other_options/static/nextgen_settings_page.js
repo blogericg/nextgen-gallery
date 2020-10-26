@@ -24,7 +24,7 @@ jQuery(function($){
 		if (!$('#'+$(this).val()).hasClass('hidden')) {
 			$('#'+$(this).val()).removeClass('hidden');
 		}
-		$('#watermark_customization').attr('rel', 'watermark_'+$('#watermark_source').val()+'_source').click();
+		$('#watermark_customization').attr('rel', 'watermark_'+$('#watermark_source').val()+'_source').trigger('click');
 	});
 
     // Don't show any Watermark fields unless Watermarks are enabled
@@ -44,7 +44,7 @@ jQuery(function($){
 
     // sends the current settings to a special ajax endpoint which saves them, regenerates the url, and then reverts
     // to the old settings. this submits the form and forces a refresh of the image through the time parameter
-    $('#nextgen_settings_preview_refresh').click(function(event) {
+    $('#nextgen_settings_preview_refresh').on('click', function(event) {
         event.preventDefault();
 
         var form = $(this).parents('form:first');

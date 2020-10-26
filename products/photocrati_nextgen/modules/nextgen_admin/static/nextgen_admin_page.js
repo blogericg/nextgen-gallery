@@ -3,7 +3,7 @@ jQuery(function($){
     /* Set active link color and show form sections when menu item is clicked */
     $('.ngg_page_content_menu a:first-of-type').addClass("ngg_page_content_menu_active");
 
-    $('.ngg_page_content_menu a').click( function(e) {
+    $('.ngg_page_content_menu a').on('click', function(e) {
         
         /* Add color to only the active link */
         $('.ngg_page_content_menu a').removeClass("ngg_page_content_menu_active");
@@ -20,7 +20,7 @@ jQuery(function($){
     $(".responsive-menu-icon").remove();
     $(".ngg_page_content_menu").addClass("responsive-menu").before('<div class="responsive-menu-icon"></div>');
 
-    $(".responsive-menu-icon").click(function(){
+    $(".responsive-menu-icon").on('click', function(){
         $(this).next(".ngg_page_content_menu").slideToggle( "fast" );
     });
 
@@ -31,14 +31,14 @@ jQuery(function($){
         }
     });
 
-    $(".responsive-menu > a").click(function(event){
+    $(".responsive-menu > a").on('click', function(event){
         if(window.innerWidth < 782) {
             $(this).parent(".ngg_page_content_menu").slideToggle( "fast" );
         }
     });
 
     // When a submit button is clicked...
-    $('input[type="submit"], button[type="submit"]').click(function(e){
+    $('input[type="submit"], button[type="submit"]').on('click', function(e){
         var $button = $(this);
         var message = false;
 

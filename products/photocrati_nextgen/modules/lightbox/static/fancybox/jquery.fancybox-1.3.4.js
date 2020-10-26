@@ -15,6 +15,8 @@
  *   http://www.gnu.org/licenses/gpl.html
  */
 
+ /*** MODIFIED BY IMAGELY TO BE jQUERY 3.5.1 COMPATIBLE */
+
 ;(function($) {
 	var tmp, loading, overlay, wrap, outer, content, close, title, nav_left, nav_right,
 
@@ -1057,15 +1059,15 @@
 			nav_right = $('<a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a>')
 		);
 
-		close.click($.fancybox.close);
-		loading.click($.fancybox.cancel);
+		close.on('click', $.fancybox.close);
+		loading.on('click', $.fancybox.cancel);
 
-		nav_left.click(function(e) {
+		nav_left.on('click', function(e) {
 			e.preventDefault();
 			$.fancybox.prev();
 		});
 
-		nav_right.click(function(e) {
+		nav_right.on('click', function(e) {
 			e.preventDefault();
 			$.fancybox.next();
 		});

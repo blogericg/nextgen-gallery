@@ -5,7 +5,7 @@
  */
 (function($) {
     $(function() {
-        $('#ngg-tabs-wrapper').find('a').click(function () {
+        $('#ngg-tabs-wrapper').find('a').on('click', function () {
             $('#ngg-tabs-wrapper').find('a').removeClass('nav-tab-active');
             $('.ngg-tab').removeClass('active');
 
@@ -21,6 +21,6 @@
 
         $('#' + activeTab).addClass('active');
         $('#' + activeTab + '-tab').addClass('nav-tab-active');
-        $('.nav-tab-active').click();
+        $('.nav-tab-active').trigger('click');
     });
 })(jQuery);
