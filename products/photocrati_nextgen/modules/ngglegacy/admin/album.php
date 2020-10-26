@@ -437,7 +437,8 @@ function showDialog() {
 			of:		window.parent
 		}
 	});
-    jQuery('#editalbum .dialog-cancel').on('click', function() { jQuery( "#editalbum" ).dialog("close"); });
+	jQuery('#editalbum .dialog-cancel').on('click', function() { jQuery( "#editalbum" ).dialog("close"); });
+	jQuery('.ui-dialog-titlebar-close').text('X')
 }
 
 // Redirect to edit the chosen album when the ngg_select_album field changes
