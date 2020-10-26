@@ -208,6 +208,8 @@ function nggallery_picturelist($controller)
                             }
                         }).width(width - 30)
                           .height(height - 30);
+
+                        $('.ui-dialog-titlebar-close').text('X')
                     }
                 );
 
