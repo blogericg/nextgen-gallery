@@ -54,7 +54,7 @@ else
 
 $allowed_file_types = ['image/gif', 'image/jpg', 'image/jpeg', 'image/pjpeg', 'image/png'];
 if ($display_zips)
-    $allowed_file_types[] = 'application/zip';
+    $allowed_file_types[] = '.zip';
 
 $max_size_megabytes = round((int)$max_size / (1024 * 1024));
 $max_size_message = sprintf(__('You may select files up to %dMB', 'nggallery'), $max_size_megabytes);
