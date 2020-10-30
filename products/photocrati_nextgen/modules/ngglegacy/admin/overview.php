@@ -332,55 +332,88 @@ function nggallery_admin_overview()
                 <h2><?php _e( 'WordPress Themes for Photographers by Imagely' ); ?></h2>
                 <p class="about-text"><?php _e( 'Meet the new series of Genesis child themes by Imagely: gorgeous, responsive image-centric themes for photographers or anyone with visually rich websites.', 'nggallery' ); ?></p>
                 <h3 class="about-text"><?php _e( 'CLICK TO LEARN MORE:', 'nggallery' ); ?></h3>
-                <div class="feature-section two-col">
-                        <div class="col">
-                            <a href="https://www.imagely.com/wordpress-photography-themes/ansel/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=ansel" target="_blank"><img src="https://f001.backblaze.com/file/nextgen-gallery/ansel-ngg.jpg" class="ngg-theme-image"></a>
+
+                <?php
+                $presets = [
+                    '10stop',
+                    'autofocus',
+                    'autofocusblackblue',
+                    'autofocusblackorange',
+                    'autofocusblackyellow',
+                    'autofocusblue',
+                    'autofocusyellow',
+                    'backlightblue',
+                    'backlightgreen',
+                    'backlightyellow',
+                    'barebulb',
+                    'barebulbbarndoors',
+                    'bokeh',
+                    'bold',
+                    'canvas',
+                    'catchlight',
+                    'catchlightblue',
+                    'catchlightyellow',
+                    'city',
+                    'contrast',
+                    'contrastdark',
+                    'contrastred',
+                    'contrastyellow',
+                    'darkroom',
+                    'emulsion',
+                    'exposure',
+                    'filter',
+                    'fstop',
+                    'music',
+                    'obscura',
+                    'overexposed',
+                    'overexposedwhite',
+                    'polarized',
+                    'prime',
+                    'print',
+                    'rangefinder',
+                    'scout',
+                    'sidewinder',
+                    'sidewinderdark',
+                    'sidewinderfull',
+                    'signature',
+                    'silverhalide',
+                    'street',
+                    'streetside',
+                    'texture',
+                    'textureblue',
+                    'texturegreen',
+                    'transparency',
+                    'transparencywhite',
+                    'underexposed',
+                    'underexposedwhite',
+                    'viewfinder',
+                    'vignette',
+                    'wideangle'
+                ];
+
+                $imgs_per_column = 2;
+                $current = 1;
+                foreach ($presets as $ndx => $preset) {
+                    if ($current === 1) { ?>
+                        <div class="feature-section two-col">
+                    <?php } ?>
+                    <div class="col">
+                        <a href="https://www.imagely.com/wordpress-photography-themes/<?php print esc_attr($preset); ?>?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=<?php print esc_attr($preset); ?>" target="_blank">
+                            <img src="https://f001.backblazeb2.com/file/photocrati-demos/<?php print esc_attr($preset); ?>.png"
+                                 alt="<?php print esc_attr($preset); ?>"
+                                 title="<?php print esc_attr($preset); ?>"/>
+                        </a>
+                    </div>
+                    <?php if ($current === $imgs_per_column) { ?>
                         </div>
-                        <div class="col">
-                            <a href="https://www.imagely.com/wordpress-photography-themes/fearless/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=fearless" target="_blank"><img src="https://f001.backblaze.com/file/nextgen-gallery/fearless-ngg.jpg" class="ngg-theme-image"></a>
-                        </div>
-                </div>
-                <div class="feature-section two-col">
-                        <div class="col">
-                            <a href="https://www.imagely.com/wordpress-photography-themes/blush/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=blush" target="_blank"><img src="https://f001.backblaze.com/file/nextgen-gallery/blush-ngg.jpg" class="ngg-theme-image"></a>
-                        </div>
-                        <div class="col">
-                            <a href="https://www.imagely.com/wordpress-photography-themes/free-spirit/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=freespirit" target="_blank"><img src="https://f001.backblaze.com/file/nextgen-gallery/free-spirit-ngg.jpg" class="ngg-theme-image"></a>
-                        </div>
-                </div>
-                <div class="feature-section two-col">
-                        <div class="col">
-                            <a href="https://www.imagely.com/wordpress-photography-themes/reportage/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=reportage" target="_blank"><img src="https://f001.backblaze.com/file/nextgen-gallery/reportage-ngg.jpg" class="ngg-theme-image"></a>
-                        </div>
-                        <div class="col">
-                            <a href="https://www.imagely.com/wordpress-photography-themes/lightly/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=lightly" target="_blank"><img src="https://f001.backblaze.com/file/nextgen-gallery/lightly-ngg.jpg" class="ngg-theme-image"></a>
-                        </div>
-                </div>
-                <div class="feature-section two-col">
-                        <div class="col">
-                            <a href="https://www.imagely.com/wordpress-photography-themes/rebel/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=rebel" target="_blank"><img src="https://f001.backblaze.com/file/nextgen-gallery/rebel-ngg.jpg" class="ngg-theme-image"></a>
-                        </div>
-                        <div class="col">
-                            <a href="https://www.imagely.com/wordpress-photography-themes/summerly/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=summerly" target="_blank"><img src="https://f001.backblaze.com/file/nextgen-gallery/summerly-ngg.jpg" class="ngg-theme-image"></a>
-                        </div>
-                </div>
-                <div class="feature-section two-col">
-                        <div class="col">
-                            <a href="https://www.imagely.com/wordpress-photography-themes/expedition/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=expedition" target="_blank"><img src="https://f001.backblaze.com/file/nextgen-gallery/expedition-ngg.jpg" class="ngg-theme-image"></a>
-                        </div>
-                        <div class="col">
-                            <a href="https://www.imagely.com/wordpress-photography-themes/punk-bride/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=punkbride" target="_blank"><img src="https://f001.backblaze.com/file/nextgen-gallery/punk-bride-ngg.jpg" class="ngg-theme-image"></a>
-                        </div>
-                </div>
-                <div class="feature-section two-col">
-                        <div class="col">
-                            <a href="https://www.imagely.com/wordpress-photography-themes/journal/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=journal" target="_blank"><img src="https://f001.backblaze.com/file/nextgen-gallery/journal-ngg.jpg" class="ngg-theme-image"></a>
-                        </div>
-                        <div class="col">
-                            <a href="https://www.imagely.com/wordpress-photography-themes/simplicity/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=simplicity" target="_blank"><img src="https://f001.backblaze.com/file/nextgen-gallery/simplicity-ngg.jpg" class="ngg-theme-image"></a>
-                        </div>
-                </div>
-                
+                    <?php } ?>
+                    <?php
+                    if ($current === $imgs_per_column) {
+                        $current = 1;
+                    } else {
+                        $current++;
+                    } ?>
+                <?php } ?>
             </div>
 
             <div data-id="ambassador-link">
