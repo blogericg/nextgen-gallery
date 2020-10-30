@@ -356,7 +356,7 @@ function nggallery_admin_overview()
                         <div class="feature-section two-col">
                     <?php } ?>
                     <div class="col">
-                        <a href="https://www.imagely.com/wordpress-photography-themes/<?php print esc_attr($preset); ?>?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=<?php print esc_attr($preset); ?>" target="_blank">
+                        <a href="https://www.imagely.com/wordpress-photography-themes/?utm_source=ngg&utm_medium=imagelythemes&utm_campaign=<?php print esc_attr($preset); ?>" target="_blank">
                             <img src="https://f001.backblazeb2.com/file/photocrati-demos/<?php print esc_attr($preset); ?>.png"
                                  alt="<?php print esc_attr($preset); ?>"
                                  title="<?php print esc_attr($preset); ?>"/>
