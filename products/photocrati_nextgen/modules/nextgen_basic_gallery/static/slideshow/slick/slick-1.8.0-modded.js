@@ -13,6 +13,10 @@
     Repo: http://github.com/kenwheeler/slick
   Issues: http://github.com/kenwheeler/slick/issues
 
+
+    Modded by Imagely
+    - Replaced all calls of $.type with typeof operator
+
  */
 /* global window, document, define, jQuery, setInterval, clearInterval */
 ;(function(factory) {
@@ -1861,7 +1865,7 @@
         var _ = this, breakpoint, currentBreakpoint, l,
             responsiveSettings = _.options.responsive || null;
 
-        if ( $.type(responsiveSettings) === 'array' && responsiveSettings.length ) {
+        if ( typeof(responsiveSettings) === 'array' && responsiveSettings.length ) {
 
             _.respondTo = _.options.respondTo || 'window';
 
@@ -2125,19 +2129,19 @@
 
         var _ = this, l, item, option, value, refresh = false, type;
 
-        if( $.type( arguments[0] ) === 'object' ) {
+        if( typeof( arguments[0] ) === 'object' ) {
 
             option =  arguments[0];
             refresh = arguments[1];
             type = 'multiple';
 
-        } else if ( $.type( arguments[0] ) === 'string' ) {
+        } else if ( typeof( arguments[0] ) === 'string' ) {
 
             option =  arguments[0];
             value = arguments[1];
             refresh = arguments[2];
 
-            if ( arguments[0] === 'responsive' && $.type( arguments[1] ) === 'array' ) {
+            if ( arguments[0] === 'responsive' && typeof( arguments[1] ) === 'array' ) {
 
                 type = 'responsive';
 
@@ -2167,7 +2171,7 @@
 
             for ( item in value ) {
 
-                if( $.type( _.options.responsive ) !== 'array' ) {
+                if( typeof( _.options.responsive ) !== 'array' ) {
 
                     _.options.responsive = [ value[item] ];
 
