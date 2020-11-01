@@ -1,6 +1,10 @@
 /*! waitForImages jQuery Plugin - v2.4.0 - 2018-02-13
 * https://github.com/alexanderdickson/waitForImages
 * Copyright (c) 2018 Alex Dickson; Licensed MIT */
+/**
+ * Modded by Imagely:
+ * - Replaced all $.type and $.isFunction calls with typeof operator
+ */
 ;(function (factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
@@ -82,7 +86,7 @@
         } else {
 
             // Handle if using deferred object and only one param was passed in.
-            if (arguments.length === 1 && $.type(arguments[0]) === 'boolean') {
+            if (arguments.length === 1 && typeof(arguments[0]) === 'boolean') {
                 waitForAll = arguments[0];
             } else {
                 finishedCallback = arguments[0];
@@ -100,7 +104,7 @@
         waitForAll = !! waitForAll;
 
         // Ensure callbacks are functions.
-        if (!$.isFunction(finishedCallback) || !$.isFunction(eachCallback)) {
+        if (typeof(finishedCallback) !== "function" || typeof(eachCallback) !== "function") {
             throw new TypeError('An invalid callback was supplied.');
         }
 

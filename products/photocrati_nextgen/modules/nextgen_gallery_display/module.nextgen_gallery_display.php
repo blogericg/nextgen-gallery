@@ -23,7 +23,7 @@ class M_Gallery_Display extends C_Base_Module
 			'photocrati-nextgen_gallery_display',
 			'Gallery Display',
 			'Provides the ability to display gallery of images',
-			'3.3.7',
+			'3.3.8',
 			'https://www.imagely.com/wordpress-gallery-plugin/nextgen-gallery/',
             'Imagely',
             'https://www.imagely.com'
@@ -420,7 +420,7 @@ class M_Gallery_Display extends C_Base_Module
 
             wp_register_script(
                 'ngg_waitforimages',
-                $router->get_static_url('photocrati-nextgen_gallery_display#jquery.waitforimages.js'),
+                $router->get_static_url('photocrati-nextgen_gallery_display#jquery.waitforimages-2.4.0-modded.js'),
                 array('jquery'),
                 NGG_SCRIPT_VERSION
             );
