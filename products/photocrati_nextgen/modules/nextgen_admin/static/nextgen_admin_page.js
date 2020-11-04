@@ -24,8 +24,8 @@ jQuery(function($){
         $(this).next(".ngg_page_content_menu").slideToggle( "fast" );
     });
 
-    $(window).resize(function(){
-        if(window.innerWidth > 640) {
+    $(window).on('resize', function() {
+        if (window.innerWidth > 640) {
             $(".ngg_page_content_menu").removeAttr("style");
             $(".responsive-menu > a").removeClass("menu-open");
         }
@@ -95,9 +95,7 @@ jQuery(function($){
     $('#ngg_page_content').css('visibility', 'visible');
 
     // Handle the "recover" and "delete" links in Manage Gallery > each image row
-    $('#ngg-listimages .row-actions .confirmrecover, #ngg-listimages .row-actions.submitdelete.delete').on(
-        'click',
-        function(event) {
+    $('#ngg-listimages .row-actions .confirmrecover, #ngg-listimages .row-actions.submitdelete.delete').on('click', function(event) {
             var target = event.target;
             if (!confirm(target.getAttribute('data-question') + ' "' + target.getAttribute('data-text') + '"')) {
                 event.preventDefault();

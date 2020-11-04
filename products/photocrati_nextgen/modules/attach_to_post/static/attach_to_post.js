@@ -208,7 +208,7 @@ jQuery(function($) {
 	});
 
 	// Close the window when the escape key is pressed
-	$(this).keydown(function(e) {
+	$(this).on('keydown', function(e) {
 		if (e.keyCode === 27) {
 			close_attach_to_post_window();
         }

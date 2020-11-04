@@ -1413,7 +1413,7 @@ jQuery(function($){
                 name: 'maximum_entity_count'
             });
 
-            edit_field.change(function () {
+            edit_field.on('change', function () {
                 self.displayed_gallery.set('maximum_entity_count', $(this).val());
             });
 
@@ -1441,7 +1441,7 @@ jQuery(function($){
                 name: 'maximum_entity_count'
             });
 
-            edit_field.change(function () {
+            edit_field.on('change', function () {
                 self.displayed_gallery.set('maximum_entity_count', $(this).val());
             });
 
