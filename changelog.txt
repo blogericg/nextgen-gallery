@@ -1,9 +1,9 @@
 NextGEN Gallery
 by Imagely
 
-= v3.3.20.4 - 10.28.2020 =
+= v3.3.20.5 - 11.04.2020 =
 * NEW:     Replaced plupload with a new uppy.js based uploader for faster uploading
-* Changed: Several changes have been made for future jQuery 3.0 compatibility
+* Changed: Several changes have been made for future jQuery 3.5 compatibility
 * Fixed:   Gutenberg Block and Featured Image features on wordpress.com hosting
 
 = V3.3.20 - 10.13.2020 =
