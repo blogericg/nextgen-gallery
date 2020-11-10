@@ -100,15 +100,18 @@ class M_NextGen_Basic_Tagcloud extends C_Base_Module
             C_NextGen_Shortcode_Manager::add('tagcloud', array(&$this, 'render_shortcode'));
             C_NextGen_Shortcode_Manager::add('nggtagcloud', array(&$this, 'render_shortcode'));
 
-            add_filter(
-                'the_posts',
-                array(
-                    C_Taxonomy_Controller::get_instance(),
-                    'detect_ngg_tag'
-                ),
-                -10,
-                2
-            );
+            if (!C_NextGen_Settings::get_instance()->get('disable_ngg_tags_page', FALSE))
+            {
+                add_filter(
+                    'the_posts',
+                    array(
+                        C_Taxonomy_Controller::get_instance(),
+                        'detect_ngg_tag'
+                    ),
+                    -10,
+                    2
+                );
+            }
         }
 
         add_action('ngg_routes', array(&$this, 'define_routes'));
