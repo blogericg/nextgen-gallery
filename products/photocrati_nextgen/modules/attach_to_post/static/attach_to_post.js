@@ -90,7 +90,7 @@ function insert_into_editor(snippet, ref_or_id) {
 
 		//IE support
 		if (document.selection) {
-			myField.focus();
+			myField.trigger('focus');
 			sel = document.selection.createRange();
 			sel.text = myValue;
 		} else if (myField.selectionStart || myField.selectionStart === '0') {
