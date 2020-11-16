@@ -26,7 +26,7 @@ class M_NextGen_Admin extends C_Base_Module
             'photocrati-nextgen_admin',
             'NextGEN Administration',
             'Provides a framework for adding Administration pages',
-            '3.3.11',
+            '3.3.21',
             'https://www.imagely.com/wordpress-gallery-plugin/nextgen-gallery/',
             'Imagely',
             'https://www.imagely.com'
