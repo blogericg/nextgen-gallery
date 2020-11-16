@@ -313,7 +313,7 @@ class M_NextGen_Admin extends C_Base_Module
         $router = C_Router::get_instance();
         wp_register_script(
             'gritter',
-            $router->get_static_url('photocrati-nextgen_admin#gritter/gritter.min.js'),
+            $router->get_static_url('photocrati-nextgen_admin#gritter/gritter.js'),
             array('jquery'),
             NGG_SCRIPT_VERSION
         );
@@ -337,13 +337,13 @@ class M_NextGen_Admin extends C_Base_Module
         );
         wp_register_style(
             'ngg_select2',
-            $router->get_static_url('photocrati-nextgen_admin#select2/select2.css'),
+            $router->get_static_url('photocrati-nextgen_admin#select2-4.0.13/dist/css/select2.css'),
             array(),
             NGG_SCRIPT_VERSION
         );
         wp_register_script(
             'ngg_select2',
-            $router->get_static_url('photocrati-nextgen_admin#select2/select2.js'),
+            $router->get_static_url('photocrati-nextgen_admin#select2-4.0.13/dist/js/select2.full.js'),
             array(),
             NGG_SCRIPT_VERSION
         );

@@ -83,7 +83,7 @@ function nggallery_sortorder($galleryID = 0) {
                     items: 'div.imageBox'
                 });
 
-                $('#sortGallery').submit(function (e) {
+                $('#sortGallery').on('submit',function (e) {
                     var serial = "";
                     var $images = $('div.imageBox');
                     for (var i = 0; i < $images.length; i++) {

@@ -489,7 +489,11 @@
 				return;
 			}
 
-			titleStr = $.isFunction(currentOpts.titleFormat) ? currentOpts.titleFormat(titleStr, currentArray, currentIndex, currentOpts) : _format_title(titleStr);
+			var isFunction = function(param) {
+				return typeof(param) === "function"
+			}
+
+			titleStr = isFunction(currentOpts.titleFormat) ? currentOpts.titleFormat(titleStr, currentArray, currentIndex, currentOpts) : _format_title(titleStr);
 
 			if (!titleStr || titleStr === '') {
 				title.hide();
@@ -839,7 +843,7 @@
 		selectedArray = [];
 		selectedIndex = parseInt(opts.index, 10) || 0;
 
-		if ($.isArray(obj)) {
+		if (Array.isArray(obj)) {
 			for (var i = 0, j = obj.length; i < j; i++) {
 				if (typeof obj[i] == 'object') {
 					$(obj[i]).data('fancybox', $.extend({}, opts, obj[i]));
@@ -1151,7 +1155,7 @@
 		onError : function(){}
 	};
 
-	$(document).ready(function() {
+	jQuery(function($) {
 		$.fancybox.init();
 	});
 
