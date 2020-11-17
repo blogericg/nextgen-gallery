@@ -1,7 +1,7 @@
 NextGEN Gallery
 by Imagely
 
-= v3.3.21 - 11.24.2020 =
+= v3.3.22 - 11.17.2020 =
 * NEW:     Replaced plupload with a new uppy.js based uploader for faster uploading
 * Changed: Updated select2 and Gritter to the latest versions
 * Changed: Several changes have been made for future jQuery 3.5 compatibility

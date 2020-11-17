@@ -4,7 +4,7 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You 
 /**
  * Plugin Name: NextGEN Gallery
  * Description: The most popular gallery plugin for WordPress and one of the most popular plugins of all time with over 30 million downloads.
- * Version: 3.3.21
+ * Version: 3.3.22
  * Author: Imagely
  * Plugin URI: https://www.imagely.com/wordpress-gallery-plugin/nextgen-gallery/
  * Author URI: https://www.imagely.com
@@ -384,7 +384,7 @@ class C_NextGEN_Bootstrap
 
         print '<div class="updated error"><p>';
         print esc_html(
-            __("Your version of NextGEN Pro is known to have some issues with NextGEN 3.3.22 and later. Please update NextGEN Pro to version 3.0.19 or higher to ensure your site works correctly.", 'nggallery')
+            __("Your version of NextGEN Pro is known to have some issues with NextGEN 3.4 and later. Please update NextGEN Pro to version 3.0.19 or higher to ensure your site works correctly.", 'nggallery')
         );
         print '</p></div>';
     }
@@ -699,7 +699,7 @@ class C_NextGEN_Bootstrap
 		define('NGG_PRODUCT_URL', path_join(str_replace("\\" , '/', NGG_PLUGIN_URL), 'products'));
 		define('NGG_MODULE_URL', path_join(str_replace("\\", '/', NGG_PRODUCT_URL), 'photocrati_nextgen/modules'));
 		define('NGG_PLUGIN_STARTED_AT', microtime());
-		define('NGG_PLUGIN_VERSION', '3.3.21');
+		define('NGG_PLUGIN_VERSION', '3.3.22');
 
 		define(
 			'NGG_SCRIPT_VERSION',
