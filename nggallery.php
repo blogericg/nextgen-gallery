@@ -383,12 +383,9 @@ class C_NextGEN_Bootstrap
             return;
 
         print '<div class="updated error"><p>';
-        print esc_html(sprintf(
-            __("NextGEN Gallery 3.3.22 and on has several important updates preparing for WordPress 5.6's new jQuery updates. Unfortunately there are some incompatibilities with this version of NextGEN Pro that may affect the NextGEN admin and the display of your galleries. Please update NextGEN Pro to version %s or higher to ensure your site works correctly.",
-                'nggallery'
-            ),
-            $this->minimum_ngg_pro_version
-            ));
+        print esc_html(
+            __("NextGEN Gallery 3.3.22 and on has several important updates preparing for WordPress 5.6's new jQuery updates. Unfortunately there are some incompatibilities with this version of NextGEN Pro that may affect the NextGEN admin and the display of your galleries. Please update NextGEN Pro to version 3.0.19 or higher to ensure your site works correctly.", 'nggallery')
+        );
         print '</p></div>';
     }
 
