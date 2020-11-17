@@ -371,6 +371,27 @@ class C_NextGEN_Bootstrap
 		echo '</p></div>';
 	}
 
+	public function render_jquery_wp_55_warning()
+    {
+        $render = false;
+        if (defined('NGG_PRO_PLUGIN_VERSION')  && version_compare(NGG_PRO_PLUGIN_VERSION,  '3.0.18.3')  < 0)
+            $render = TRUE;
+        if (defined('NGG_PLUS_PLUGIN_VERSION') && version_compare(NGG_PLUS_PLUGIN_VERSION, '1.6.30.1') < 0)
+            $render = TRUE;
+
+        if (!$render)
+            return;
+
+        print '<div class="updated error"><p>';
+        print esc_html(sprintf(
+            __("NextGEN Gallery 3.3.22 and on has several important updates preparing for WordPress 5.6's new jQuery updates. Unfortunately there are some incompatibilities with this version of NextGEN Pro that may affect the NextGEN admin and the display of your galleries. Please update NextGEN Pro to version %s or higher to ensure your site works correctly.",
+                'nggallery'
+            ),
+            $this->minimum_ngg_pro_version
+            ));
+        print '</p></div>';
+    }
+
 
 	/**
 	 * Registers hooks for the WordPress framework necessary for instantiating
@@ -414,12 +435,13 @@ class C_NextGEN_Bootstrap
 		// NGG extension plugins should be loaded in a specific order
         add_action('shutdown', array(&$this, 'fix_loading_order'));
 
-		// Display a warning if an compatible version of NextGEN Pro is installed alongside this
-		// version of NextGEN Gallery
+		// Display a warning if an compatible version of NextGEN Pro is installed alongside this version of NextGEN Gallery
 		if ($this->is_pro_incompatible()) {
-			add_filter('http_request_args', array(&$this, 'fix_autoupdate_api_requests'), 10, 2);
-			add_action('all_admin_notices', array(&$this, 'render_incompatibility_warning'));
+			add_filter('http_request_args', array($this, 'fix_autoupdate_api_requests'), 10, 2);
+			add_action('all_admin_notices', array($this, 'render_incompatibility_warning'));
 		}
+
+		add_action('all_admin_notices', [$this, 'render_jquery_wp_55_warning']);
 
 		add_filter('ngg_load_frontend_logic', array($this, 'disable_frontend_logic'), -10, 2);
 
