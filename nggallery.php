@@ -384,7 +384,7 @@ class C_NextGEN_Bootstrap
 
         print '<div class="updated error"><p>';
         print esc_html(
-            __("Your current version of NextGEN Pro is known to have some issues with NextGEN 3.3.22 and later. Please update NextGEN Pro to version 3.0.19 or higher to ensure your site works correctly.", 'nggallery')
+            __("Your version of NextGEN Pro is known to have some issues with NextGEN 3.3.22 and later. Please update NextGEN Pro to version 3.0.19 or higher to ensure your site works correctly.", 'nggallery')
         );
         print '</p></div>';
     }
