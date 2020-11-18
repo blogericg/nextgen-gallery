@@ -45,7 +45,9 @@ function nggallery_admin_overview()
             if (!$found) { ?>
                 <a href="javascript:void(0)" data-id="ngg-vs-pro-link"><?php _e( 'NextGEN Basic vs Pro', 'nggallery'); ?></a>
             <?php } ?>
+            <?php if (wp_get_theme() != "Imagely"): ?>
             <a href="javascript:void(0)" data-id="genesis-link"><?php _e( 'Imagely Themes', 'nggallery'); ?></a>
+            <?php endif ?>
             <a href="javascript:void(0)" data-id="ambassador-link"><?php _e( 'Ambassadors', 'nggallery'); ?></a>
             <?php if (!$found) { ?>
                 <a href="javascript:void(0)" data-id="pro-link"><?php _e('Unlock More', 'nggallery'); ?></a>
@@ -326,7 +328,7 @@ function nggallery_admin_overview()
                 </table>
 
             </div>
-
+            <?php if (wp_get_theme() != "Imagely"): ?>
             <div data-id="genesis-link">
 
                 <h2><?php _e( 'WordPress Themes for Photographers by Imagely' ); ?></h2>
@@ -373,6 +375,7 @@ function nggallery_admin_overview()
                     } ?>
                 <?php } ?>
             </div>
+            <?php endif ?>
 
             <div data-id="ambassador-link">
 
