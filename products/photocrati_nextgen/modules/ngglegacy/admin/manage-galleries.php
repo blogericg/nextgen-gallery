@@ -160,6 +160,8 @@ function nggallery_manage_gallery_main()
             $("#" + windowId + ' .dialog-cancel').on('click', function() {
                 $("#" + windowId).dialog("close");
             });
+
+            $('.ui-dialog-titlebar-close').text('X');
         }
 
         function showAddGallery() {
