@@ -180,16 +180,26 @@ $max_size_message = sprintf(__('You may select files up to %dMB', 'nggallery'), 
                 const gallery_url = '<?php echo admin_url("/admin.php?page=nggallery-manage-gallery&mode=edit&gid=")?>' + gallery_select.value;
                 const chosen_name = String(gallery_select.selectedOptions[0].dataset.originalValue);
 
+                let upload_count = result.successful.length;
+
+                // Adjust the upload count for images uploaded inside a zip file
+                result.successful.forEach(function(uploaded_file) {
+                    if ('zip' === uploaded_file.extension) {
+                        upload_count = upload_count - 1;
+                        upload_count = upload_count + uploaded_file.response.body.image_ids.length;
+                    }
+                });
+
                 /** @var NggUploadImages_i18n object */
                 let message = NggUploadImages_i18n.x_images_uploaded;
-                if (result.successful.length === 0) {
+                if (upload_count === 0) {
                     message = NggUploadImages_i18n.no_image_uploaded;
-                } else if (result.successful.length === 1) {
+                } else if (upload_count === 1) {
                     message = NggUploadImages_i18n.one_image_uploaded;
                 }
 
                 message = message + ' ' + NggUploadImages_i18n.manage_gallery;
-                message = message.replace('{count}', String(result.successful.length))
+                message = message.replace('{count}', String(upload_count))
                                  .replace('{name}', chosen_name);
 
                 Toastify({
