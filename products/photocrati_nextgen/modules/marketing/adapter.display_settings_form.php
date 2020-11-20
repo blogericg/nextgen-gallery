@@ -41,7 +41,7 @@ class A_Marketing_Display_Settings_Form extends Mixin_Display_Type_Form
     public function _render_marketing_block_field($thing)
     {
         $context = $this->get_context();
-        $footer = __('<strong>Bonus:</strong> NextGEN Gallery users get a discount of 30% off regular price.', 'nggallery');
+        $footer = __('<strong>Bonus:</strong> NextGEN Gallery users get a discount of 20% off regular price.', 'nggallery');
         switch($context) {
             case 'tile':
                 $card = new C_Marketing_Block_Large(

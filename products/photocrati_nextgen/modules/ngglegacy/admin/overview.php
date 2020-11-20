@@ -306,7 +306,7 @@ function nggallery_admin_overview()
                                                rel="noreferrer noopener">Get NextGEN Pro Today and Unlock all the Powerful Features</a>
                                         </h3>
                                         <p>
-                                            <strong>Bonus:</strong> NextGEN Gallery users get 30% off the regular price using in the link above.
+                                            <strong>Bonus:</strong> NextGEN Gallery users get 20% off the regular price using in the link above.
                                         </p>
                                     </div>
                                     <div class="wp-block-column is-vertically-aligned-center"

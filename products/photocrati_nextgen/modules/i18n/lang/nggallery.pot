@@ -371,7 +371,7 @@ msgstr ""
 #: products/photocrati_nextgen/modules/marketing/adapter.display_settings_form.php:44
 #: products/photocrati_nextgen/modules/marketing/adapter.other_options_form.php:19
 #: products/photocrati_nextgen/modules/marketing/module.marketing.php:219
-msgid "<strong>Bonus:</strong> NextGEN Gallery users get a discount of 30% off regular price."
+msgid "<strong>Bonus:</strong> NextGEN Gallery users get a discount of 20% off regular price."
 msgstr ""
 
 #: products/photocrati_nextgen/modules/marketing/adapter.display_settings_form.php:48
@@ -485,7 +485,7 @@ msgid "The Pro Lightbox allows you to display images at full scale when opened. 
 msgstr ""
 
 #: products/photocrati_nextgen/modules/marketing/adapter.lightbox_options_mvc.php:14
-msgid "<strong>Bonus:</strong> NextGEN Gallery users get a discount of 30% off regular price"
+msgid "<strong>Bonus:</strong> NextGEN Gallery users get a discount of 20% off regular price"
 msgstr ""
 
 #: products/photocrati_nextgen/modules/marketing/adapter.lightbox_options_mvc.php:17
@@ -523,7 +523,7 @@ msgid "Upgrade to NextGEN Pro"
 msgstr ""
 
 #: products/photocrati_nextgen/modules/marketing/module.marketing.php:40
-msgid "NextGEN Basic users get a discount of 30% off regular price"
+msgid "NextGEN Basic users get a discount of 20% off regular price"
 msgstr ""
 
 #: products/photocrati_nextgen/modules/marketing/module.marketing.php:41
@@ -608,7 +608,7 @@ msgid "Want More Layouts?"
 msgstr ""
 
 #: products/photocrati_nextgen/modules/marketing/templates/igw_promo.php:12
-msgid "Get 30% Off Now!"
+msgid "Get 20% Off Now!"
 msgstr ""
 
 #: products/photocrati_nextgen/modules/nextgen_addgallery_page/adapter.import_folder_form.php:12

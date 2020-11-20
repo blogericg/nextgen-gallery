@@ -46,7 +46,8 @@
 <div id="uploader"></div>
 
 <?php
-$display_zips = (!is_multisite() || (is_multisite() && $settings->get('wpmuZipUpload')));
+$global_settings = C_NextGen_Global_Settings::get_instance();
+$display_zips = (!is_multisite() || (is_multisite() && $global_settings->get('wpmuZipUpload')));
 if ($display_zips)
     $message = __('Drag image and ZIP files here or %{browse}', 'nggallery');
 else
