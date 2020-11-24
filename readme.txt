@@ -3,7 +3,7 @@ Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 5.2.0
 Stable tag: 3.4.0
-Tested up to: 5.5.1
+Tested up to: 5.6.0
 License: GPLv3
 Requires PHP: 5.6
 
