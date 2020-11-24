@@ -373,19 +373,25 @@ class C_NextGEN_Bootstrap
 
 	public function render_jquery_wp_55_warning()
     {
-        $render = false;
-        if (defined('NGG_PRO_PLUGIN_VERSION')  && version_compare(NGG_PRO_PLUGIN_VERSION,  '3.0.18.3')  < 0)
+        $render  = false;
+
+        if (defined('NGG_PRO_PLUGIN_VERSION')  && version_compare(NGG_PRO_PLUGIN_VERSION,  '3.1')  < 0)
+        {
             $render = TRUE;
-        if (defined('NGG_PLUS_PLUGIN_VERSION') && version_compare(NGG_PLUS_PLUGIN_VERSION, '1.6.30.1') < 0)
+            $message = __("Your version of NextGEN Pro is known to have some issues with NextGEN 3.4 and later. Please update NextGEN Pro to version 3.1 or higher to ensure your site works correctly.", 'nggallery')
+        }
+
+        if (defined('NGG_PLUS_PLUGIN_VERSION') && version_compare(NGG_PLUS_PLUGIN_VERSION, '1.7') < 0)
+        {
             $render = TRUE;
+            $message = __("Your version of NextGEN Plus is known to have some issues with NextGEN 3.4 and later. Please update NextGEN Plus to version 1.7 or higher to ensure your site works correctly.", 'nggallery')
+        }
 
         if (!$render)
             return;
 
         print '<div class="updated error"><p>';
-        print esc_html(
-            __("Your version of NextGEN Pro is known to have some issues with NextGEN 3.4 and later. Please update NextGEN Pro to version 3.0.19 or higher to ensure your site works correctly.", 'nggallery')
-        );
+        print esc_html($message);
         print '</p></div>';
     }
 
