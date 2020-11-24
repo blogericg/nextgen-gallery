@@ -108,7 +108,6 @@ class A_Watermarks_Form extends Mixin
 
     function _get_preview_image()
     {
-		xdebug_break();
         $registry = $this->object->get_registry();
         $storage  = C_Gallery_Storage::get_instance();
         $image    = C_Image_Mapper::get_instance()->find_first();
