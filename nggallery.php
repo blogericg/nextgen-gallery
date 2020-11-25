@@ -378,13 +378,13 @@ class C_NextGEN_Bootstrap
         if (defined('NGG_PRO_PLUGIN_VERSION')  && version_compare(NGG_PRO_PLUGIN_VERSION,  '3.1')  < 0)
         {
             $render = TRUE;
-            $message = __("Your version of NextGEN Pro is known to have some issues with NextGEN 3.4 and later. Please update NextGEN Pro to version 3.1 or higher to ensure your site works correctly.", 'nggallery')
+            $message = __("Your version of NextGEN Pro is known to have some issues with NextGEN 3.4 and later. Please update NextGEN Pro to version 3.1 or higher to ensure your site works correctly.", 'nggallery');
         }
 
         if (defined('NGG_PLUS_PLUGIN_VERSION') && version_compare(NGG_PLUS_PLUGIN_VERSION, '1.7') < 0)
         {
             $render = TRUE;
-            $message = __("Your version of NextGEN Plus is known to have some issues with NextGEN 3.4 and later. Please update NextGEN Plus to version 1.7 or higher to ensure your site works correctly.", 'nggallery')
+            $message = __("Your version of NextGEN Plus is known to have some issues with NextGEN 3.4 and later. Please update NextGEN Plus to version 1.7 or higher to ensure your site works correctly.", 'nggallery');
         }
 
         if (!$render)
