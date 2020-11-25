@@ -4,7 +4,7 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You 
 /**
  * Plugin Name: NextGEN Gallery
  * Description: The most popular gallery plugin for WordPress and one of the most popular plugins of all time with over 30 million downloads.
- * Version: 3.4.3
+ * Version: 3.4.4
  * Author: Imagely
  * Plugin URI: https://www.imagely.com/wordpress-gallery-plugin/nextgen-gallery/
  * Author URI: https://www.imagely.com
@@ -374,12 +374,16 @@ class C_NextGEN_Bootstrap
 	public function render_jquery_wp_55_warning()
     {
 		$render  = false;
+		$account_msg = sprintf(__("Please download the latest version of NextGEN Pro from your <a href='%s' target='_blank'>account area</a>", 'nggallery'), 'https://www.imagely.com/account/');
+		if (stripos(wp_get_theme()->get('Name'), "photocrati") >= 0) 
+		$account_msg = sprintf(__("Please download the latest version of NextGEN Pro from your <a href='%s' target='_blank'>account area</a>", 'nggallery'), 'https://members.photocrati.com/account/');
 		global $wp_version;
 
         if (defined('NGG_PRO_PLUGIN_VERSION')  && version_compare(NGG_PRO_PLUGIN_VERSION,  '3.1')  < 0)
         {
 			$render = TRUE;
-            $message = __("Your version of NextGEN Pro is known to have some issues with NextGEN Gallery 3.4 and later. Please download the latest version of NextGEN Pro from your <a href='https://www.imagely.com/account/' target='_blank'>account area</a>", 'nggallery');
+
+            $message = __("Your version of NextGEN Pro is known to have some issues with NextGEN Gallery 3.4 and later.", 'nggallery');
         }
 
         if (defined('NGG_PLUS_PLUGIN_VERSION') && version_compare(NGG_PLUS_PLUGIN_VERSION, '1.7') < 0)
@@ -392,9 +396,11 @@ class C_NextGEN_Bootstrap
             return;
 
         print '<div class="updated error"><p>';
-		print ($message);
+		print $message;
+		print ' ';
+		print $account_msg;
 		
-		if ( version_compare( $wp_version, '5.5', '>=' )  && version_compare( $wp_version, '5.5.4', '<=') ) {
+		if ( version_compare( $wp_version, '5.5', '>=' )  && version_compare( $wp_version, '5.5.9', '<=') ) {
 			$note = __("NOTE: The autoupdater doesn't work on the version of WordPress you have installed.", 'ngallery');
 			print "<div style='font-weight: bold;'>";
 			print $note;
@@ -713,7 +719,7 @@ class C_NextGEN_Bootstrap
 		define('NGG_PRODUCT_URL', path_join(str_replace("\\" , '/', NGG_PLUGIN_URL), 'products'));
 		define('NGG_MODULE_URL', path_join(str_replace("\\", '/', NGG_PRODUCT_URL), 'photocrati_nextgen/modules'));
 		define('NGG_PLUGIN_STARTED_AT', microtime());
-		define('NGG_PLUGIN_VERSION', '3.4.3');
+		define('NGG_PLUGIN_VERSION', '3.4.4');
 
 		define(
 			'NGG_SCRIPT_VERSION',
