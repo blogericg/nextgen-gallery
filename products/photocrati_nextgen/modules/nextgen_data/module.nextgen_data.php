@@ -161,7 +161,7 @@ class M_NextGen_Data extends C_Base_Module
 				require_once(NGG_PLUGIN_DIR."vendor/ezyang/htmlpurifier/library/HTMLPurifier.auto.php");
 			}
 			$config = HTMLPurifier_Config::createDefault();
-			$config->set('Cache', 'DefinitionImpl', NULL);
+			$config->set('Cache.DefinitionImpl', NULL);
 			$purifier = new HTMLPurifier($config);
 			return $purifier->purify($data);
 		}
