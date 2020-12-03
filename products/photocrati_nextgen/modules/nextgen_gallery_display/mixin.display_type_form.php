@@ -85,9 +85,12 @@ class Mixin_Display_Type_Form extends Mixin
      * @param array $attributes
      * @return boolean
      */
-    function save_action($attributes=array())
+    function save_action($attributes = array())
     {
-        return $this->object->get_model()->save(array('settings'=>$attributes));
+        $model = $this->object->get_model();
+        if ($model)
+            return $model->save(['settings' => $attributes]);
+        return FALSE;
     }
 
     /**

@@ -81,7 +81,7 @@ class A_NextGen_Basic_Slideshow_Controller extends Mixin
 
 		wp_enqueue_script(
 			'ngg_slick',
-			$this->get_static_url("photocrati-nextgen_basic_gallery#slideshow/slick/slick.min.js"),
+			$this->get_static_url("photocrati-nextgen_basic_gallery#slideshow/slick/slick-1.8.0-modded.js"),
 			array('jquery'),
 			NGG_SCRIPT_VERSION
 		);

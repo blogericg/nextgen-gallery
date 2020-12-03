@@ -363,7 +363,7 @@ class C_Admin_Notification_Manager
 			{
 				$show_dismiss_button = method_exists($handler, 'show_dismiss_button')
                     ? $handler->show_dismiss_button()
-                    : method_exists($handler, 'is_dismissable') ? $handler->is_dismissable() : FALSE;
+                    : (method_exists($handler, 'is_dismissable') ? $handler->is_dismissable() : FALSE);
 
 				$template = method_exists($handler, 'get_mvc_template')
                     ? $handler->get_mvc_template()
@@ -383,7 +383,11 @@ class C_Admin_Notification_Manager
 				));
 
 				$retval = $view->render(TRUE);
-				$this->_displayed_notice = TRUE;
+
+				if (method_exists($handler, 'enqueue_backend_resources'))
+				    $handler->enqueue_backend_resources();
+
+                $this->_displayed_notice = TRUE;
 			}
 		}
 

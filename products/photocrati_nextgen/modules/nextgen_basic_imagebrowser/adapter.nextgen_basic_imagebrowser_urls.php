@@ -1,7 +1,6 @@
 <?php
 
 /**
- * Class A_NextGen_Basic_ImageBrowser_Urls
  * @mixin C_Routing_App
  * @adapts I_Routing_App
  */

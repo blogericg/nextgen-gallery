@@ -86,10 +86,26 @@ class Mixin_GalleryStorage_Base_Upload extends Mixin
         else
             $retval['gallery_id'] = $gallery_id;
 
+
+        // Remove full sized image if backup is included
+        $files_to_import = [];
         foreach ($files as $file_abspath) {
-            $basename = pathinfo($file_abspath, PATHINFO_BASENAME);
-            if (($image_id = $this->import_image_file($gallery_id, $file_abspath, $basename, FALSE, FALSE, FALSE)))
+            if (preg_match("##_backup$", $file_abspath)) {
+                $files_to_import[] = $file_abspath;
+                continue;
+            }
+            elseif (in_array($file_abspath."_backup", $files) || strpos("thumbs_", $file_abspath) !== FALSE) continue;
+
+            $files_to_import[] = $file_abspath;
+        }
+
+
+        foreach ($files_to_import as $file_abspath) {
+            $basename = preg_replace('#_backup$#', '', pathinfo($file_abspath, PATHINFO_BASENAME));
+            if ($this->is_image_file($file_abspath)) {
+                if (($image_id = $this->import_image_file($gallery_id, $file_abspath, $basename, FALSE, FALSE, FALSE)))
                 $retval['image_ids'][] = $image_id;
+            }
         }
 
         // Add the gallery name to the result
@@ -107,10 +123,16 @@ class Mixin_GalleryStorage_Base_Upload extends Mixin
     public function is_allowed_image_extension($filename)
     {
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $extension = strtolower($extension);
+
         $allowed_extensions = apply_filters(
             'ngg_allowed_file_types',
             array('jpeg', 'jpg', 'png', 'gif')
         );
+
+        foreach ($allowed_extensions as $extension) {
+            $allowed_extensions[] = $extension . '_backup';
+        }
 
         return in_array($extension, $allowed_extensions);
     }
@@ -223,7 +245,7 @@ class Mixin_GalleryStorage_Base_Upload extends Mixin
         $filename = $filename ? $filename : uniqid('nextgen-gallery');
         $filename = preg_replace("#^/#", "", $filename);
         $filename = sanitize_file_name($filename);
-        if (preg_match("/\-(png|jpg|gif|jpeg)$/i", $filename, $match)) {
+        if (preg_match("/\-(png|jpg|gif|jpeg|jpg_backup)$/i", $filename, $match)) {
             $filename = str_replace($match[0], '.'.$match[1], $filename);
         }
         return $filename;
@@ -255,7 +277,7 @@ class Mixin_GalleryStorage_Base_Upload extends Mixin
             $filename = $this->sanitize_filename_for_db($filename);
 
             // Ensure that the filename is valid
-            if (!preg_match("/(png|jpeg|jpg|gif)\$/i", $filename))
+            if (!preg_match("/(png|jpeg|jpg|gif|_backup)\$/i", $filename))
                 throw new E_UploadException(__('Invalid image file. Acceptable formats: JPG, GIF, and PNG.', 'nggallery'));
 
             // Compute the destination folder
@@ -341,6 +363,13 @@ class Mixin_GalleryStorage_Base_Upload extends Mixin
 
             // Set gallery preview image if missing
             C_Gallery_Mapper::get_instance()->set_preview_image($dst_gallery, $image_id, TRUE);
+
+            // Automatically watermark the main image if requested
+            if ($settings->get('watermark_automatically_at_upload', 0))
+            {
+                $image_abspath = $this->object->get_image_abspath($image, 'full');
+                $this->object->generate_image_clone($image_abspath, $image_abspath, array('watermark' => TRUE));
+            }
 
             // Notify other plugins that an image has been added
             do_action('ngg_added_new_image', $image);

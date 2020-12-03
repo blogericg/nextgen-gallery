@@ -3,20 +3,6 @@ jQuery(function($) {
 	// Creates a Firefox-friendly wrapper around jQuery Tabs
 	$.fn.ngg_tabs = function(options) {
 
-	    // TODO: remove this when plupload is upgraded
-        if (/crios|iP(hone|od|ad)/i.test(navigator.userAgent)) {
-            this.find('.main_menu_tab').each(function() {
-                if (this.id === 'create_tab') {
-                    $(this).remove();
-                }
-            });
-            this.find('ul li a').each(function() {
-                if (this.href.indexOf('#create_tab') !== -1) {
-                    $(this).parent('li').remove();
-                };
-            });
-        }
-
 		// Create jQuery tabs
 		this.tabs(options);
 
@@ -32,7 +18,7 @@ jQuery(function($) {
 		});
 
 		// When the selected tab changes, then we need to re-adjust
-		this.bind('tabsactivate', function(event, ui) {
+		this.on('tabsactivate', function(event, ui) {
 			// Ensure that all tabs are still displayed, but hidden ;)
 			$.fn.ngg_tabs.hide_tab($.fn.ngg_tabs.get_tab_by_li(ui.oldTab), options.onHideTab);
 			$.fn.ngg_tabs.show_tab($.fn.ngg_tabs.get_tab_by_li(ui.newTab), options.onShowTab);

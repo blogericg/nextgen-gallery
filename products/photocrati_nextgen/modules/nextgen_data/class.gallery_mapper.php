@@ -74,6 +74,24 @@ class Mixin_Gallery_Mapper extends Mixin
         return $entity->title;
     }
 
+    /**
+     * @param string $slug
+     * @return C_Gallery|stdClass|null
+     */
+    public function get_by_slug($slug)
+    {
+        $sanitized_slug = sanitize_title($slug);
+
+        // Try finding the gallery by slug first; if nothing is found assume that the user passed a gallery id
+        $retval = $this->object->select()->where(array('slug = %s', $sanitized_slug))->limit(1)->run_query();
+
+        // NextGen used to turn "This & That" into "this-&amp;-that" when assigning gallery slugs
+        if (empty($retval) && strpos($slug, '&') !== FALSE)
+            return $this->get_by_slug(str_replace('&', '&amp;', $slug));
+
+        return reset($retval);
+    }
+
     function _save_entity($entity)
     {
         $storage = C_Gallery_Storage::get_instance();

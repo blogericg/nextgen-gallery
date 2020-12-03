@@ -32,7 +32,7 @@ function nggallery_manage_gallery_main()
     $query = $gallery_mapper->select();
 
     if (!empty($_GET['gs']))
-        $query->where(array('title LIKE %s', '%' . $_GET['gs']. '%'));
+        $query->where(array('title LIKE %s', '%' . trim($_GET['gs']) . '%'));
 
     $gallerylist = $query->order_by($orderby, $order)
                          ->limit($items_per_page, $start)
@@ -157,9 +157,11 @@ function nggallery_manage_gallery_main()
                     of: window.parent
                 }
             });
-            $("#" + windowId + ' .dialog-cancel').click(function() {
+            $("#" + windowId + ' .dialog-cancel').on('click', function() {
                 $("#" + windowId).dialog("close");
             });
+
+            $('.ui-dialog-titlebar-close').text('X');
         }
 
         function showAddGallery() {
@@ -174,7 +176,7 @@ function nggallery_manage_gallery_main()
                     of: window.parent
                 }
             });
-            $("#addGallery .dialog-cancel").click(function() {
+            $("#addGallery .dialog-cancel").on('click', function() {
                 $("#addGallery").dialog("close");
             });
         }
@@ -229,7 +231,7 @@ function nggallery_manage_gallery_main()
                                id="gallery-search-input"
                                name="gs"
                                placeholder="<?php _e('Search Galleries', 'nggallery'); ?>"
-                               value="<?php print !empty($_GET['gs']) ? esc_attr($_GET['gs']) : ''; ?>"/>
+                               value="<?php print !empty($_GET['gs']) ? esc_attr(trim($_GET['gs'])) : ''; ?>"/>
                         <input type="submit"
                                value="<?php _e('Search Galleries', 'nggallery'); ?>"
                                class="button-primary"/>
@@ -249,6 +251,8 @@ function nggallery_manage_gallery_main()
                 <input type="hidden"
                        name="nggpage"
                        value="manage-galleries"/>
+
+
 
                 <div class="tablenav top">
 
@@ -286,6 +290,11 @@ function nggallery_manage_gallery_main()
                     <?php $ngg->manage_page->pagination('top', $_GET['paged'], $total_number_of_galleries, $items_per_page ); ?>
 
                 </div>
+
+                <?php
+                // Allows for additional content to be injected between the bulk actions and the actual tabular data
+                do_action('ngg_manage_galleries_above_table');
+                ?>
 
                 <table class="wp-list-table widefat" cellspacing="0">
 
@@ -408,6 +417,8 @@ function nggallery_manage_gallery_main()
                     <?php $ngg->manage_page->pagination('bottom', $_GET['paged'], $total_number_of_galleries, $items_per_page ); ?>
                 </div>
             </form>
+
+            <?php do_action('ngg_manage_galleries_marketing_block'); ?>
 
         </div> <!-- /.ngg_page_content_main -->
     </div> <!-- /.wrap -->

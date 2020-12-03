@@ -38,7 +38,7 @@ class C_Lightbox_Library_Manager
         $simplelightbox->title    = __('Simplelightbox', 'nggallery');
         $simplelightbox->code     = 'class="ngg-simplelightbox" rel="%GALLERY_NAME%"';
         $simplelightbox->styles   = array(
-            'photocrati-lightbox#simplelightbox/simplelightbox.css'
+            'photocrati-lightbox#simplelightbox/simple-lightbox.css'
         );
         $simplelightbox->scripts  = array(
             'photocrati-lightbox#simplelightbox/simple-lightbox.js',
@@ -54,6 +54,7 @@ class C_Lightbox_Library_Manager
             'photocrati-lightbox#fancybox/jquery.fancybox-1.3.4.css'
         );
         $fancybox->scripts  = array(
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery-browser/0.1.0/jquery.browser.min.js',
             'photocrati-lightbox#fancybox/jquery.easing-1.3.pack.js',
             'photocrati-lightbox#fancybox/jquery.fancybox-1.3.4.pack.js',
             'photocrati-lightbox#fancybox/nextgen_fancybox_init.js'

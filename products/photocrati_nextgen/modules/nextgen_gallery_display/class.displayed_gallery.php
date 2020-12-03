@@ -347,7 +347,7 @@ class Mixin_Displayed_Gallery_Queries extends Mixin
 		if (in_array($this->object->source, array('recent', 'recent_images')))
 		{
 			$sort_direction = 'DESC';
-			$sort_by = 'imagedate';
+			$sort_by = apply_filters('ngg_recent_images_sort_by_column', 'imagedate');
 		}
 		elseif ($this->object->source == 'random_images' && empty($this->object->entity_ids)) {
             // A gallery with source=random and a non-empty entity_ids is treated as being source=images & image_ids=(entity_ids)
