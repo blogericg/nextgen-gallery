@@ -307,7 +307,27 @@ table.nextgen_settings_position {
     height: 80px;
     margin-top: -23px;
     margin-bottom: 24px;
-} 
+}
+
+#ngg_page_content .ngg_page_content_header_select2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    margin-top: -5px;
+}
+
+#ngg_gallery_quickswitch_wrapper {
+    font-size: 18px;
+    color: black;
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    line-height: 80px;
+}
+
+#ngg_page_content .ngg_page_content_header_select2 h3 {
+    padding-right: 5px;
+}
 
 #ngg_page_content .ngg_page_content_header img {
     height: 60px;
@@ -315,6 +335,9 @@ table.nextgen_settings_position {
     padding-right: 20px;
     float: left;
     width: auto;
+}
+#ngg_page_content .ngg_page_content_header_select2 img {
+    padding-top: 0;
 }
 
 #ngg_page_content .ngg_page_content_header h2,

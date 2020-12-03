@@ -387,19 +387,13 @@ function nggallery_picturelist($controller)
 
                 <?php else :?>
 
-                <div class="ngg_page_content_header">
+                <div class="ngg_page_content_header ngg_page_content_header_select2">
                     <img src="<?php  echo(C_Router::get_instance()->get_static_url('photocrati-nextgen_admin#imagely_icon.png')); ?>"
                          alt="">
                     <h3>
                         <?php echo _n('Gallery: ', 'Galleries: ', 1, 'nggallery'); ?>
-                        <?php echo esc_html (M_I18N::translate($gallery->title)); ?>
                     </h3>
-                </div>
-
-                <?php // begin gallery quick-switch widget ?>
-                <div id="ngg_gallery_quickswitch_wrapper">
-                    <label for="ngg_gallery_quickswitch">
-                        <?php print __('Switch gallery:', 'nggallery'); ?>
+                    <div id="ngg_gallery_quickswitch_wrapper">
                         <select id="ngg_gallery_quickswitch">
                             <?php
                             $new_GET  = $_GET;
@@ -410,18 +404,20 @@ function nggallery_picturelist($controller)
                                 $this_url       = $base_url . $_SERVER['DOCUMENT_URI'] . '?' . $new_get_parts;
                                 ?>
                                 <option value="<?php print esc_attr($this_gallery->gid); ?>"
-                                        <?php selected($gallery->gid, $this_gallery->gid); ?>
+                                    <?php selected($gallery->gid, $this_gallery->gid); ?>
                                         data-url="<?php print esc_attr($this_url); ?>">
-                                    <?php print esc_html($this_gallery->title); ?>
+                                    <?php print esc_html(M_I18N::translate($this_gallery->title)); ?>
                                 </option>
                             <?php } ?>
                         </select>
-                    </label>
+                    </div>
                 </div>
+
                 <script type="text/javascript">
-                    jQuery(document).ready(function($) {
+                    (function($) {
                         var field = $('#ngg_gallery_quickswitch');
                         field.select2({
+                            width: '100%',
                             dropdownAutoWidth: true
                         });
                         // prevent select2 from "remembering" past choices
