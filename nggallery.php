@@ -374,23 +374,24 @@ class C_NextGEN_Bootstrap
 	public function render_jquery_wp_55_warning()
     {
 		$render  = false;
-		$account_msg = sprintf(__("Please download the latest version of NextGEN Pro from your <a href='%s' target='_blank'>account area</a>", 'nggallery'), 'https://www.imagely.com/account/');
-		if (preg_match("#photocrati#i", wp_get_theme()->get('Name'))) {
-			$account_msg = sprintf(__("Please download the latest version of NextGEN Pro from your <a href='%s' target='_blank'>account area</a>", 'nggallery'), 'https://members.photocrati.com/account/');
-		}
 		global $wp_version;
 
         if (defined('NGG_PRO_PLUGIN_VERSION')  && version_compare(NGG_PRO_PLUGIN_VERSION,  '3.1')  < 0)
         {
 			$render = TRUE;
-
-            $message = __("Your version of NextGEN Pro is known to have some issues with NextGEN Gallery 3.4 and later.", 'nggallery');
+			$message = __("Your version of NextGEN Pro is known to have some issues with NextGEN Gallery 3.4 and later.", 'nggallery');
+			$account_msg = preg_match("#photocrati#i", wp_get_theme()->get('Name'))
+				? sprintf(__("Please download the latest version of NextGEN Pro from your <a href='%s' target='_blank'>account area</a>", 'nggallery'), 'https://members.photocrati.com/account/')
+				: sprintf(__("Please download the latest version of NextGEN Pro from your <a href='%s' target='_blank'>account area</a>", 'nggallery'), 'https://www.imagely.com/account/');
         }
 
         if (defined('NGG_PLUS_PLUGIN_VERSION') && version_compare(NGG_PLUS_PLUGIN_VERSION, '1.7') < 0)
         {
             $render = TRUE;
-            $message = __("Your version of NextGEN Plus is known to have some issues with NextGEN 3.4 and later. Please update NextGEN Plus to version 1.7 or higher to ensure your site works correctly.", 'nggallery');
+			$message = __("Your version of NextGEN Plus is known to have some issues with NextGEN Gallery 3.4 and later.", 'nggallery');
+			$account_msg = preg_match("#photocrati#i", wp_get_theme()->get('Name'))
+				? sprintf(__("Please download the latest version of NextGEN Plus from your <a href='%s' target='_blank'>account area</a>", 'nggallery'), 'https://members.photocrati.com/account/')
+				: sprintf(__("Please download the latest version of NextGEN Plus from your <a href='%s' target='_blank'>account area</a>", 'nggallery'), 'https://www.imagely.com/account/');
         }
 
         if (!$render)
