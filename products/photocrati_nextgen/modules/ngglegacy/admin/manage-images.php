@@ -411,6 +411,7 @@ function nggallery_picturelist($controller)
                             <?php } ?>
                         </select>
                     </div>
+                    <i class="fas fa-search"></i>
                 </div>
 
                 <script type="text/javascript">

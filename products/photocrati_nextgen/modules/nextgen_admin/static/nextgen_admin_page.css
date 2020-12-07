@@ -322,11 +322,30 @@ table.nextgen_settings_position {
     color: black;
     font-family: 'Lato', sans-serif;
     font-weight: 900;
-    line-height: 80px;
+    line-height: 30px;
+    height: 32px;
+}
+
+#ngg_gallery_quickswitch_wrapper .select2-container--default .select2-selection--single {
+    border: none;
+    border-radius: 0;
 }
 
 #ngg_page_content .ngg_page_content_header_select2 h3 {
     padding-right: 5px;
+    line-height: 30px !important;
+}
+
+#ngg_gallery_quickswitch_wrapper .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: black;
+    line-height: 30px;
+    font-size: 18px;
+    margin: 0;
+    padding: 0 5px 0 0;
+}
+
+#ngg_gallery_quickswitch_wrapper .select2-container {
+    height: 100%;
 }
 
 #ngg_page_content .ngg_page_content_header img {

@@ -225,6 +225,7 @@ class nggAdminPanel{
     			wp_enqueue_script( 'shutter' );
                 wp_enqueue_script( 'ngg_select2' );
                 wp_enqueue_style( 'ngg_select2' );
+                M_Gallery_Display::enqueue_fontawesome();
     			add_thickbox();
 			break;
 			case "nggallery-manage-album" :
