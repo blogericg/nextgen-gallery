@@ -1,6 +1,9 @@
 NextGEN Gallery
 by Imagely
 
+= V3.4.7.1 - 12.07.2020 =
+* Fixed:   Pagination missing ellipsis for missing page numbers
+
 = v3.4.7 - 11.25.2020 =
 * NEW:     Replaced plupload with a new uppy.js based uploader for faster uploading
 * Changed: Updated select2 and Gritter to the latest versions
