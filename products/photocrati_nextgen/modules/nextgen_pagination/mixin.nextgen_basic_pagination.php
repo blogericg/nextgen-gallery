@@ -17,7 +17,6 @@ class Mixin_NextGen_Basic_Pagination extends Mixin
      */
     public function create_pagination($selected_page, $number_of_entities, $entities_per_page = 0, $current_url = NULL)
     {
-        xdebug_break();
         $prev_symbol = apply_filters('ngg_prev_symbol', '&#9668;');
         $next_symbol = apply_filters('ngg_next_symbol', '&#9658;');
 
