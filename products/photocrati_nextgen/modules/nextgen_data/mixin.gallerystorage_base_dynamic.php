@@ -253,16 +253,16 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
 
                 $thumbnail = apply_filters('ngg_before_save_thumbnail', $thumbnail);
 
-                $exif_iptc = @C_Exif_Writer_Wrapper::read_metadata($image_path);
+                $exif_iptc = @C_Exif_Writer::read_metadata($image_path);
 
                 $thumbnail->save($destpath, $quality);
 
                 // We've just rotated the image however the EXIF metadata contains an Orientation tag. To prevent
                 // certain browsers from rotating our already-rotated image we reset the Orientation tag to the default.
                 if ($remove_orientation_exif && !empty($exif_iptc['exif']))
-                    $exif_iptc['exif'] = @C_Exif_Writer_Wrapper::reset_orientation($exif_iptc['exif']);
+                    $exif_iptc['exif'] = @C_Exif_Writer::reset_orientation($exif_iptc['exif']);
 
-                @C_Exif_Writer_Wrapper::write_metadata($destpath, $exif_iptc);
+                @C_Exif_Writer::write_metadata($destpath, $exif_iptc);
             }
         }
 
