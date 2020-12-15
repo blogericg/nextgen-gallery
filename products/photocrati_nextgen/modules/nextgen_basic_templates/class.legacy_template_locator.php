@@ -155,7 +155,7 @@ class Mixin_Legacy_Template_Locator extends Mixin
                 }
             }
         }
-        else {
+        else if (!preg_match('#\.\.[/\\\]#', $custom_template)) {
             // An absolute path was already given
             $template_abspath = $custom_template;
         }

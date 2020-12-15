@@ -388,7 +388,7 @@ class Mixin_Display_Type_Controller extends Mixin
 	        $dirs = M_Gallery_Display::get_display_type_view_dirs($display_type_name);
 
 	        // If the view starts with a slash, we assume that a filename has been given
-	        if (strpos($display_type_view, DIRECTORY_SEPARATOR) === 0) {
+	        if (strpos($display_type_view, DIRECTORY_SEPARATOR) === 0 && !preg_match('#\.\.[/\\\]#', $display_type_view)) {
 		        if (@file_exists($display_type_view)) {
 			        $template = $display_type_view;
 		        }
