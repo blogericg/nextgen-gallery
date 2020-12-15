@@ -216,7 +216,8 @@ class A_NextGen_AddGallery_Ajax extends Mixin
     {
 	    $retval = array();
 
-	    if ( $this->validate_ajax_request( 'nextgen_upload_image' , $_REQUEST['nonce']) ) {
+	    if ( $this->validate_ajax_request( 'nextgen_upload_image', TRUE))
+	    {
 		    if ( ( $folder = $this->param( 'folder' ) ) ) {
 			    $storage = C_Gallery_Storage::get_instance();
 			    $fs      = C_Fs::get_instance();
@@ -266,7 +267,7 @@ class A_NextGen_AddGallery_Ajax extends Mixin
         $image_mapper    = C_Image_Mapper::get_instance();
         $attachment_ids  = $this->param('attachment_ids');
 
-        if ($this->validate_ajax_request('nextgen_upload_image', $_REQUEST['nonce']))
+        if ($this->validate_ajax_request('nextgen_upload_image', TRUE))
         {
             if (empty($attachment_ids) || !is_array($attachment_ids))
             {

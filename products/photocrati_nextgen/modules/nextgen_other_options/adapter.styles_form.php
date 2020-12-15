@@ -44,10 +44,20 @@ class A_Styles_Form extends Mixin
 
 			// the desired file, but users shouldn't use this to write files that don't end in .css anyway
 			$file_info = pathinfo($settings['CSSfile']);
-			if (strpos($file_info['extension'], 'css') === FALSE) $valid = FALSE;
+
+			// Prevent something.php.css from being executed on poorly configured servers
+			if (preg_match('/\.php(.*)$/i', $settings['CSSfile'], $matches))
+			    $valid = FALSE;
+
+			// Ensure a .css extension
+			if (strpos($file_info['extension'], 'css') === FALSE)
+			    $valid = FALSE;
+
+
 
             // TODO: C_Page's add_error() doesn't seem to work here so we should report that we aren't saving
-			if ($valid) $this->object->get_model()->set($settings)->save();
+			if ($valid)
+			    $this->object->get_model()->set($settings)->save();
 
 			// Are we to modify the CSS file?
 			if ($valid && ($contents = $this->object->param('cssfile_contents')))
