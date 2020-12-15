@@ -211,6 +211,13 @@ class M_NextGen_Admin extends C_Base_Module
             $php_id = ($version[0] * 10000 + $version[1] * 100 + $version[2]);
         }
 
+        $styles_deprecation_url   = 'https://www.imagely.com/docs/styles-tab-deprecation';
+        $template_deprecation_url = 'https://www.imagely.com/docs/legacy-templates-deprecation';
+        $notices->add(
+            "ngg_styles_and_custom_templates_deprecation",
+            ["message" => sprintf(__('NextGEN will soon be removing support for custom styles and legacy templates. For more information please see our documentation on the <a href="%s">styles tab deprecation</a> or our documentation on <a href="%s">legacy templates deprecation</a>', 'nggallery'), $styles_deprecation_url, $template_deprecation_url)]
+        );
+
         if ($php_id < 50300) {
             $notices->add(
                 "ngg_php52_deprecation",
