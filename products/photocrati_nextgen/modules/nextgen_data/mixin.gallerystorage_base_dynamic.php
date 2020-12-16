@@ -253,7 +253,11 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
 
                 $thumbnail = apply_filters('ngg_before_save_thumbnail', $thumbnail);
 
-                $exif_iptc = @C_Exif_Writer::read_metadata($image_path);
+                $backup_path = $image_path . '_backup';
+                if (!@file_exists($backup_path))
+                    $exif_iptc = @C_Exif_Writer::read_metadata($image_path);
+                else
+                    $exif_iptc = @C_Exif_Writer::read_metadata($backup_path);
 
                 $thumbnail->save($destpath, $quality);
 
