@@ -30,7 +30,7 @@ class A_NextGen_AddGallery_Ajax extends Mixin
         {
             $action = 'nextgen_upload_image';
             $retval['allowed']        = M_Security::is_allowed($action);
-            $retval['verified_token'] = (!$_REQUEST['nonce'] || wp_verify_nonce($_REQUEST['nonce'], $action));
+            $retval['verified_token'] = (!$_REQUEST['nonce'] || !wp_verify_nonce($_REQUEST['nonce'], $action));
             $retval['error']          = __("No permissions to upload images. Try refreshing the page or ensuring that your user account has sufficient roles/privileges.", 'nggallery');
             return $retval;
         }
@@ -138,7 +138,7 @@ class A_NextGen_AddGallery_Ajax extends Mixin
         else {
             $action = 'nextgen_upload_image';
             $retval['allowed']        = M_Security::is_allowed($action);
-            $retval['verified_token'] = (!$_REQUEST['nonce'] || wp_verify_nonce($_REQUEST['nonce'], $action));
+            $retval['verified_token'] = (!$_REQUEST['nonce'] || !wp_verify_nonce($_REQUEST['nonce'], $action));
             $retval['error']          = __("No permissions to upload images. Try refreshing the page or ensuring that your user account has sufficient roles/privileges.", 'nggallery');
         }
 

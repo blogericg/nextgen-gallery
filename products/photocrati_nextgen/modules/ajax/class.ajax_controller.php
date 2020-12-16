@@ -65,7 +65,7 @@ class C_Ajax_Controller extends C_MVC_Controller
 
 	function validate_ajax_request($action = NULL, $token = FALSE)
 	{
-		if ($token === TRUE && (!isset($_REQUEST['nonce']) || !M_Security::verify_nonce($_REQUEST['nonce'])))
+		if ($token === TRUE && (!isset($_REQUEST['nonce']) || !M_Security::verify_nonce($_REQUEST['nonce'], $action)))
             return FALSE;
 
 		return M_Security::is_allowed($action);
