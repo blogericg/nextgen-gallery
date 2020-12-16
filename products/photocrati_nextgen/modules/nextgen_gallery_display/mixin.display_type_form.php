@@ -267,7 +267,6 @@ class Mixin_Display_Type_Form extends Mixin
         
         /* Populate the views array by scanning each directory for relevant templates */
         foreach ($dirs as $dir_name => $dir) {
-
             /* Confirm directory exists */
             if ( !file_exists($dir) || !is_dir($dir) ) {
                 continue;

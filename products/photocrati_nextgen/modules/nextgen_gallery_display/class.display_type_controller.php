@@ -387,33 +387,23 @@ class Mixin_Display_Type_Controller extends Mixin
 	        /* Fetch array of template directories */
 	        $dirs = M_Gallery_Display::get_display_type_view_dirs($display_type_name);
 
-	        // If the view starts with a slash, we assume that a filename has been given
-	        if (strpos($display_type_view, DIRECTORY_SEPARATOR) === 0 && !preg_match('#\.\.[/\\\]#', $display_type_view)) {
-		        if (@file_exists($display_type_view)) {
-			        $template = $display_type_view;
-		        }
-	        }
+	        // Add the missing "default" category name prefix to the template to make it
+            // more consistent to evaluate
+            if (strpos($display_type_view, DIRECTORY_SEPARATOR) === FALSE) {
+                $display_type_view = join(DIRECTORY_SEPARATOR, array('default', $display_type_view));
+            }
 
-	        // We need to search for the display type view in one of the display type view directories
-	        else {
-	        	// Add the missing "default" category name prefix to the template to make it
-		        // more consistent to evaluate
-		        if (strpos($display_type_view, DIRECTORY_SEPARATOR) === FALSE) {
-		        	$display_type_view = join(DIRECTORY_SEPARATOR, array('default', $display_type_view));
-		        }
-
-		        foreach ($dirs as $category => $dir) {
-		        	$category = preg_quote($category . DIRECTORY_SEPARATOR);
-		        	if (preg_match("#^{$category}(.*)$#", $display_type_view, $match)) {
-						$display_type_view = $match[1];
-						$template_abspath = $fs->join_paths($dir, $display_type_view);
-						if (@file_exists($template_abspath)) {
-							$template = $template_abspath;
-							break;
-						}
-			        }
-		        }
-	        }
+            foreach ($dirs as $category => $dir) {
+                $category = preg_quote($category . DIRECTORY_SEPARATOR);
+                if (preg_match("#^{$category}(.*)$#", $display_type_view, $match)) {
+                    $display_type_view = $match[1];
+                    $template_abspath = $fs->join_paths($dir, $display_type_view);
+                    if (@file_exists($template_abspath)) {
+                        $template = $template_abspath;
+                        break;
+                    }
+                }
+            }
         }
 
         /* Return template. If no match is found, returns the original template */
