@@ -118,6 +118,8 @@ jQuery(function($){
                     item.set('selected', false);
             });
             this.collection.trigger('selected');
+
+            if (this.onSelect) this.onSelect();
         },
 
         render: function(){
@@ -676,7 +678,10 @@ jQuery(function($){
                 id: 'source_select',
                 collection: this.sources,
                 placeholder: 'Select a source',
-                width: 500
+                width: 500,
+                onSelect: function(){
+                    $('.main_menu_tab').off('scroll');
+                }
             });
 
             var template = _.template('<tr><td id="source_column"></td><td><label><%- sources %></label></td></tr>');
