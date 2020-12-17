@@ -1,8 +1,13 @@
 NextGEN Gallery
 by Imagely
 
-= V3.4.7.1 - 12.07.2020 =
+= V3.5.0.1 - 01.12.2020 =
 * Fixed:   Pagination missing ellipsis for missing page numbers
+
+= v3.5.0 - 12.17.2020 =
+* Changed: Deprecated legacy template functionality
+* Changed: Deprecated built-in custom style / CSS mechanism
+* Fixed:   Misc updates for PHP 8.0 compatibility
 
 = v3.4.7 - 11.25.2020 =
 * NEW:     Replaced plupload with a new uppy.js based uploader for faster uploading

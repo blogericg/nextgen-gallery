@@ -24,8 +24,8 @@ class A_Import_Folder_Form extends Mixin
     function render()
     {
         return $this->object->render_partial('photocrati-nextgen_addgallery_page#import_folder', array(
-	        'browse_nonce' =>  M_Security::create_nonce('nextgen_upload_image'),
-	        'import_nonce' =>  M_Security::create_nonce('nextgen_upload_image')
+	        'browse_nonce' => M_Security::create_nonce('nextgen_upload_image'),
+	        'import_nonce' => M_Security::create_nonce('nextgen_upload_image')
         ), TRUE);
     }
 }

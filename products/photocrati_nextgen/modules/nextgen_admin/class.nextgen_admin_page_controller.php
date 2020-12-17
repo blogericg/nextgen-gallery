@@ -38,24 +38,21 @@ class C_NextGen_Admin_Page_Controller extends C_MVC_Controller
 class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
 {
 	/**
+     * @param string $privilege
+     * @return bool
+     *
 	 * Authorizes the request
 	 */
 	function is_authorized_request($privilege=NULL)
 	{
-		$retval = TRUE;
+        if (!$privilege)
+            $privilege = $this->object->get_required_permission();
 
-		if (!$privilege) $privilege = $this->object->get_required_permission();
+        if ($this->object->is_post_request() && (!isset($_REQUEST['nonce']) || !M_Security::verify_nonce($_REQUEST['nonce'], $privilege)))
+            return FALSE;
 
-		// Ensure that the user has permission to access this page
-		if (!M_Security::is_allowed($privilege))
-			$retval = FALSE;
-
-		// Ensure that nonce is valid
-		if ($this->object->is_post_request() && (isset($_REQUEST['nonce']) && !M_Security::verify_nonce($_REQUEST['nonce'], $privilege))) {
-			$retval = FALSE;
-		}
-
-		return $retval;
+        // Ensure that the user has permission to access this page
+        return M_Security::is_allowed($privilege);
 	}
 
 	/**

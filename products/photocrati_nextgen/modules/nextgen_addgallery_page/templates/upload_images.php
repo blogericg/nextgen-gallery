@@ -282,6 +282,7 @@ $max_size_message = sprintf(__('You may select files up to %dMB', 'nggallery'), 
                 const postData = new FormData();
                 postData.append('action', 'create_new_gallery');
                 postData.append('gallery_name', gallery_name.value);
+                postData.append('nonce', urlencode("<?php echo $nonce; ?>"));
 
                 fetch(photocrati_ajax.url, {
                     method: 'POST',
