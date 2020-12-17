@@ -254,10 +254,14 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
                 $thumbnail = apply_filters('ngg_before_save_thumbnail', $thumbnail);
 
                 $backup_path = $image_path . '_backup';
-                if (!@file_exists($backup_path))
-                    $exif_iptc = @C_Exif_Writer::read_metadata($image_path);
-                else
-                    $exif_iptc = @C_Exif_Writer::read_metadata($backup_path);
+                try {
+                    $exif_abspath = @file_exists($backup_path) ? $backup_path : $image_path;
+                    $exif_iptc = @C_Exif_Writer::read_metadata($exif_abspath);
+                }
+                catch (PelException $ex) {
+                    error_log("Could not read image metadata {$exif_abspath}");
+                    error_log(print_r($ex, TRUE));
+                }
 
                 $thumbnail->save($destpath, $quality);
 
@@ -266,7 +270,14 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
                 if ($remove_orientation_exif && !empty($exif_iptc['exif']))
                     $exif_iptc['exif'] = @C_Exif_Writer::reset_orientation($exif_iptc['exif']);
 
-                @C_Exif_Writer::write_metadata($destpath, $exif_iptc);
+                try {
+                    @C_Exif_Writer::write_metadata($destpath, $exif_iptc);
+                }
+                catch (PelException $ex) {
+                    error_log("Could not write data to {$destpath}");
+                    error_log(print_r($ex, TRUE));
+                }
+                    
             }
         }
 

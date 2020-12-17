@@ -161,10 +161,10 @@ class C_Exif_Writer
         // This can cause errors if incorrectly pointed at a non-JPEG file
         try {
             // Loop through each JPEG segment in search of region 13
-            while ((substr($new_file_contents, 0, 2) & 0xFFF0) === 0xFFE0) {
+            while ((hexdec(substr($new_file_contents, 0, 2)) & 0xFFF0) === 0xFFE0) {
 
-                $segment_length = (substr($new_file_contents, 2, 2) & 0xFFFF);
-                $segment_number = (substr($new_file_contents, 1, 1) & 0x0F);
+                $segment_length = (hexdec(substr($new_file_contents, 2, 2)) & 0xFFFF);
+                $segment_number = (hexdec(substr($new_file_contents, 1, 1)) & 0x0F);
 
                 // Not a segment we're interested in
                 if ($segment_length <= 2)
