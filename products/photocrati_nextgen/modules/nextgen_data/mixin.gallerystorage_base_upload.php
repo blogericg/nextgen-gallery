@@ -90,7 +90,7 @@ class Mixin_GalleryStorage_Base_Upload extends Mixin
         // Remove full sized image if backup is included
         $files_to_import = [];
         foreach ($files as $file_abspath) {
-            if (preg_match("##_backup$", $file_abspath)) {
+            if (preg_match("#_backup$#", $file_abspath)) {
                 $files_to_import[] = $file_abspath;
                 continue;
             }
