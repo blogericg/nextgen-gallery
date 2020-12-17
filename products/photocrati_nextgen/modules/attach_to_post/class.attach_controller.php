@@ -333,7 +333,7 @@ class Mixin_Attach_To_Post extends Mixin
 			'ngg_display_tab',
 			$this->get_static_url('photocrati-attach_to_post#display_tab.js'),
 			array('jquery', 'backbone', 'photocrati_ajax'),
-			NGG_SCRIPT_VERSION
+			NGG_ATTACH_TO_POST_VERSION
 		);
 		$this->object->mark_script('ngg_display_tab');
 		wp_localize_script('ngg_display_tab', 'igw_data', array(
