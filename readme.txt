@@ -180,8 +180,10 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= v3.5.0 - 12.16.2020 =
-* Changed: Misc updates for PHP 8.0 compatibility
+= v3.5.0 - 12.17.2020 =
+* Changed: Deprecated legacy template functionality
+* Changed: Deprecated built-in custom style / CSS mechanism
+* Fixed:   Misc updates for PHP 8.0 compatibility
 
 = v3.4.7 - 11.25.2020 =
 * NEW:     Replaced plupload with a new uppy.js based uploader for faster uploading
