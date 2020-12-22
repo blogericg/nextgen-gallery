@@ -74,7 +74,8 @@ class A_Upload_Images_Form extends Mixin
             'no_image_uploaded'  => __('No images were uploaded successfully.',      'nggallery'),
             'one_image_uploaded' => __('1 image was uploaded successfully.',         'nggallery'),
             'x_images_uploaded'  => __('{count} images were uploaded successfully.', 'nggallery'),
-            'manage_gallery'     => __('Manage gallery > {name}',                    'nggallery')
+            'manage_gallery'     => __('Manage gallery > {name}',                    'nggallery'),
+            'image_failed'       => __('Image {filename} failed to upload: {error}', 'nggallery')
         ];
     }
 
