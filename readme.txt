@@ -2,11 +2,7 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 5.2.0
-<<<<<<< HEAD
-Stable tag: 3.4.7.1
-=======
-Stable tag: 3.5.0
->>>>>>> master
+Stable tag: 3.6.0
 Tested up to: 5.6.0
 License: GPLv3
 Requires PHP: 5.6
@@ -184,7 +180,8 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.5.0.1 - 01.12.2020 =
+= V3.5.0.2 - 01.12.2020 =
+* Fixed:   Image rotation not reliable
 * Fixed:   Pagination missing ellipsis for missing page numbers
 
 = v3.5.0 - 12.17.2020 =
