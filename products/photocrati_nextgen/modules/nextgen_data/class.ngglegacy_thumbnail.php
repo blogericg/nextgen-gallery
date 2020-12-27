@@ -821,13 +821,14 @@ class C_NggLegacy_Thumbnail {
    * @return bool
 	 */
 	function rotateImageAngle( $angle = 90 ) {
-		
 		if ( function_exists('imagerotate') ) {
-	        $this->workingImage = imagerotate($this->oldImage, 360 - $angle, 0); // imagerotate() rotates CCW 
 	        $this->currentDimensions['width']  = imagesx($this->workingImage);
 	    	$this->currentDimensions['height'] = imagesy($this->workingImage);
-    	    $this->oldImage = $this->workingImage;
-			$this->newImage = $this->workingImage;
+            $this->oldImage = $this->workingImage;
+            
+            // imagerotate() rotates CCW ;
+            // See for help: https://evertpot.com/115/
+			$this->newImage = imagerotate($this->oldImage, 360-($angle*90), 0);
 			return true;
 		}
 		
