@@ -216,11 +216,11 @@ by Imagely
 * Changed: Updated jquery.waitforimages.js
 * Fixed:   Uploading of non-JPEG images and uploading of JPEG with invalid EXIF data
 
-= V3.1.4 - 12.21.2018 =
-* Fixed:   Visual shortcode not displaying in WP 5.0.2
-
 = V3.1.3 - 01.08.2018 =
 * Fixed:   Post thumbnail support for NextGEN Gallery when using Block Editor
+
+= V3.1.4 - 12.21.2018 =
+* Fixed:   Visual shortcode not displaying in WP 5.0.2
 
 = V3.1.2 - 12.18.2018 =
 * Fixed:   Variable mismatch error when using central gallery management pages
