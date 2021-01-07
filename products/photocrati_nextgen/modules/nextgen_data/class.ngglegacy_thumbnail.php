@@ -828,7 +828,7 @@ class C_NggLegacy_Thumbnail {
             
             // imagerotate() rotates CCW ;
             // See for help: https://evertpot.com/115/
-			$this->newImage = imagerotate($this->oldImage, 360-($angle*90), 0);
+			$this->newImage = imagerotate($this->oldImage, 360 - $angle, 0);
 			return true;
 		}
 		
