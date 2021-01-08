@@ -4,7 +4,7 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You 
 /**
  * Plugin Name: NextGEN Gallery
  * Description: The most popular gallery plugin for WordPress and one of the most popular plugins of all time with over 30 million downloads.
- * Version: 3.5.0.2
+ * Version: 3.5.0.3
  * Author: Imagely
  * Plugin URI: https://www.imagely.com/wordpress-gallery-plugin/nextgen-gallery/
  * Author URI: https://www.imagely.com
@@ -166,12 +166,17 @@ class C_NextGEN_Bootstrap
 		// We only load the plugin if we're outside of the activation request, loaded in an iframe
 		// by WordPress. Reason being, if WP_DEBUG is enabled, and another Pope-based plugin (such as
 		// the photocrati theme or NextGEN Pro/Plus), then PHP will output strict warnings
-		if ($this->is_not_activating()) {
+		if ($this->is_not_activating() && !$this->is_topscorer_request()) {
 			$this->_define_constants();
 			$this->_load_non_pope();
 			$this->_register_hooks();
 			$this->_load_pope();
 		}
+	}
+
+	function is_topscorer_request()
+	{
+		return strpos($_SERVER['REQUEST_URI'], 'topscorer/v1') !== FALSE;
 	}
 
 	function is_not_activating()
@@ -721,7 +726,7 @@ class C_NextGEN_Bootstrap
 		define('NGG_PRODUCT_URL', path_join(str_replace("\\" , '/', NGG_PLUGIN_URL), 'products'));
 		define('NGG_MODULE_URL', path_join(str_replace("\\", '/', NGG_PRODUCT_URL), 'photocrati_nextgen/modules'));
 		define('NGG_PLUGIN_STARTED_AT', microtime());
-		define('NGG_PLUGIN_VERSION', '3.5.0.2');
+		define('NGG_PLUGIN_VERSION', '3.5.0.3');
 
 		define(
 			'NGG_SCRIPT_VERSION',

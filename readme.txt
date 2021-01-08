@@ -180,7 +180,8 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.5.0.2 - 01.12.2020 =
+= V3.5.0.3 - 01.25.2021 =
+* Fixed:   Compatibility issue with Topscorer Theme
 * Fixed:   Image rotation not reliable
 * Fixed:   Pagination missing ellipsis for missing page numbers
 
