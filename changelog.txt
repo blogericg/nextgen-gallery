@@ -1,7 +1,9 @@
 NextGEN Gallery
 by Imagely
 
-= V3.5.0.2 - 01.12.2020 =
+= V3.5.0.4 - 01.25.2020 =
+* NEW:     Added new 'Bulk actions' option to remove EXIF Orientation from existing images
+* Fixed:   Compatibility issue with Topscorer Theme
 * Fixed:   Image rotation not reliable
 * Fixed:   Pagination missing ellipsis for missing page numbers
 

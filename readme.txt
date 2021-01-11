@@ -180,7 +180,8 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.5.0.3 - 01.25.2021 =
+= V3.5.0.4 - 01.25.2021 =
+* NEW:     Added new 'Bulk actions' option to remove EXIF Orientation from existing images
 * Fixed:   Compatibility issue with Topscorer Theme
 * Fixed:   Image rotation not reliable
 * Fixed:   Pagination missing ellipsis for missing page numbers
