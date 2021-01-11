@@ -253,31 +253,15 @@ class Mixin_GalleryStorage_Base_Dynamic extends Mixin
 
                 $thumbnail = apply_filters('ngg_before_save_thumbnail', $thumbnail);
 
+                // Always retrieve metadata from the backup when possible
                 $backup_path = $image_path . '_backup';
-                try {
-                    $exif_abspath = @file_exists($backup_path) ? $backup_path : $image_path;
-                    $exif_iptc = @C_Exif_Writer::read_metadata($exif_abspath);
-                }
-                catch (PelException $ex) {
-                    error_log("Could not read image metadata {$exif_abspath}");
-                    error_log(print_r($ex, TRUE));
-                }
+                $exif_abspath = @file_exists($backup_path) ? $backup_path : $image_path;
+
+                $exif_iptc = @C_Exif_Writer::read_metadata($exif_abspath);
 
                 $thumbnail->save($destpath, $quality);
 
-                // We've just rotated the image however the EXIF metadata contains an Orientation tag. To prevent
-                // certain browsers from rotating our already-rotated image we reset the Orientation tag to the default.
-                if ($remove_orientation_exif && !empty($exif_iptc['exif']))
-                    $exif_iptc['exif'] = @C_Exif_Writer::reset_orientation($exif_iptc['exif']);
-
-                try {
-                    @C_Exif_Writer::write_metadata($destpath, $exif_iptc);
-                }
-                catch (PelException $ex) {
-                    error_log("Could not write data to {$destpath}");
-                    error_log(print_r($ex, TRUE));
-                }
-                    
+                @C_Exif_Writer::write_metadata($destpath, $exif_iptc);
             }
         }
 
