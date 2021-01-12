@@ -114,6 +114,7 @@ class M_Third_Party_Compat extends C_Base_Module
         add_action('wp',   array($this, 'bjlazyload'), PHP_INT_MAX);
 
         add_action('admin_init', array($this, 'excellent_themes_admin'), -10);
+        add_action('wp_enqueue_scripts', array($this, 'jquery_mmenu_fix'));
 
         add_action('plugins_loaded',     array($this, 'wpml'), PHP_INT_MAX);
         add_action('plugins_loaded',     array($this, 'wpml_translation_management'), PHP_INT_MAX);
@@ -144,6 +145,24 @@ class M_Third_Party_Compat extends C_Base_Module
 
         // TODO: Only needed for NGG Pro 1.0.10 and lower
         add_action('the_post', array(&$this, 'add_ngg_pro_page_parameter'));
+    }
+
+    public function jquery_mmenu_fix()
+    {
+        if (C_NextGen_Settings::get_instance()->get('thumbEffect') === 'fancybox') {
+            wp_add_inline_script('ngg_lightbox_context', '
+            // Fix compatibility issue with jQuery Mmenu.
+            if (jQuery.fn.mmenu) window.addEventListener(
+                "click",
+                ({target}) => {
+                    let $target = $(target);
+                    if ($target.hasClass(".ngg-fancybox") || $target.parents("a").hasClass(".ngg-fancybox")) {
+                        $(body).off("click.mm-oncanvas", "a[href]");
+                    }
+                },
+                true
+            )');
+        }
     }
 
     public function divi()
