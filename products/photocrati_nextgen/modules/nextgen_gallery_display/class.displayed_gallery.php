@@ -517,7 +517,13 @@ class Mixin_Displayed_Gallery_Queries extends Mixin
             {
                 if ($container_ids !== array('0') && $container_ids !== array(''))
                 {
+                    $container_ids = array_map('intval', $container_ids);
                     $album_mapper->where(array("{$album_key} IN %s", $container_ids));
+
+                    // This order_by is necessary for albums to be ordered correctly given the WHERE .. IN() above
+                    $order_string = implode(',', $container_ids);
+                    $album_mapper->order_by("FIELD('id', {$order_string})");
+
                     foreach ($album_mapper->run_query() as $album) {
                         $entity_ids = array_merge($entity_ids, (array) $album->sortorder);
                     }
