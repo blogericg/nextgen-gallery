@@ -1,7 +1,8 @@
 NextGEN Gallery
 by Imagely
 
-= V3.5.0.2 - 01.12.2020 =
+= V3.6.0 - 01.26.2020 =
+* NEW:     Provide hooks to customize Uppy settings (https://imagely.myjetbrains.com/youtrack/issue/NGG-1139)
 * Fixed:   Image rotation not reliable
 * Fixed:   Pagination missing ellipsis for missing page numbers
 
