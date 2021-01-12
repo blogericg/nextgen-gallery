@@ -137,6 +137,13 @@
                             adjust_upload_button();
                         }
                     })
+                .on('error', (file, error, response) => {
+                    if (console && console.log) {
+                        console.log(file)
+                        console.log(error)
+                        console.log(response)
+                    }
+                })
                 .on('complete', (result) => {
                     // There was at least one error: remove the successful images so users can find out what went wrong
                     if (result.failed.length > 0) {

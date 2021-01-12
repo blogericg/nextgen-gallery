@@ -54,6 +54,7 @@ class A_Upload_Images_Form extends Mixin
     function get_uppy_xhr_settings()
     {
         return apply_filters('ngg_uppy_xhr_settings', [
+            'timeout'   => intval(NGG_UPLOAD_TIMEOUT) * 1000,
             'limit'     => intval(NGG_UPLOAD_LIMIT),
             'fieldName' => 'file'
         ]);

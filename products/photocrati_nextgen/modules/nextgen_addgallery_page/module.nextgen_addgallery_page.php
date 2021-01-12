@@ -7,6 +7,7 @@
 
 define('NGG_ADD_GALLERY_SLUG', 'ngg_addgallery');
 if (!defined('NGG_UPLOAD_LIMIT')) define('NGG_UPLOAD_LIMIT', 6);
+if (!defined('NGG_UPLOAD_TIMEOUT')) define('NGG_UPLOAD_TIMEOUT', 40);
 
 class M_NextGen_AddGallery_Page extends C_Base_Module
 {
