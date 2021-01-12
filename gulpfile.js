@@ -189,7 +189,7 @@ gulp.task('showdeploydir', function(done){
 
 
 // Create the deploy path directory if it doesn't exist
-gulp.task('mkdeploydir', shell.task('mkdir -p "'+deploy_path+'"', {
+gulp.task('mkdeploydir', shell.task('mkdir -p "'+deploy_path+'" || true', {
 	quiet: true
 }));
 
