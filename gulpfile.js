@@ -198,6 +198,11 @@ gulp.task('delbuild', function() {
 	return del('build/**/*');
 });
 
+// Delete contents of build and deploy folders
+gulp.task('deldevdeps', shell.task('composer --no-dev update', {
+	cwd: './build/' + product
+}));
+
 // Delete the contents of your deployed directory
 gulp.task('deldeploy', function() {
 	if (deploy_path)
@@ -327,7 +332,7 @@ gulp.task('rdeploy', function(){
 /*
  * Finally, one command to do it all in sequence
  */
-var build_tasks 					= ['copybuild', 'webpack-block', 'webpack-others', 'minify', 'compile', 'cleanbin'];
+var build_tasks 					= ['copybuild', 'webpack-block', 'webpack-others', 'minify', 'compile', 'deldevdeps', 'cleanbin'];
 if (!do_keep_build)					build_tasks.unshift('delbuild');
 if (do_zip)							build_tasks.push('zip');
 if (do_deploy && !do_use_lftp)		build_tasks = build_tasks.concat(['deldeploy', 'deploy']);
