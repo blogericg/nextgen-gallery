@@ -7,15 +7,15 @@ jQuery(function($) {
             e => {
                 let $target = $(e.target);
                 if ($target.is(selector) || $target.parents('a').is(selector)) {
-                    $link = e.target.nodeName == "IMG" ? $target : $target.find('img')
-                    e.preventDefault()
-                    $.fancybox($link[0].outerHTML, {
+                    e.preventDefault();
+                    $(selector).fancybox({
                         titlePosition: 'inside',
                         // Needed for twenty eleven
                         onComplete: function() {
                             $('#fancybox-wrap').css('z-index', 10000);
                         }
                     })
+                    $target.trigger('click.fb');
                     
                     e.stopPropagation();
                 }
