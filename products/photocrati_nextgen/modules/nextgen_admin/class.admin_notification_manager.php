@@ -313,7 +313,7 @@ class C_Admin_Notification_Manager
 				NGG_SCRIPT_VERSION,
 				TRUE
 			);
-			wp_localize_script('ngg_admin_notices', 'ngg_dismiss_url', $this->_dismiss_url);
+			wp_localize_script('ngg_admin_notices', 'ngg_dismiss_url', [$this->_dismiss_url]);
 		}
 	}
 
