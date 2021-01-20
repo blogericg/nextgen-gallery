@@ -137,8 +137,12 @@ class Mixin_Gallery_Mapper extends Mixin
 
         if ($retval)
         {
-            wp_mkdir_p($storage->get_gallery_abspath($entity));
-            do_action('ngg_created_new_gallery', $entity->{$entity->id_field});
+            $path = $storage->get_gallery_abspath($entity);
+            if (!file_exists($path))
+            {
+                wp_mkdir_p($path);
+                do_action('ngg_created_new_gallery', $entity->{$entity->id_field});
+            }
             C_Photocrati_Transient_Manager::flush('displayed_gallery_rendering');
         }
 
