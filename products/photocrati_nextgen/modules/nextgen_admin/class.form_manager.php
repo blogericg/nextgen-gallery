@@ -82,7 +82,7 @@ class Mixin_Form_Manager extends Mixin
 		if (isset($this->object->_forms[$type])) {
 			foreach ($form_names as $form) {
 				if (($index = array_search($form, $this->object->_forms[$type])))
-					unsset($this->object->_forms[$type][$index]);
+					unset($this->object->_forms[$type][$index]);
 			}
 			$retval = $this->object->get_form_count($type);
 		}
