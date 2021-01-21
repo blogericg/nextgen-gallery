@@ -70,7 +70,7 @@ class A_NextGen_Basic_ImageBrowser_Controller extends Mixin
             else {
                 // in the case it's a slug we need to search for the pid
                 foreach ($picture_list as $key => $picture) {
-                    if ($picture->image_slug == $pid)
+                    if ($picture->image_slug == $pid || strtoupper($picture->image_slug) === strtoupper(urlencode($pid)))
                     {
                         $numeric_pid = $key;
                         break;
