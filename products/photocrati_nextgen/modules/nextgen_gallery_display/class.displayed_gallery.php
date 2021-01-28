@@ -80,10 +80,13 @@ class Mixin_Displayed_Gallery_Validation extends Mixin
 				}
 			}
 
-			// If no maximum_entity_count has been given, then set a maximum
-			if (!empty($this->object->display_settings['maximum_entity_count'])) {
+            // Only some sources should have their own maximum_entity_count
+            if (!empty($this->object->display_settings['maximum_entity_count'])
+            &&  in_array($this->object->source, array('tag', 'tags', 'random_images', 'recent_images', 'random', 'recent'))) {
                 $this->object->maximum_entity_count = $this->object->display_settings['maximum_entity_count'];
             }
+
+            // If no maximum_entity_count has been given, then set a maximum
 			if (!isset($this->object->maximum_entity_count))
 			{
 				$settings = C_NextGen_Settings::get_instance();
