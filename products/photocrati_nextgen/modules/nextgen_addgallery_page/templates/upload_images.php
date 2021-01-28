@@ -199,15 +199,26 @@ $max_size_message = sprintf(__('You may select files up to %dMB', 'nggallery'), 
                     message = NggUploadImages_i18n.one_image_uploaded;
                 }
 
-                message = message + ' ' + NggUploadImages_i18n.manage_gallery;
+                if (upload_count >= 1) {
+                    message = message + ' ' + NggUploadImages_i18n.manage_gallery;
+                }
+
+                if (result.failed.length > 0) {
+                    uppy.getFiles().forEach((file) => {
+                        message = message + "<br/>" + NggUploadImages_i18n.image_failed;
+                        message = message.replace('{filename}', file.name)
+                                         .replace('{error}', file.error);
+                    })
+                }
+
                 message = message.replace('{count}', String(upload_count))
                                  .replace('{name}', chosen_name);
 
                 Toastify({
                     text: message,
                     duration: 180000,
-                    destination: gallery_url,
-                    newWindow: true,
+                    destination: (upload_count === 0) ? '' : gallery_url,
+                    newWindow: (upload_count !== 0),
                     close: true,
                     gravity: 'bottom',
                     position: 'right',
