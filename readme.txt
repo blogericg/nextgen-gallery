@@ -188,6 +188,7 @@ For more information, feel free to visit the official website for the NextGEN Ga
 * Fixed:   Pagination missing ellipsis for missing page numbers (1099)
 * Fixed:   Transient tracker was calling update_option() on every page (1074)
 * Fixed:   Error responses from the server when uploading images failed were not specific (1121)
+* Fixed:   Compatibility with Custom Post Types UI (1076)
 
 = v3.5.0 - 12.17.2020 =
 * Changed: Deprecated legacy template functionality
