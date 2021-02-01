@@ -22,7 +22,8 @@ class C_NextGen_Rest_V1_Images extends WP_REST_Controller
                 ),
                 array(
                     'methods'  => 'GET',
-                    'callback' => array($this, 'images_list')
+                    'callback' => array($this, 'images_list'),
+                    'permission_callback' => '__return_true'
                 ),
                 'schema' => array($this, 'images_list_schema')
             )

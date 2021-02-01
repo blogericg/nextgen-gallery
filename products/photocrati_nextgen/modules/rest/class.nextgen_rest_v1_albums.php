@@ -14,7 +14,8 @@ class C_NextGen_Rest_V1_Albums extends WP_REST_Controller
             array(
                 array(
                     'methods'  => 'GET',
-                    'callback' => array($this, 'albums_list')
+                    'callback' => array($this, 'albums_list'),
+                    'permission_callback' => '__return_true'
                 ),
                 'schema' => array($this, 'album_list_schema')
             )

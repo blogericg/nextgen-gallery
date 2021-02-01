@@ -14,7 +14,8 @@ class C_NextGen_Rest_V1_Galleries
             array(
                 array(
                     'methods'  => 'GET',
-                    'callback' => array($this, 'galleries_list')
+                    'callback' => array($this, 'galleries_list'),
+                    'permission_callback' => '__return_true'
                 ),
                 'schema' => array($this, 'galleries_list_schema')
             )
@@ -34,7 +35,8 @@ class C_NextGen_Rest_V1_Galleries
                 ),
                 array(
                     'methods'  => 'GET',
-                    'callback' => array($this, 'gallery_info')
+                    'callback' => array($this, 'gallery_info'),
+                    'permission_callback' => '__return_true'
                 ),
                 'schema' => array($this, 'gallery_info_schema')
             )

@@ -32,5 +32,11 @@ class C_NextGen_Rest_V1
          */
         $images = new C_NextGen_Rest_V1_Images();
         $images->register_routes();
+
+        $settings = new C_NextGen_Rest_V1_Settings();
+        $settings->register_routes();
+
+        $display_types = new C_NextGen_Rest_V1_Display_Types();
+        $display_types->register_routes();
     }
 }

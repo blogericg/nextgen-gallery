@@ -45,10 +45,12 @@ class M_NextGen_REST extends C_Base_Module
     function get_type_list()
     {
         return array(
-            'C_NextGen_Rest_V1'           => 'class.nextgen_rest_v1.php',
-            'C_NextGen_Rest_V1_Albums'    => 'class.nextgen_rest_v1_albums.php',
-            'C_NextGen_Rest_V1_Galleries' => 'class.nextgen_rest_v1_galleries.php',
-            'C_NextGen_Rest_V1_Images'    => 'class.nextgen_rest_v1_images.php'
+            'C_NextGen_Rest_V1'               => 'class.nextgen_rest_v1.php',
+            'C_NextGen_Rest_V1_Albums'        => 'class.nextgen_rest_v1_albums.php',
+            'C_NextGen_Rest_V1_Galleries'     => 'class.nextgen_rest_v1_galleries.php',
+            'C_NextGen_Rest_V1_Images'        => 'class.nextgen_rest_v1_images.php',
+            'C_NextGen_Rest_V1_Settings'      => 'class.nextgen_rest_v1_settings.php',
+            'C_NextGen_Rest_V1_Display_Types' => 'class.nextgen_rest_v1_display_types.php'
         );
     }
 }
