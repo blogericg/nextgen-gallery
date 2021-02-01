@@ -116,7 +116,6 @@ class C_NextGen_Metadata extends C_Component
 	 * @return bool|array
 	 */
 	function get_EXIF($object = false) {
-
 		if ( !$this->exif_data )
 			return false;
 

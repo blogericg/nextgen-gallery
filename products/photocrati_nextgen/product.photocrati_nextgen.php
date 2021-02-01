@@ -22,7 +22,6 @@ class P_Photocrati_NextGen extends C_Base_Product
 		'photocrati-ajax'                       =>  'always',
 		'photocrati-datamapper'                 =>  'always',
 		'photocrati-nextgen-legacy'             =>  'always',
-		'photocrati-simple_html_dom'            =>  'always',
 		'photocrati-nextgen-data'               =>  'always',
 		'photocrati-nextgen_block'              =>  'always',
 
@@ -56,6 +55,7 @@ class P_Photocrati_NextGen extends C_Base_Product
 		'photocrati-nextgen_xmlrpc'             =>  'always',
 		'photocrati-nextgen_rest'               =>  'always',
 		'photocrati-wpcli'                      =>  'always',
+        'photocrati-marketing'                  =>  'backend',
         'photocrati-imagify'                    =>  'backend'
 	);
 

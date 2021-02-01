@@ -22,12 +22,13 @@
 /* 1. Overall IGW Window */
 
 html, body {
-	width: 100%;
-	height: 100%;
-	padding: 0px;
-	margin: 0px;
-	font-size: 13px;
-	overflow: hidden;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    font-size: 13px;
+    overflow: hidden;
 }
 
 body {
@@ -55,7 +56,7 @@ body {
 }
 
 #attach_to_post_tabs {
-	border: 0px;
+	border: 0;
 	background: none;
 	height: 100%;
     overflow: hidden;
@@ -64,7 +65,6 @@ body {
     visibility: visible;
 }
 
-#attach_to_post_tabs
 #attach_to_post_tabs.ui-tabs-hide {
 	display: block !important;
 	visibility: hidden;
@@ -100,7 +100,7 @@ h3#choose_display {
 }
 
 #attach_to_post_tabs .ui-widget-header {
-	border: 0px;
+	border: 0;
 	border-bottom: 1px solid #dfdfdf;
 	background: none;
 }
@@ -109,8 +109,8 @@ iframe {
 	width: 100%;
 	min-height: 100%;
 	border: none;
-	padding: 0px;
-	margin: 0px;
+	padding: 0;
+	margin: 0;
 	background: transparent;
 }
 
@@ -169,7 +169,6 @@ table {
     line-height: 60px;
     margin-bottom: 0;
     position: fixed;
-    padding: 10px 25px 30px 10px;
     text-transform: uppercase;
     width: 220px;
     padding: 0;
@@ -196,7 +195,6 @@ table {
 	display: block;
 	height: auto;
 	margin: 0;
-	padding: 0;
 	width: 100%;
 	border-radius: 0;
     box-sizing: border-box;
@@ -210,24 +208,8 @@ table {
     outline: none;
 }
 
-/* The next couple of rules are all a workaround to disable the "Insert Into Page" tab just for iOS */
-/* TODO: consolidate when plupload is upgraded */
-#attach_to_post_tabs ul.ui-tabs-nav li:nth-of-type(1) {
-    list-style: none;
-    /*border-top: 1px solid #344a59;*/
-}
-#attach_to_post_tabs:not(.ngg_atp_ios_detected) ul.ui-tabs-nav li:nth-of-type(2) {
-    list-style: none;
-}
-
-#attach_to_post_tabs:not(.ngg_atp_ios_detected) ul.ui-tabs-nav li:nth-of-type(1) a {
-    display: list-item;
-}
-#attach_to_post_tabs ul.ui-tabs-nav li:nth-of-type(2) a {
-    display: list-item;
-}
-
 #attach_to_post_tabs .ui-tabs-nav li a {
+    display: list-item;
     color: #555;
     float: right;
     font-size: 13px;
@@ -287,7 +269,6 @@ table {
     border: none;
     color: black;
     display: inline;
-    font-size: 14px;
     font-weight: 300;
     text-decoration: none;
     line-height: 25px;
@@ -323,19 +304,17 @@ table {
 
 #displayed_tab .ngg_igw_promo {
     display: block !important;
-    padding: 10px 20px;
-    position: relative;
-    top: -187px;
-    left: 608px;
-    background: #9ebc1b;
-    color: #fff;
-    /*border-bottom: 5px solid #9ebc1b;*/
-    font-family: Lato,sans-serif;
+    padding: 15px 7px;
+    color: #666;
+	font-family: "Lato", sans-serif;
+	font-size: 10pt;
     letter-spacing: .5px;
     box-sizing: border-box;
-    width: 200px;
     height: 172px;
-    margin-bottom: -170px;
+}
+
+#displayed_tab .ngg_igw_promo p {
+	text-align: center;
 }
 
 #displayed_tab .ngg_igw_promo p:nth-of-type(1) {
@@ -349,21 +328,11 @@ table {
 #displayed_tab .ngg_igw_promo a {
     text-decoration: none;
     font-weight: 600;
-    background: black;
-    color: #fff;
+    background: #9ebc1b;
+    color: white;
     padding: 10px 16px;
     font-size: 11px;
     text-transform: uppercase;
-}
-
-#displayed_tab .ngg_igw_promo a:after {
-	content: "\f345";
-    font: normal 12px dashicons;
-    color: white !important;
-    display: inline-block;
-    position: relative;
-    top: 2px;
-    left: 6px;
 }
 
 #displayed_tab .ngg_igw_coupon {
@@ -405,7 +374,6 @@ table {
     font-weight: 600;
     cursor: pointer;
     font-family: Lato, sans-serif;
-    letter-spacing: .5px;
     background: black;
     color: #fff;
     text-transform: uppercase;
@@ -619,7 +587,7 @@ h3#preview_tab {
 #preview_tab_content ul {
 	list-style-type: none;
 	display: block;
-	padding: 0px;
+	padding: 0;
 	position: relative;
 	margin-top: 20px;
 }
@@ -652,7 +620,7 @@ h3#preview_tab {
 }
 
 #preview_tab_content .image_container img {
-	border: 0px;
+	border: 0;
 }
 
 #preview_tab_content #entity_list  li{
@@ -681,7 +649,7 @@ h3#preview_tab {
 	font-size: 0.8em;
 	position: absolute;
 	bottom: 0.2em;
-	left: 0px;
+	left: 0;
 	width: 100%;
 	padding: 5px 0;
 }
@@ -702,7 +670,7 @@ h3#preview_tab {
 }
 #preview_tab_content .header_row .separator {
 	display: inline-block;
-	margin: 0px 5px;
+	margin: 0 5px;
 }
 
 #preview_tab_content .header_row .selected {
@@ -844,6 +812,10 @@ h3#preview_tab {
 	#displayed_tab #ngg_page_content .responsive-menu-icon {
 		padding: 10px 0 15px !important;
 	}
+}
+
+.ngg-marketing-popup {
+	font-family: "Lato", sans-serif;	
 }
 
 @media (max-width: 400px) {

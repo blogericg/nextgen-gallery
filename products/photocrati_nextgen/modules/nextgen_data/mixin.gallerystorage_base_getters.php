@@ -135,7 +135,7 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
 
     function get_gallery_root()
     {
-        return wp_normalize_path(NGG_GALLERY_ROOT_TYPE == 'content' ? WP_CONTENT_DIR : ABSPATH);
+        return wp_normalize_path(C_Fs::get_instance()->get_document_root('galleries'));
     }
 
     function _get_computed_gallery_abspath($gallery)
@@ -205,6 +205,11 @@ class Mixin_GalleryStorage_Base_Getters extends Mixin
 
     function get_gallery_relpath($gallery)
     {
+        // Special hack for home.pl: their document root is just '/'
+        $root = $this->object->get_gallery_root();
+        if ($root === '/')
+            return $this->get_gallery_abspath($gallery);
+
         return str_replace($this->object->get_gallery_root(), '', $this->get_gallery_abspath($gallery));
     }
 

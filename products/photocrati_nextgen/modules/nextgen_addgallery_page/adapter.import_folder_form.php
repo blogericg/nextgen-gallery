@@ -18,13 +18,14 @@ class A_Import_Folder_Form extends Mixin
         wp_enqueue_style('ngg_progressbar');
         wp_enqueue_script('jquery.filetree');
         wp_enqueue_script('ngg_progressbar');
+        return $this->call_parent('enqueue_static_resources');
     }
 
     function render()
     {
         return $this->object->render_partial('photocrati-nextgen_addgallery_page#import_folder', array(
-	        'browse_nonce' =>  M_Security::create_nonce('nextgen_upload_image'),
-	        'import_nonce' =>  M_Security::create_nonce('nextgen_upload_image')
+	        'browse_nonce' => M_Security::create_nonce('nextgen_upload_image'),
+	        'import_nonce' => M_Security::create_nonce('nextgen_upload_image')
         ), TRUE);
     }
 }

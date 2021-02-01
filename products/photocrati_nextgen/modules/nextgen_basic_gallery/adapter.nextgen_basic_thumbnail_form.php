@@ -20,7 +20,7 @@ class A_NextGen_Basic_Thumbnail_Form extends Mixin_Display_Type_Form
 		$this->object->enqueue_style(
 			'nextgen_basic_thumbnails_settings',
 			$this->object->get_static_url('photocrati-nextgen_basic_gallery#thumbnails/nextgen_basic_thumbnails_settings.css')
-		);
+        );
 
 		$this->object->enqueue_script(
 			'nextgen_basic_thumbnails_settings',

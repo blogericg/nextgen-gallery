@@ -144,11 +144,11 @@ class C_Displayed_Gallery_Source_Manager
         foreach (array_values($this->_sources) as $source_obj) {
             if (!in_array($source_obj, $retval)) $retval[] = $source_obj;
         }
-        usort($retval, array(&$this, '__sort_by_name'));
+        usort($retval, array($this, '_sort_by_name'));
         return $retval;
     }
 
-    function __sort_by_name($a, $b)
+    function _sort_by_name($a, $b)
     {
         return strcmp($a->name, $b->name);
     }

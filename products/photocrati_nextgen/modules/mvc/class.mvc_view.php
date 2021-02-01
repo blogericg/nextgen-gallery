@@ -16,9 +16,11 @@ class C_MVC_View extends C_Component
 	{
 		$this->_template = $template;
 		$this->_params   = (array) $params;
-		$this->_engine   = $engine;
+        $this->_engine   = $engine;
 
-		parent::__construct();
+        $context = $context ? array_unique([$context, $template], SORT_REGULAR) : $template;
+
+		parent::__construct($context);
 	}
     
     function define($context = FALSE)

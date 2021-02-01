@@ -43,15 +43,17 @@ $.Jcrop = function(obj,opt)
 	// Some on-the-fly fixes for MSIE...sigh
 	if (!('trackDocument' in opt))
 	{
-		opt.trackDocument = $.browser.msie ? false : true;
-		if ($.browser.msie && $.browser.version.split('.')[0] == '8')
+		if (navigator.appName.indexOf("Internet Explorer") !== -1) {
+			opt.trackDocument = navigator.appVersion.indexOf("MSIE 8") !== -1;
+		} else {
 			opt.trackDocument = true;
+		}
 	}
 
 	if (!('keySupport' in opt))
-			opt.keySupport = $.browser.msie ? false : true;
-		
-	// }}}
+		opt.keySupport = navigator.appName.indexOf("Internet Explorer") !== -1;
+
+		// }}}
 	// Extend the default options {{{
 	var defaults = {
 
@@ -158,7 +160,7 @@ $.Jcrop = function(obj,opt)
 	var bound = options.boundary;
 	var $trk = newTracker().width(boundx+(bound*2)).height(boundy+(bound*2))
 		.css({ position: 'absolute', top: px(-bound), left: px(-bound), zIndex: 290 })
-		.mousedown(newSelection);	
+		.on('mousedown', newSelection);	
 	
 	/* }}} */
 	// Set more variables {{{
@@ -416,7 +418,7 @@ $.Jcrop = function(obj,opt)
 		if (options.drawBorders) {
 			borders = {
 					top: insertBorder('hline')
-						.css('top',$.browser.msie?px(-1):px(0)),
+						.css('top', navigator.appVersion.indexOf("MSIE 8") !== -1 ? px(-1) : px(0)),
 					bottom: insertBorder('hline'),
 					left: insertBorder('vline'),
 					right: insertBorder('vline')
@@ -453,7 +455,7 @@ $.Jcrop = function(obj,opt)
 		function dragDiv(ord,zi)/*{{{*/
 		{
 			var jq = $('<div />')
-				.mousedown(createDragger(ord))
+				.on('mousedown', createDragger(ord))
 				.css({
 					cursor: ord+'-resize',
 					position: 'absolute',
@@ -614,7 +616,7 @@ $.Jcrop = function(obj,opt)
 		};
 		/*}}}*/
 
-		var $track = newTracker().mousedown(createDragger('move'))
+		var $track = newTracker().on('mousedown', createDragger('move'))
 				.css({ cursor: 'move', position: 'absolute', zIndex: 360 })
 
 		$img_holder.append($track);
@@ -644,9 +646,9 @@ $.Jcrop = function(obj,opt)
 		if (!trackDoc)
 		{
 			$trk
-				.mousemove(trackMove)
-				.mouseup(trackUp)
-				.mouseout(trackUp)
+				.on('mousemove',trackMove)
+				.on('mouseup',trackUp)
+				.on('mouseout', trackUp)
 			;
 		}
 
@@ -656,8 +658,8 @@ $.Jcrop = function(obj,opt)
 			if (trackDoc)
 			{
 				$(document)
-					.mousemove(trackMove)
-					.mouseup(trackUp)
+					.on('mousemove',trackMove)
+					.on('mouseup',trackUp)
 				;
 			}
 		}
@@ -668,8 +670,8 @@ $.Jcrop = function(obj,opt)
 			if (trackDoc)
 			{
 				$(document)
-					.unbind('mousemove',trackMove)
-					.unbind('mouseup',trackUp)
+					.off('mousemove',trackMove)
+					.off('mouseup',trackUp)
 				;
 			}
 		}
@@ -722,8 +724,8 @@ $.Jcrop = function(obj,opt)
 	{
 		var $keymgr = $('<input type="radio" />')
 				.css({ position: 'absolute', left: '-30px' })
-				.keypress(parseKey)
-				.blur(onBlur),
+				.on('keypress',parseKey)
+				.on('blur',onBlur),
 
 			$keywrap = $('<div />')
 				.css({
@@ -738,7 +740,7 @@ $.Jcrop = function(obj,opt)
 			if (options.keySupport)
 			{
 				$keymgr.show();
-				$keymgr.focus();
+				$keymgr.trigger('focus');
 			}
 		};
 		/*}}}*/
@@ -965,7 +967,9 @@ $.Jcrop = function(obj,opt)
 	function newTracker()
 	{
 		var trk = $('<div></div>').addClass(cssClass('tracker'));
-		$.browser.msie && trk.css({ opacity: 0, backgroundColor: 'white' });
+		if (navigator.appName.indexOf("Internet Explorer") !== -1) {
+			trk.css({ opacity: 0, backgroundColor: 'white' });
+		}
 		return trk;
 	};
 

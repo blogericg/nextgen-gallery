@@ -33,12 +33,17 @@ const argv		= require('yargs').argv;
 const zip		= require('gulp-zip');
 const children	= require('child_process');
 const fs		= require('fs');
-const gutil 	= require('gulp-util');
 const uglify 	= require('gulp-uglify');
 const cleancss  = require('gulp-clean-css');
 const rename 	= require('gulp-rename');
 const webpack 	= require('webpack-stream');
+const babel 	= require('gulp-babel');
 const exec 		= children.exec;
+
+const gutil = {
+	log: require('fancy-log'),
+	colors: require('ansi-colors')
+}
 
 /*
  *
@@ -215,18 +220,25 @@ gulp.task('copybuild', function() {
 		'!./{build,build/**}',
 		'!./{tests,tests/**}',
 		'!./{zips,zips/**}',
-		'!./{autoupdate_config,autoupdate_config/**}'])
+		'!./{autoupdate_config,autoupdate_config/**}',
+		'!.env',
+		'!README.md',
+		'!./{config,config/**}',
+		'!docker-compose.yml',
+		'!export.sh',
+		'!./{wp-app,wp-app/**}',
+		'!./{wp-data,wp-data/**'])
 		.pipe(gulp.dest('./build/' + product));
 });
 
 gulp.task('webpack-block', function() {
-  return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/block.min.js')
+  return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/block.jsx')
     .pipe(webpack({
 		mode: "production",
 		devtool: "source-map",	
 		module: {
 			rules: [
-				{ test: /\.js$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
+				{ test: /\.js[x]?$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
 			],
 		},
 		output: {
@@ -237,13 +249,13 @@ gulp.task('webpack-block', function() {
 });
 
 gulp.task('webpack-others', function() {
-	return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/post-thumbnail.min.js')
+	return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/post-thumbnail.jsx')
 	.pipe(webpack({
 		mode: "production",
 		devtool: "source-map",	
 		module: {
 			rules: [
-			{ test: /\.js$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
+			{ test: /\.js[x]?$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
 			],
 		},
 		output: {
@@ -264,6 +276,9 @@ gulp.task('minify-css', function() {
 
 gulp.task('minify-js', function() {  
   return gulp.src(["./build/" + product + "/**/*.js", "!./build/"+product+"/**/*.min.js*", "!./build/"+product+"/**/*.packed.js*"])
+		.pipe(babel({
+			presets: ['@babel/env']
+		}))
 		.pipe(uglify())
 	  	.pipe(rename({
 		  	suffix: ".min"

@@ -16,19 +16,55 @@ class A_NextGen_AddGallery_Ajax extends Mixin
 		return array('success' => 1, 'cookies' => $_COOKIE);
 	}
 
+    function create_new_gallery_action()
+    {
+        $gallery_name    = urldecode($this->param('gallery_name'));
+        $gallery_mapper  = C_Gallery_Mapper::get_instance();
+
+        $retval = [
+            'gallery_name' => esc_html($gallery_name),
+            'gallery_id'   => NULL
+        ];
+
+        if (!$this->validate_ajax_request('nextgen_upload_image', TRUE))
+        {
+            $action = 'nextgen_upload_image';
+            $retval['allowed']        = M_Security::is_allowed($action);
+            $retval['verified_token'] = (!$_REQUEST['nonce'] || !wp_verify_nonce($_REQUEST['nonce'], $action));
+            $retval['error']          = __("No permissions to upload images. Try refreshing the page or ensuring that your user account has sufficient roles/privileges.", 'nggallery');
+            return $retval;
+        }
+
+        if (strlen($gallery_name) > 0)
+        {
+            $gallery = $gallery_mapper->create(['title' => $gallery_name]);
+            if (!$gallery->save())
+                $retval['error'] = $gallery->get_errors();
+            else
+                $retval['gallery_id'] = $gallery->id();
+        }
+        else {
+            $retval['error'] = __("No gallery name specified", 'nggallery');
+        }
+
+        return $retval;
+    }
+
     function upload_image_action()
     {
-        $retval = array();
+        $created_gallery = FALSE;
+        $gallery_id      = intval($this->param('gallery_id'));
+        $gallery_name    = urldecode($this->param('gallery_name'));
+        $gallery_mapper  = C_Gallery_Mapper::get_instance();
 
-        $created_gallery    = FALSE;
-        $gallery_id         = intval($this->param('gallery_id'));
-        $gallery_name       = urldecode($this->param('gallery_name'));
-        $gallery_mapper     = C_Gallery_Mapper::get_instance();
-        $error              = FALSE;
+        $retval = [
+            'gallery_name' => esc_html($gallery_name)
+        ];
+
         if ($this->validate_ajax_request('nextgen_upload_image', TRUE))
         {
         	  if (!class_exists('DOMDocument')) {
-				$retval['error'] = __("Please ask your hosting provider or system administrator to enable the PHP XML module which is required for image uploads", 'nggallery');
+                  $retval['error'] = __("Please ask your hosting provider or system administrator to enable the PHP XML module which is required for image uploads", 'nggallery');
 	          }
 	          else {
 		          // We need to create a gallery
@@ -36,25 +72,23 @@ class A_NextGen_AddGallery_Ajax extends Mixin
 		          {
 			          if (strlen($gallery_name) > 0)
 			          {
-				          $gallery = $gallery_mapper->create(array('title' =>  $gallery_name));
+				          $gallery = $gallery_mapper->create(['title' =>  $gallery_name]);
 				          if (!$gallery->save())
 				          {
 					          $retval['error'] = $gallery->get_errors();
-					          $error = TRUE;
 				          }
 				          else {
-					          $created_gallery  = TRUE;
-					          $gallery_id       = $gallery->id();
+					          $created_gallery = TRUE;
+					          $gallery_id      = $gallery->id();
 				          }
 			          }
 			          else {
-				          $error = TRUE;
 				          $retval['error'] = __("No gallery name specified", 'nggallery');
 			          }
 		          }
 
 		          // Upload the image to the gallery
-		          if (!$error)
+		          if (empty($retval['error']))
 		          {
 			          $retval['gallery_id'] = $gallery_id;
 			          $settings = C_NextGen_Settings::get_instance();
@@ -67,61 +101,50 @@ class A_NextGen_AddGallery_Ajax extends Mixin
 						          $retval = $results;
 					          else
 						          $retval['error'] = __('Failed to extract images from ZIP', 'nggallery');
-				          } elseif (($image_id = $storage->upload_image($gallery_id))) {
+				          }
+				          elseif (($image_id = $storage->upload_image($gallery_id))) {
 					          $retval['image_ids'] = array($image_id);
-					          $retval['image_errors'] = array();
 
 					          // check if image was resized correctly
-					          if ($settings->imgAutoResize)
+					          if ($settings->get('imgAutoResize'))
 					          {
 						          $image_path = $storage->get_full_abspath($image_id);
 						          $image_thumb = new C_NggLegacy_Thumbnail($image_path, true);
 
 						          if ($image_thumb->error)
-						          {
-							          $retval['image_errors'][] = array(
-								          'id' => $image_id,
-								          'error' => sprintf(__('Automatic image resizing failed [%1$s].', 'nggallery'), $image_thumb->errmsg)
-							          );
-							          $image_thumb = null;
-						          }
+							          $retval['error'] = sprintf(__('Automatic image resizing failed [%1$s].', 'nggallery'), $image_thumb->errmsg);
 					          }
 
 					          // check if thumb was generated correctly
-					          $thumb_path = $storage->get_thumb_abspath($image_id);
+					          $thumb_path = $storage->get_image_abspath($image_id, 'thumb');
 					          if (!file_exists($thumb_path))
-						          $retval['image_errors'][] = array('id' => $image_id, 'error' => __('Thumbnail generation failed.', 'nggallery'));
+						          $retval['error'] = __('Thumbnail generation failed.', 'nggallery');
 				          }
 				          else {
 					          $retval['error'] = __('Image generation failed', 'nggallery');
-					          $error = TRUE;
 				          }
 			          }
 			          catch (E_NggErrorException $ex) {
 				          $retval['error'] = $ex->getMessage();
-				          $error = TRUE;
-				          if ($created_gallery) $gallery_mapper->destroy($gallery_id);
+				          if ($created_gallery)
+				              $gallery_mapper->destroy($gallery_id);
 			          }
 			          catch (Exception $ex) {
-				          $retval['error']            = __("An unexpected error occured.", 'nggallery');
-				          $retval['error_details']    = $ex->getMessage();
-				          $error = TRUE;
+				          $retval['error'] = sprintf(__("An unexpected error occurred: %s", 'nggallery'), $ex->getMessage());
 			          }
 		          }
 	          }
 		}
         else {
             $action = 'nextgen_upload_image';
-            $retval['allowed']          = M_Security::is_allowed($action);
-            $retval['verified_token']   = (!$_REQUEST['nonce'] || wp_verify_nonce($_REQUEST['nonce'], $action));
-            $retval['error'] = __("No permissions to upload images. Try refreshing the page or ensuring that your user account has sufficient roles/privileges.", 'nggallery');
-            $error = TRUE;
+            $retval['allowed']        = M_Security::is_allowed($action);
+            $retval['verified_token'] = (!$_REQUEST['nonce'] || !wp_verify_nonce($_REQUEST['nonce'], $action));
+            $retval['error']          = __("No permissions to upload images. Try refreshing the page or ensuring that your user account has sufficient roles/privileges.", 'nggallery');
         }
 
-        if ($error)
-            return $retval;
-        else
-            $retval['gallery_name'] = esc_html($gallery_name);
+        // Sending a 500 header is used for uppy.js to determine upload failures
+        if (!empty($retval['error']))
+            header('HTTP/1.1 500 Internal Server Error');
 
         return $retval;
     }
@@ -193,7 +216,8 @@ class A_NextGen_AddGallery_Ajax extends Mixin
     {
 	    $retval = array();
 
-	    if ( $this->validate_ajax_request( 'nextgen_upload_image' , $_REQUEST['nonce']) ) {
+	    if ( $this->validate_ajax_request( 'nextgen_upload_image', TRUE))
+	    {
 		    if ( ( $folder = $this->param( 'folder' ) ) ) {
 			    $storage = C_Gallery_Storage::get_instance();
 			    $fs      = C_Fs::get_instance();
@@ -243,7 +267,7 @@ class A_NextGen_AddGallery_Ajax extends Mixin
         $image_mapper    = C_Image_Mapper::get_instance();
         $attachment_ids  = $this->param('attachment_ids');
 
-        if ($this->validate_ajax_request('nextgen_upload_image', $_REQUEST['nonce']))
+        if ($this->validate_ajax_request('nextgen_upload_image', TRUE))
         {
             if (empty($attachment_ids) || !is_array($attachment_ids))
             {

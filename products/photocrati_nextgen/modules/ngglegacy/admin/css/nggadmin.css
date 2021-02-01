@@ -328,6 +328,12 @@ a.switch-expert {
     font-size: 14px;
     letter-spacing: 1px;
 }
+
+#ngg_page_content #editgalleries #bulkaction {
+	min-height: 35px;
+	max-height: 35px;
+}
+
 #ngg_page_content .ngg_manage_galleries .tablenav.bottom {
     margin: 15px 0 0;
 }
@@ -854,10 +860,12 @@ div .progressbar span {
 	box-sizing: border-box;
     border: 1px solid #eee;
     padding: 10px 10px 20px;
-    width: 32%;
     margin: 0 1% 0 0;
-    float: left;
-    box-shadow: 0 0 4px 2px rgba(0 0 4px 2px rgba(0,0,0,.02));
+    width: 100%;
+}
+
+.ngg_manage_albums .widget:last-of-type {
+	margin-right: 0;
 }
 
 .container {
@@ -866,6 +874,9 @@ div .progressbar span {
 
 .ngg_manage_albums .container {
 	margin-top: 30px;
+	display: flex;
+	flex-direction: row;
+    justify-content: center;
 }
 
 .ngg_select_album {
@@ -1297,6 +1308,31 @@ DIV that shows the image as you drag it
 	#ngg_page_content .ngg_manage_galleries .tablenav .tablenav-pages {
 	    margin-top: 20px;
 	    margin-bottom: 28px !important;
+	}
+	#ngg_page_content .ngg_manage_galleries .search-box input[type=text] {
+		width: calc(100% - 150px) !important;
+	}
+	#ngg_page_content .ngg_manage_galleries .search-box input[type=submit].button-primary {
+		height: 40px !important;
+	}
+	#ngg_page_content .ngg_manage_galleries .search-box-wrapper {
+		flex-direction: column;
+	}
+	#ngg_page_content .ngg_manage_galleries form.search-form {
+		width: 100%;
+	}
+	#ngg_page_content #editgalleries div.tablenav.top div.alignleft.actions input.button-primary {
+		width: auto !important;
+		display: inline-block;
+	}
+	#ngg_page_content #editgalleries div.tablenav.top div.alignleft.actions input.button-primary:first-of-type {
+		margin-left: 5px;
+	}
+	#ngg_page_content #editgalleries div.tablenav.top div.tablenav-pages {
+		display: none;
+	}
+	#ngg_page_content #editgalleries #bulkaction {
+		width: auto !important;
 	}
 }
 

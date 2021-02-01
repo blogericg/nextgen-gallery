@@ -751,10 +751,43 @@ class nggManageGallery {
 
 			switch ($_POST['TB_bulkaction']) {
 				case 'copy_to':
-                    C_Gallery_Storage::get_instance()->copy_images($pic_ids, $dest_gid);
+				    $destination = C_Gallery_Mapper::get_instance()->find($dest_gid);
+                    $new_ids     = C_Gallery_Storage::get_instance()->copy_images($pic_ids, $dest_gid);
+
+                    if (!empty($new_ids))
+                    {
+                        $admin_url = admin_url();
+                        $title     = esc_html($destination->title);
+                        $link      = "<a href='{$admin_url}admin.php?page=nggallery-manage-gallery&mode=edit&gid={$destination->gid}'>{$title}</a>";
+                        nggGallery::show_message(
+                            sprintf(__('Copied %1$s picture(s) to gallery: %2$s .','nggallery'), count($new_ids), $link)
+                        );
+                    }
+                    else {
+                        nggGallery::show_error(
+                            __('Failed to copy images', 'nggallery')
+                        );
+                    }
+
 					break;
 				case 'move_to':
-                    C_Gallery_Storage::get_instance()->move_images($pic_ids, $dest_gid);
+                    $destination = C_Gallery_Mapper::get_instance()->find($dest_gid);
+                    $new_ids     = C_Gallery_Storage::get_instance()->move_images($pic_ids, $dest_gid);
+
+                    if (!empty($new_ids))
+                    {
+                        $admin_url = admin_url();
+                        $title     = esc_html($destination->title);
+                        $link      = "<a href='{$admin_url}admin.php?page=nggallery-manage-gallery&mode=edit&gid={$destination->gid}'>{$title}</a>";
+                        nggGallery::show_message(
+                            sprintf(__('Moved %1$s picture(s) to gallery: %2$s .','nggallery'), count($new_ids), $link)
+                        );
+                    }
+                    else {
+                        nggGallery::show_error(
+                            __('Failed to move images', 'nggallery')
+                        );
+                    }
 					break;
 			}
 		}
@@ -832,11 +865,17 @@ class nggManageGallery {
 					$this->gallery = $mapper->find($this->gid, TRUE);
 				}
 
-				if ($this->gallery)
-				{
-					foreach ($_POST as $key => $value) {
-						$this->gallery->$key = $value;
-					}
+                if ($this->gallery)
+                {
+                    foreach ($_POST as $key => $value) {
+                        // Yet another IIS hack: gallery paths can be mangled into \\wp-content\\blah\\ which causes
+                        // later errors when validating the gallery path: just automatically replace \\ with / here.
+                        if ($key === 'path')
+                            $value = str_replace('\\\\', '/', $value);
+
+                        $this->gallery->$key = $value;
+                    }
+
 					$mapper->save($this->gallery);
 
 					if ($this->gallery->is_invalid())

@@ -54,14 +54,16 @@ class Mixin_Attach_To_Post extends Mixin
 		if (($id = $this->object->param('id'))) {
 			$this->object->_displayed_gallery = $mapper->find($id, TRUE);
 		}
-
-		// Fetch the displayed gallery by shortcode
 		else if (isset($_REQUEST['shortcode'])) {
-			$params = str_replace('ngg_images', '', base64_decode($_REQUEST['shortcode']));
-            $params = str_replace('ngg', '', base64_decode($_REQUEST['shortcode']));
-			$params = stripslashes($params);
+            // Fetch the displayed gallery by shortcode
+            $shortcode = base64_decode($_REQUEST['shortcode']);
+
+            // $shortcode lacks the opening and closing brackets but still begins with 'ngg ' or 'ngg_images ' which are not parameters
+            $params = preg_replace('/^(ngg|ngg_images) /i', '', $shortcode, 1);
+            $params = stripslashes($params);
 			$params = str_replace(array('[',']'), array('&#91;', '&#93;'), $params);
 			$params = shortcode_parse_atts($params);
+
 			$this->object->_displayed_gallery = C_Displayed_Gallery_Renderer::get_instance()->params_to_displayed_gallery($params);
 		}
 
@@ -331,7 +333,7 @@ class Mixin_Attach_To_Post extends Mixin
 			'ngg_display_tab',
 			$this->get_static_url('photocrati-attach_to_post#display_tab.js'),
 			array('jquery', 'backbone', 'photocrati_ajax'),
-			NGG_SCRIPT_VERSION
+			NGG_ATTACH_TO_POST_VERSION
 		);
 		$this->object->mark_script('ngg_display_tab');
 		wp_localize_script('ngg_display_tab', 'igw_data', array(
@@ -437,7 +439,7 @@ class Mixin_Attach_To_Post extends Mixin
 		wp_dequeue_script('debug-bar-js');
 		wp_dequeue_style('debug-bar-css');
 		
-		$this->enqueue_display_tab_js();
+		$this->object->enqueue_display_tab_js();
 
 		do_action('ngg_igw_enqueue_scripts');
 		do_action('ngg_igw_enqueue_styles');
@@ -626,7 +628,7 @@ class Mixin_Attach_To_Post extends Mixin
 		// 	);
 		// }
 
-		return $retval;
+        return apply_filters('ngg_attach_to_post_main_tabs', $retval);
 	}
 
 	/**

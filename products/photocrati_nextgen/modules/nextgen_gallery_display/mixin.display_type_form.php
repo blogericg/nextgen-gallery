@@ -85,9 +85,12 @@ class Mixin_Display_Type_Form extends Mixin
      * @param array $attributes
      * @return boolean
      */
-    function save_action($attributes=array())
+    function save_action($attributes = array())
     {
-        return $this->object->get_model()->save(array('settings'=>$attributes));
+        $model = $this->object->get_model();
+        if ($model)
+            return $model->save(['settings' => $attributes]);
+        return FALSE;
     }
 
     /**
@@ -264,7 +267,6 @@ class Mixin_Display_Type_Form extends Mixin
         
         /* Populate the views array by scanning each directory for relevant templates */
         foreach ($dirs as $dir_name => $dir) {
-
             /* Confirm directory exists */
             if ( !file_exists($dir) || !is_dir($dir) ) {
                 continue;
