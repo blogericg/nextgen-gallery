@@ -180,15 +180,19 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.5.0.4 - 01.25.2020 =
+= V3.5.0.4 - 02.02.2020 =
 * NEW:     Added new 'Bulk actions' option to remove EXIF Orientation from existing images (1137)
 * NEW:     Allow maximum_entity_limit display setting regardless of source (1146)
+* NEW:     Provide hooks to customize Uppy settings (1139)
+* Fixed:   A compatibility warning with NextGEN Plus would appear when users had NextGEN Starter (1097)
 * Fixed:   Compatibility issue with Topscorer Theme (344171)
-* Fixed:   Image rotation not reliable (1137)
-* Fixed:   Pagination missing ellipsis for missing page numbers (1099)
-* Fixed:   Transient tracker was calling update_option() on every page (1074)
-* Fixed:   Error responses from the server when uploading images failed were not specific (1121)
 * Fixed:   Compatibility with Custom Post Types UI (1076)
+* Fixed:   Error responses from the server when uploading images failed were not specific (1121)
+* Fixed:   Image rotation not reliable (1137)
+* Fixed:   Imagebrowser pagination broke on images with UTF8 characters in their title (1135)
+* Fixed:   Pagination missing ellipsis for missing page numbers (1099)
+* Fixed:   Shortcodes displaying albums did not appear in the order listed (1128)
+* Fixed:   Transient tracker was calling update_option() on every page (1074)
 
 = v3.5.0 - 12.17.2020 =
 * Changed: Deprecated legacy template functionality
