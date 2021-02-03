@@ -1,10 +1,11 @@
 NextGEN Gallery
 by Imagely
 
-= V3.5.0.4 - 02.02.2020 =
+= V3.5.0.5 - 02.10.2020 =
 * NEW:     Added new 'Bulk actions' option to remove EXIF Orientation from existing images (1137)
 * NEW:     Allow maximum_entity_limit display setting regardless of source (1146)
 * NEW:     Provide hooks to customize Uppy settings (1139)
+* Fixed:   Inability to change gallerypath on multisite networks (1150)
 * Fixed:   A compatibility warning with NextGEN Plus would appear when users had NextGEN Starter (1097)
 * Fixed:   Compatibility issue with Topscorer Theme (344171)
 * Fixed:   Compatibility with Custom Post Types UI (1076)
