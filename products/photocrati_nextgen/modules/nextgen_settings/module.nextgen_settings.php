@@ -172,7 +172,7 @@ class C_NextGen_Settings_Installer
 
 			// a gallerypath setting has already been set, so we explicitly set a default AND set a new value
 			$this->blog_settings->set_default_value('gallerypath', $gallerypath);
-			$this->blog_settings->set('gallerypath', $gallerypath);
+			if ($reset) $this->blog_settings->set('gallerypath', $gallerypath);
 		}
 	}
 
