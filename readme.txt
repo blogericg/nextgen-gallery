@@ -184,6 +184,7 @@ For more information, feel free to visit the official website for the NextGEN Ga
 * NEW:     Added new 'Bulk actions' option to remove EXIF Orientation from existing images (1137)
 * NEW:     Allow maximum_entity_limit display setting regardless of source (1146)
 * NEW:     Provide hooks to customize Uppy settings (1139)
+* NEW:     Recreated legacy templates as modern "views" (1127)
 * Fixed:   A compatibility warning with NextGEN Plus would appear when users had NextGEN Starter (1097)
 * Fixed:   Compatibility issue with Topscorer Theme (344171)
 * Fixed:   Compatibility with Custom Post Types UI (1076)
