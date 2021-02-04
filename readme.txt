@@ -188,6 +188,7 @@ For more information, feel free to visit the official website for the NextGEN Ga
 * Fixed:   A compatibility warning with NextGEN Plus would appear when users had NextGEN Starter (1097)
 * Fixed:   Compatibility issue with Topscorer Theme (344171)
 * Fixed:   Compatibility with Custom Post Types UI (1076)
+* Fixed:   Compatibility with jQuery.mmenu (1140)
 * Fixed:   Error responses from the server when uploading images failed were not specific (1121)
 * Fixed:   Image rotation not reliable (1137)
 * Fixed:   Imagebrowser pagination broke on images with UTF8 characters in their title (1135)
