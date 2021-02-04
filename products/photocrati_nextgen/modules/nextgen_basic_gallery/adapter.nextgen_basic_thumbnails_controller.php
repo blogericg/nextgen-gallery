@@ -150,6 +150,23 @@ class A_NextGen_Basic_Thumbnails_Controller extends Mixin
             }
             else {
                 $params = $display_settings;
+
+                // Additional values for the carousel display view
+                if (!empty($this->param('pid')))
+                {
+                    foreach ($images as $image) {
+                        if ($image->image_slug === $this->param('pid'))
+                            $params['current_image'] = $image;
+                    }
+                    if ($pagination_result)
+                    {
+                        $params['pagination_prev'] = $pagination_result['prev'];
+                        $params['pagination_next'] = $pagination_result['next'];
+                    }
+                }
+                if (empty($params['current_image']))
+                    $params['current_image'] = reset($images);
+
                 $params['storage']				= &$storage;
                 $params['images']				= &$images;
                 $params['displayed_gallery_id'] = $gallery_id;
