@@ -50,6 +50,16 @@ class Mixin_Displayed_Gallery_Renderer extends Mixin
         // Get the NextGEN settings to provide some defaults
         $settings = C_NextGen_Settings::get_instance();
 
+        // Perform some conversions...
+        if (isset($params['galleries'])) {
+            $params['gallery_ids'] = $params['galleries'];
+            unset($params['galleries']);
+        }
+        if (isset($params['albums'])) {
+            $params['album_ids'] = $params['albums'];
+            unset($params['albums']);
+        }
+
         // Configure the arguments
         $defaults = array(
             'id'				=> NULL,
@@ -83,7 +93,6 @@ class Mixin_Displayed_Gallery_Renderer extends Mixin
 
         // We're generating a new displayed gallery
         else {
-            // Perform some conversions...
 
             // Galleries?
             if ($args['gallery_ids'])
@@ -355,7 +364,7 @@ class Mixin_Displayed_Gallery_Renderer extends Mixin
         elseif (!NGG_RENDERING_CACHE_ENABLED) $lookup = FALSE;
 
 		// Enqueue any necessary static resources
-        if ((!defined('NGG_SKIP_LOAD_SCRIPTS') || !NGG_SKIP_LOAD_SCRIPTS) && !$this->is_rest_request()) {
+        if ((!defined('NGG_SKIP_LOAD_SCRIPTS') || !constant('NGG_SKIP_LOAD_SCRIPTS')) && !$this->is_rest_request()) {
 		    $controller->enqueue_frontend_resources($displayed_gallery);
         }
 

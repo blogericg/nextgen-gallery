@@ -141,10 +141,20 @@ class C_NextGen_Settings_Installer
             // Duration of caching of 'random' widgets image IDs
             'random_widget_cache_ttl' => 30
         ]);
+
+		error_log(__METHOD__);
+		if (is_multisite()) {
+			if ($options = get_site_option('ngg_options'))
+				$gallerypath = $options['gallerypath'];
+			else
+				$gallerypath = $this->_global_settings['gallerypath'];
+			$this->_local_settings['gallerypath'] = $this->gallerypath_replace($gallerypath);
+		}
 	}
 
 	function install_global_settings($reset=FALSE)
 	{
+		error_log(__METHOD__);
 		foreach ($this->_global_settings as $key => $value) {
 			if ($reset) $this->site_settings->set($key, NULL);
 			$this->site_settings->set_default_value($key, $value);
@@ -153,6 +163,7 @@ class C_NextGen_Settings_Installer
 
 	function install_local_settings($reset=FALSE)
 	{
+		error_log(__METHOD__);
 		foreach ($this->_local_settings as $key => $value) {
 			if ($reset) $this->blog_settings->set($key, NULL);
 			$this->blog_settings->set_default_value($key, $value);
@@ -196,6 +207,7 @@ class C_NextGen_Settings_Installer
 	{
 		$gallerypath = str_replace('%BLOG_NAME%', get_bloginfo('name'),  $gallerypath);
 		$gallerypath = str_replace('%BLOG_ID%',   get_current_blog_id(), $gallerypath);
+		$gallerypath = str_replace('%SITE_ID%',   get_current_blog_id(), $gallerypath);
 		return $gallerypath;
 	}
 }
