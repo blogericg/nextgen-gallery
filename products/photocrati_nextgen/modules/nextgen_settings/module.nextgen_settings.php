@@ -142,7 +142,6 @@ class C_NextGen_Settings_Installer
             'random_widget_cache_ttl' => 30
         ]);
 
-		error_log(__METHOD__);
 		if (is_multisite()) {
 			if ($options = get_site_option('ngg_options'))
 				$gallerypath = $options['gallerypath'];
@@ -154,7 +153,6 @@ class C_NextGen_Settings_Installer
 
 	function install_global_settings($reset=FALSE)
 	{
-		error_log(__METHOD__);
 		foreach ($this->_global_settings as $key => $value) {
 			if ($reset) $this->site_settings->set($key, NULL);
 			$this->site_settings->set_default_value($key, $value);
@@ -163,7 +161,6 @@ class C_NextGen_Settings_Installer
 
 	function install_local_settings($reset=FALSE)
 	{
-		error_log(__METHOD__);
 		foreach ($this->_local_settings as $key => $value) {
 			if ($reset) $this->blog_settings->set($key, NULL);
 			$this->blog_settings->set_default_value($key, $value);
