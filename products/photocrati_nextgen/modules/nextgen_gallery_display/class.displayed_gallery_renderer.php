@@ -354,11 +354,6 @@ class Mixin_Displayed_Gallery_Renderer extends Mixin
 		elseif ($controller->is_cachable() === FALSE) $lookup = FALSE;
         elseif (!NGG_RENDERING_CACHE_ENABLED) $lookup = FALSE;
 
-		// Enqueue any necessary static resources
-        if ((!defined('NGG_SKIP_LOAD_SCRIPTS') || !NGG_SKIP_LOAD_SCRIPTS) && !$this->is_rest_request()) {
-		    $controller->enqueue_frontend_resources($displayed_gallery);
-        }
-
 		// Try cache lookup, if we're to do so
 		$key =  NULL;
 		$html = FALSE;
