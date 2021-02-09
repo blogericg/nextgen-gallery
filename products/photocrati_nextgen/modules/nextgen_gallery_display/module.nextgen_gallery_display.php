@@ -108,8 +108,8 @@ class M_Gallery_Display extends C_Base_Module
 	{
         if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
         {
-            C_NextGen_Shortcode_Manager::add('ngg', array(&$this, 'display_images'));
-            C_NextGen_Shortcode_Manager::add('ngg_images', array(&$this, 'display_images'));
+            C_NextGen_Shortcode_Manager::add('ngg', [$this, 'display_images']);
+            C_NextGen_Shortcode_Manager::add('ngg_images', [$this, 'display_images']);
             add_filter('the_content', array($this, '_render_related_images'));
         }
 
@@ -135,20 +135,34 @@ class M_Gallery_Display extends C_Base_Module
             return;
 
         preg_match_all('/' . get_shortcode_regex() . '/', $post->post_content, $matches, PREG_SET_ORDER);
+
+        $manager = C_NextGen_Shortcode_Manager::get_instance();
+        $ngg_shortcodes = $manager->get_shortcodes();
+        $shortcode_keys = array_keys($ngg_shortcodes);
+
         foreach ($matches as $shortcode) {
             // Only process our 'ngg' shortcodes
-            if ($shortcode[2] !== 'ngg')
+            $this_shortcode_name = $shortcode[2];
+            if (!in_array($this_shortcode_name, $shortcode_keys))
                 continue;
 
-            $str = trim($shortcode[0], '[]');
-            $atts = shortcode_parse_atts($str);
-            if ($atts[0] === 'ngg') // Don't pass 0 => 'ngg' as a parameter, it's just part of the shortcode itself
-                unset($atts[0]);
+            $params = shortcode_parse_atts(trim($shortcode[0], '[]'));
+            if (in_array($params[0], $shortcode_keys)) // Don't pass 0 => 'ngg' as a parameter, it's just part of the shortcode itself
+                unset($params[0]);
 
             // And do the enqueueing process
             $renderer = C_Displayed_Gallery_Renderer::get_instance();
             $registry = C_Component_Registry::get_instance();
-            $displayed_gallery = $renderer->params_to_displayed_gallery($atts);
+
+            // This is necessary for legacy shortcode compatibility
+            if (is_callable($ngg_shortcodes[$this_shortcode_name]['transformer']))
+                $params = call_user_func($ngg_shortcodes[$this_shortcode_name]['transformer'], $params);
+
+            $displayed_gallery = $renderer->params_to_displayed_gallery($params);
+
+            if (!$displayed_gallery || empty($params))
+                continue;
+
             if (is_null($displayed_gallery->id()))
                 $displayed_gallery->id(md5(json_encode($displayed_gallery->get_entity())));
 

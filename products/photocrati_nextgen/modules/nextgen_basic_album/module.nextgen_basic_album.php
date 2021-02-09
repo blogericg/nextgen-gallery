@@ -119,8 +119,8 @@ class M_NextGen_Basic_Album extends C_Base_Module
         if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id)
         && (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES))
         {
-            C_NextGen_Shortcode_Manager::add('album', array(&$this, 'ngglegacy_shortcode'));
-            C_NextGen_Shortcode_Manager::add('nggalbum', array(&$this, 'ngglegacy_shortcode'));
+            C_NextGen_Shortcode_Manager::add('album', NULL, [$this, 'ngglegacy_shortcode']);
+            C_NextGen_Shortcode_Manager::add('nggalbum', NULL, [$this, 'ngglegacy_shortcode']);
         }
 
         add_filter('ngg_atp_show_display_type', array($this, 'atp_show_basic_albums'), 10, 2);
@@ -161,19 +161,16 @@ class M_NextGen_Basic_Album extends C_Base_Module
 	/**
      * Renders the shortcode for rendering an album
      * @param array $params
-     * @param null $inner_content
-     * @return string
+     * @return array
      */
-	function ngglegacy_shortcode($params, $inner_content=NULL)
+	function ngglegacy_shortcode($params)
     {
         $params['source']           = $this->_get_param('source', 'albums', $params);
         $params['container_ids']    = $this->_get_param('id', NULL, $params);
         $params['display_type']     = $this->_get_param('display_type', NGG_BASIC_COMPACT_ALBUM, $params);
 
         unset($params['id']);
-
-        $renderer = C_Displayed_Gallery_Renderer::get_instance();
-        return $renderer->display_images($params, $inner_content);
+        return $params;
     }
 
     function get_type_list()

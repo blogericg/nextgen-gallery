@@ -79,8 +79,8 @@ class M_NextGen_Basic_Singlepic extends C_Base_Module
         if (apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id)
         && (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES))
         {
-            C_NextGen_Shortcode_Manager::add('singlepic', array(&$this, 'render_singlepic'));
-            C_NextGen_Shortcode_Manager::add('nggsinglepic', array(&$this, 'render_singlepic'));
+            C_NextGen_Shortcode_Manager::add('singlepic', NULL, [$this, 'render_singlepic']);
+            C_NextGen_Shortcode_Manager::add('nggsinglepic', NULL, [$this, 'render_singlepic']);
 
             // TODO - why aren't we using the singlepic controller for this instead?
             // enqueue the singlepic CSS if an inline image has the ngg-singlepic class
@@ -127,14 +127,12 @@ class M_NextGen_Basic_Singlepic extends C_Base_Module
         return (isset($params[$name])) ? $params[$name] : $default;
     }
 
-	function render_singlepic($params, $inner_content=NULL)
+	function render_singlepic($params)
 	{
 		$params['display_type'] = $this->_get_param('display_type', NGG_BASIC_SINGLEPIC, $params);
         $params['image_ids'] = $this->_get_param('id', NULL, $params);
         unset($params['id']);
-
-		$renderer = C_Displayed_Gallery_Renderer::get_instance();
-        return $renderer->display_images($params, $inner_content);
+        return $params;
 	}
 
     function get_type_list()

@@ -70,20 +70,6 @@ class M_Third_Party_Compat extends C_Base_Module
         if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION == 4) {
             @ini_set('zlib.output_compression', 'Off');
         }
-
-        // Cornerstone's page builder requires a 'clean slate' of css/js that our resource manager interefers with
-        if (class_exists('Cornerstone'))
-        {
-            if (!defined('NGG_DISABLE_FILTER_THE_CONTENT'))
-                define('NGG_DISABLE_FILTER_THE_CONTENT', TRUE);
-        }
-
-        // Genesis Tabs creates a new query / do_shortcode loop which requires these be set
-        if (class_exists('Genesis_Tabs'))
-        {
-            if (!defined('NGG_DISABLE_FILTER_THE_CONTENT'))
-                define('NGG_DISABLE_FILTER_THE_CONTENT', TRUE);
-        }
     }
 
     function _register_adapters()
