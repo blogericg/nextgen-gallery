@@ -1,13 +1,13 @@
 === WordPress Gallery Plugin - NextGEN Gallery ===
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
-Requires at least: 5.2.0
+Requires at least: 5.4.0
 Stable tag: 3.6.0
-Tested up to: 5.6.0
+Tested up to: 5.6.1
 License: GPLv3
 Requires PHP: 5.6
 
-The most popular WordPress gallery plugin and one of the most popular plugins of all time with over 30 million downloads.
+The most popular WordPress gallery plugin and one of the most popular plugins of all time with over 31 million downloads.
 
 == Description ==
 
@@ -180,7 +180,7 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.5.0.4 - 02.02.2020 =
+= V3.6.0 - 02.10.2020 =
 * NEW:     Added new 'Bulk actions' option to remove EXIF Orientation from existing images (1137)
 * NEW:     Allow maximum_entity_limit display setting regardless of source (1146)
 * NEW:     Provide hooks to customize Uppy settings (1139)
@@ -189,10 +189,10 @@ For more information, feel free to visit the official website for the NextGEN Ga
 * Fixed:   Compatibility issue with Topscorer Theme (344171)
 * Fixed:   Compatibility with Custom Post Types UI (1076)
 * Fixed:   Compatibility with jQuery.mmenu (1140)
+* Fixed:   Disable marketing additions for users with NextGEN Starter enabled
 * Fixed:   Error responses from the server when uploading images failed were not specific (1121)
 * Fixed:   Image rotation not reliable (1137)
 * Fixed:   Imagebrowser pagination broke on images with UTF8 characters in their title (1135)
-* Fixed:   Pagination missing ellipsis for missing page numbers (1099)
 * Fixed:   Shortcodes displaying albums did not appear in the order listed (1128)
 * Fixed:   Transient tracker was calling update_option() on every page (1074)
 

@@ -1,7 +1,7 @@
 NextGEN Gallery
 by Imagely
 
-= V3.5.0.4 - 02.04.2020 =
+= V3.6.0 - 02.10.2020 =
 * NEW:     Added new 'Bulk actions' option to remove EXIF Orientation from existing images (1137)
 * NEW:     Allow maximum_entity_limit display setting regardless of source (1146)
 * NEW:     Provide hooks to customize Uppy settings (1139)
@@ -14,7 +14,6 @@ by Imagely
 * Fixed:   Error responses from the server when uploading images failed were not specific (1121)
 * Fixed:   Image rotation not reliable (1137)
 * Fixed:   Imagebrowser pagination broke on images with UTF8 characters in their title (1135)
-* Fixed:   Pagination missing ellipsis for missing page numbers (1099)
 * Fixed:   Shortcodes displaying albums did not appear in the order listed (1128)
 * Fixed:   Transient tracker was calling update_option() on every page (1074)
 
