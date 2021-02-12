@@ -82,7 +82,7 @@ class Mixin_NextGen_Basic_Pagination extends Mixin
 
         $pages = array_merge($before, $after);
 
-        if ($pages && $number_of_pages > 1) {
+        if ($pages && count($pages) > 1) {
             // Next page
             if ($selected_page+1 <= $number_of_pages) {
                 $next_page = $selected_page+1;
