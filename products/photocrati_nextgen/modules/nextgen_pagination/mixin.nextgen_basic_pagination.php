@@ -52,43 +52,39 @@ class Mixin_NextGen_Basic_Pagination extends Mixin
         for ($i=1; $i<=$number_of_pages; $i++) {
 
             if ($selected_page === $i) {
-                $pages[] = "<span class='current'>{$i}</span>";
+                $pages['current'] = "<span class='current'>{$i}</span>";
             }
             else {
-                $add=TRUE;
-                // We always show the first and last pages
-                // However, if the number of pages is created than 4
-                // then an ellipsis will sometimes appear after the first page
-                // or before the last page, depending on what the current page is
-                if ($number_of_pages > 4) {
-                    if ($i == 1 || $i == $number_of_pages || $i == $selected_page-1 || $i == $selected_page+1) {
-                        $add = TRUE;
-                    }
-                    else {
-                        $add = FALSE;
-                        if ($ending_ellipsis < 0 && $i > $selected_page) {
-                            $pages[] = "<span class='ellipsis'>...</span>";
-                            $ending_ellipsis = $i;
-                        }
-                        else if ($starting_ellipsis < 0 && $i < $selected_page) {
-                            $pages[] = "<span class='ellipsis'>...</span>";
-                            $starting_ellipsis = $i;
-                        }
-                    }
-                }
-
-                if ($add) {
-                    $link = esc_attr($this->object->set_param_for($current_url, 'nggpage', $i));
-                    $pages[] = "<a class='page-numbers' data-pageid='{$i}' href='{$link}'>{$i}</a>";
-                }
+                $link = esc_attr($this->object->set_param_for($current_url, 'nggpage', $i));
+                $pages[$i] = "<a class='page-numbers' data-pageid='{$i}' href='{$link}'>{$i}</a>";
                 
             }
         }
 
-        if ($pages) {
+        $after = $this->array_slice_from('current', $pages);
+        if (count($after) > 3) {
+            $after = array_merge(
+                $this->array_take_from_start(2, $after),
+                ["<span class='ellipsis'>...</span>"],
+                $this->array_take_from_end(1, $after)
+            );
+        }
+
+        $before = $this->array_slice_to('current', $pages);
+        if (count($before) > 3) {
+            $before = array_merge(
+                $this->array_take_from_start(1, $before),
+                ["<span class='ellipsis'>...</span>"],
+                $this->array_take_from_end(2, $before)
+            );
+            array_pop($before);
+        }
+
+        $pages = array_merge($before, $after);
+
+        if ($pages && $number_of_pages > 1) {
             // Next page
             if ($selected_page+1 <= $number_of_pages) {
-
                 $next_page = $selected_page+1;
                 $link = $return['next'] = $this->object->set_param_for($current_url, 'nggpage', $next_page);
                 $pages[] = "<a class='prev' data-pageid={$next_page}>{$next_symbol}</a>";
@@ -105,5 +101,49 @@ class Mixin_NextGen_Basic_Pagination extends Mixin
         }
 
         return $return;
+    }
+
+    function array_slice_from($find_key, $arr)
+    {
+        $retval = [];
+        reset($arr);
+        foreach ($arr as $key => $value) {
+            if ($key == $find_key || $retval) {
+                $retval[$key] = $value;
+            }
+        }
+        reset($arr);
+
+        return $retval;
+    }
+
+    function array_slice_to($find_key, $arr)
+    {
+        $retval = [];
+        reset($arr);
+        foreach ($arr as $key => $value) {
+            $retval[$key] = $value;
+            if ($key== $find_key) {
+                break;
+            }
+        }
+        reset($arr);
+
+        return $retval;
+    }
+
+    function array_take_from_start($number, $arr)
+    {  
+        $retval = [];
+        foreach ($arr as $key => $value) {
+            if (count($retval) < $number)
+                $retval[$key] = $value;
+            else break;
+        }
+        return $retval;
+    }
+
+    function array_take_from_end($number, $arr) {
+        return array_reverse($this->array_take_from_start($number, array_reverse($arr)));
     }
 }
