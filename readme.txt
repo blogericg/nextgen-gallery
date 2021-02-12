@@ -181,8 +181,11 @@ For more information, feel free to visit the official website for the NextGEN Ga
 == Changelog ==
 
 = V3.6.1 - 02.12.2020 =
-* Fixed:   Inability to change gallerypath on multisite networks (1150)
+* Fixed:   Added ellipsis to pagination to show pages skipped (1099)
 * Fixed:   Deleted images could still appear in 'random' image galleries (1129)
+* Fixed:   Galleries with only one page were causing pagination links to appear (1156)
+* Fixed:   Inability to change gallerypath on multisite networks (1150)
+* Fixed:   Overriding static resources (CSS & JS) through files in wp-content/ngg/ was not working (1144)
 
 = V3.6.0 - 02.10.2020 =
 * NEW:     Added new 'Bulk actions' option to remove EXIF Orientation from existing images (1137)
