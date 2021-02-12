@@ -180,6 +180,10 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
+= V3.6.1 - 02.12.2020 =
+* Fixed:   Inability to change gallerypath on multisite networks (1150)
+* Fixed:   Deleted images could still appear in 'random' image galleries (1129)
+
 = V3.6.0 - 02.10.2020 =
 * NEW:     Added new 'Bulk actions' option to remove EXIF Orientation from existing images (1137)
 * NEW:     Allow maximum_entity_limit display setting regardless of source (1146)
