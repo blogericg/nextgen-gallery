@@ -1,8 +1,8 @@
 NextGEN Gallery
 by Imagely
 
-= V3.6.1 - 02.12.2020 =
-* Fixed:   Added ellipsis to pagination to show pages skipped (1099)
+= V3.7.0 - 02.17.2020 =
+* Fixed:   Added ellipsis to pagination to show pages skipped (1099) (1157)
 * Fixed:   Deleted images could still appear in 'random' image galleries (1129)
 * Fixed:   Galleries with only one page were causing pagination links to appear (1156)
 * Fixed:   Inability to change gallerypath on multisite networks (1150)
