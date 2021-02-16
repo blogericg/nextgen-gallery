@@ -87,14 +87,14 @@ class Mixin_NextGen_Basic_Pagination extends Mixin
             if ($selected_page+1 <= $number_of_pages) {
                 $next_page = $selected_page+1;
                 $link = $return['next'] = $this->object->set_param_for($current_url, 'nggpage', $next_page);
-                $pages[] = "<a class='prev' data-pageid={$next_page}>{$next_symbol}</a>";
+                $pages[] = "<a class='prev' href='{$link}' data-pageid={$next_page}>{$next_symbol}</a>";
             }
 
             // Prev page
             if ($selected_page-1 > 0) {
                 $prev_page = $selected_page-1;
                 $link = $return['next'] = $this->object->set_param_for($current_url, 'nggpage', $prev_page);
-                array_unshift($pages, "<a class='next' data-pageid={$prev_page}>{$prev_symbol}</a>");
+                array_unshift($pages, "<a class='next' href='{$link}' data-pageid={$prev_page}>{$prev_symbol}</a>");
             }
 
             $return['output'] = "<div class='ngg-navigation'>" . implode("\n", $pages) . "</div>";
