@@ -187,12 +187,15 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
 	 */
 	function get_forms()
 	{
-		$forms = array();
         $form_manager = C_Form_Manager::get_instance();
-		foreach ($form_manager->get_forms($this->object->get_form_type()) as $form) {
-			$forms[] = $this->object->get_registry()->get_utility('I_Form', $form);
-		}
-		return $forms;
+		return array_map(
+			function($form) {
+				$form = $this->object->get_registry()->get_utility('I_Form', $form);
+				$form->page = $this;
+				return $form;
+			},
+			$form_manager->get_forms($this->object->get_form_type())
+		);
 	}
 
 	/**
