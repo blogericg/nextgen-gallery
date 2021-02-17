@@ -19,6 +19,8 @@ On the back end, NextGEN offers a complete WordPress gallery management system w
 
 On the front end, the free version of NextGEN provides three main gallery styles (slideshow, thumbnail, and imagebrowser galleries) and two album styles (compact and extended), all of which come with a wide array of options for controlling size, style, timing, transitions, controls, lightbox effects, and more. Learn more about <a href="https://www.imagely.com/wordpress-gallery-plugin/" target="_blank">NextGEN WordPress Gallery Plugin features.</a>
 
+The best gets better with full support for the Gutenberg block editor. Now you can add a gallery or album anywhere on your site, with a page builder type feel directly in the WordPress editor.
+
 https://www.youtube.com/embed/4Phvmm3etnw
 
 **NEXTGEN GALLERY DEMOS**<br>
@@ -33,18 +35,15 @@ https://www.youtube.com/embed/4Phvmm3etnw
 https://www.youtube.com/embed/ePnYGQX0Lf8
 
 **NEXTGEN PRO DEMOS**<br>
+*<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-ecommerce-demo/" target="_blank">Photo Print Sales</a><br>
+*<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-proofing-demo/" target="_blank">Photo Proofing</a><br>
+*<a href="https://www.imagely.com/wordpress-gallery-plugin/digital-download-demo/" target="_blank">Digital Downloads</a><br>
 *<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-mosaic-gallery/" target="_blank">Pro Mosaic Gallery</a><br>
 *<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-masonry-gallery/" target="_blank">Pro Masonry Gallery</a><br>
+*<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-tiled-gallery/" target="_blank">Pro Tiled Gallery</a><br>
 *<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-filmstrip-gallery/" target="_blank">Pro Filmstrip Gallery</a><br>
 *<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-film-gallery/" target="_blank">Pro Film Gallery</a><br>
-*<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-slideshow-gallery/" target="_blank">Pro Slideshow Gallery</a><br>
-*<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-thumbnail-gallery/" target="_blank">Pro Thumbnail Gallery</a><br>
-*<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-blogstyle-gallery/" target="_blank">Pro Blog Style Gallery</a><br>
-*<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-grid-album/" target="_blank">Pro Grid Albums</a><br>
-*<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-list-album/" target="_blank">Pro List Album</a><br>
-*<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-lightbox-demo/" target="_blank">Pro Lightbox Demo</a><br>
-*<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-proofing-demo/" target="_blank">Pro Proofing Demo</a><br>
-*<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-ecommerce-demo/" target="_blank">Pro Ecommerce Demo</a><br>
+*<a href="https://www.imagely.com/wordpress-gallery-plugin/pro-lightbox-demo/" target="_blank">Pro Lightbox</a><br>
 
 = About Imagely =
 
@@ -52,8 +51,8 @@ NextGEN Gallery is a WordPress gallery plugin maintained by Imagely. We're the W
 
 Learn more or connect with us:<br>
 *<a href="https://www.imagely.com/" target="_blank">Imagely Website</a><br>
-*<a href="https://www.imagely.com/wordpress-photography-themes/" target="_blank">Genesis WordPress Themes for Photographers</a><br>
-*<a href="https://www.imagely.com/hosting/" target="_blank">Managed WordPress Hosting for Photographers</a><br>
+*<a href="https://www.imagely.com/wordpress-photography-themes/" target="_blank">WordPress Themes for Photographers</a><br>
+*<a href="https://www.imagely.com/sites/" target="_blank">Turnkey Photography Sites</a><br>
 *<a href="https://www.imagely.com/podcast/" target="_blank">The WordPress Photography Podcast</a><br>
 *<a href="https://www.imagely.com/docs/nextgen-gallery/" target="_blank">NextGEN Gallery Documentation</a><br>
 *<a href="https://twitter.com/imagely" target="_blank">Imagely on Twitter</a><br>
