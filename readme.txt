@@ -62,7 +62,7 @@ Learn more or connect with us:<br>
 == Credits ==
 
 Copyright:<br>
-Imagely 2016-2019
+Imagely 2016-2021
 Photocrati Media 2012-2016<br>
 Alex Rabe 2007-2011
 
