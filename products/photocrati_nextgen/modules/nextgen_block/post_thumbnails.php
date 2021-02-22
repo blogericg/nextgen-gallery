@@ -24,24 +24,24 @@ class C_Ngg_Post_Thumbnails
         add_action( 'rest_insert_page', [$this, 'set_or_remove_ngg_post_thumbnail'], PHP_INT_MAX - 1, 2);
         
         // Expose a field for posts/pages to set the ngg_post_thumbnail via REST API
-        register_meta(
-            'post',
-            'ngg_post_thumbnail',
-            [
-                'type'         => 'integer',
-                'single'       => TRUE,
-                'show_in_rest' => TRUE
-            ]
-        );
-        register_meta(
-            'page',
-            'ngg_post_thumbnail',
-            [
-                'type'         => 'integer',
-                'single'       => TRUE,
-                'show_in_rest' => TRUE
-            ]
-        );
+        add_action( 'init', function() {
+            array_map(
+                function($post_type) {
+                    add_post_type_support($post_type, 'custom-fields');
+
+                    register_meta(
+                        $post_type,
+                        'ngg_post_thumbnail',
+                        [
+                            'type'         => 'integer',
+                            'single'       => TRUE,
+                            'show_in_rest' => TRUE
+                        ]
+                    );
+                },
+                get_post_types_by_support('thumbnail')
+            );
+        }, 11);
     }
 
     function register_adapters()
