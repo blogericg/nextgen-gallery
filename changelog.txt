@@ -1,6 +1,12 @@
 NextGEN Gallery
 by Imagely
 
+= V3.7.1 - 02.24.2020 =
+* NEW:     NGG featured image support for custom post types
+* Fixed:   Compatibility with Custom Post Type UI plugin
+* Fixed:   Compatibility with Advanced Custom Fields plugin
+* Fixed:   Compatibility with Photo Station plugin
+
 = V3.7.0 - 02.17.2020 =
 * Fixed:   Added ellipsis to pagination to show pages skipped (1099) (1157)
 * Fixed:   Deleted images could still appear in 'random' image galleries (1129)
