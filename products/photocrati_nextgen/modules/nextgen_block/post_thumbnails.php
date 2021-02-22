@@ -20,8 +20,6 @@ class C_Ngg_Post_Thumbnails
     public function register_hooks()
     {
         add_action( 'enqueue_block_editor_assets', [$this, 'enqueue_post_thumbnails'], 1);
-        add_action( 'rest_insert_post', [$this, 'set_or_remove_ngg_post_thumbnail'], PHP_INT_MAX - 1, 2);
-        add_action( 'rest_insert_page', [$this, 'set_or_remove_ngg_post_thumbnail'], PHP_INT_MAX - 1, 2);
         
         // Expose a field for posts/pages to set the ngg_post_thumbnail via REST API
         add_action( 'init', function() {
@@ -38,6 +36,8 @@ class C_Ngg_Post_Thumbnails
                             'show_in_rest' => TRUE
                         ]
                     );
+
+                    add_action('rest_insert_'.$post_type, [$this, 'set_or_remove_ngg_post_thumbnail'], PHP_INT_MAX-1, 2);
                 },
                 get_post_types_by_support('thumbnail')
             );
