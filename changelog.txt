@@ -1,7 +1,7 @@
 NextGEN Gallery
 by Imagely
 
-= V3.7.1 - 02.24.2020 =
+= V3.8.0 - 02.24.2020 =
 * NEW:     NGG featured image support for custom post types
 * Fixed:   Compatibility with Custom Post Type UI plugin
 * Fixed:   Compatibility with Advanced Custom Fields plugin

@@ -2,7 +2,7 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 5.4.0
-Stable tag: 3.7.1
+Stable tag: 3.8.0
 Tested up to: 5.6.1
 License: GPLv3
 Requires PHP: 5.6
@@ -179,7 +179,7 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.7.1 - 02.24.2020 =
+= V3.8.0 - 02.24.2020 =
 * NEW:     NGG featured image support for custom post types
 * Fixed:   Compatibility with Custom Post Type UI plugin
 * Fixed:   Compatibility with Advanced Custom Fields plugin
