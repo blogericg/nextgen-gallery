@@ -131,7 +131,7 @@ class M_Gallery_Display extends C_Base_Module
     {
         global $post;
 
-        if ((defined('NGG_SKIP_LOAD_SCRIPTS') && NGG_SKIP_LOAD_SCRIPTS) || $this->is_rest_request())
+        if ((defined('NGG_SKIP_LOAD_SCRIPTS') && NGG_SKIP_LOAD_SCRIPTS) || $this->is_rest_request() || empty($post->post_content))
             return;
 
         preg_match_all('/' . get_shortcode_regex() . '/', $post->post_content, $matches, PREG_SET_ORDER);
