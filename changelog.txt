@@ -6,6 +6,7 @@ by Imagely
 * Fixed:   Compatibility with Custom Post Type UI plugin (1076)
 * Fixed:   Compatibility with Advanced Custom Fields plugin (1150)
 * Fixed:   Compatibility with Photo Station plugin (855)
+* Fixed:   Compatibility with Stackable (981)
 
 = V3.7.0 - 02.17.2020 =
 * Fixed:   Added ellipsis to pagination to show pages skipped (1099) (1157)

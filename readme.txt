@@ -180,10 +180,11 @@ For more information, feel free to visit the official website for the NextGEN Ga
 == Changelog ==
 
 = V3.8.0 - 02.24.2020 =
-* NEW:     NGG featured image support for custom post types
-* Fixed:   Compatibility with Custom Post Type UI plugin
-* Fixed:   Compatibility with Advanced Custom Fields plugin
-* Fixed:   Compatibility with Photo Station plugin
+* NEW:     NGG featured image support for custom post types (1076)
+* Fixed:   Compatibility with Custom Post Type UI plugin (1076)
+* Fixed:   Compatibility with Advanced Custom Fields plugin (1150)
+* Fixed:   Compatibility with Photo Station plugin (855)
+* Fixed:   Compatibility with Stackable (981)
 
 = V3.7.0 - 02.17.2020 =
 * Fixed:   Added ellipsis to pagination to show pages skipped (1099) (1157)
