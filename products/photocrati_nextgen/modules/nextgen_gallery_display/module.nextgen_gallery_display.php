@@ -10,6 +10,8 @@ if (!defined('NGG_SHOW_DISPLAYED_GALLERY_ERRORS')) define('NGG_SHOW_DISPLAYED_GA
 
 class M_Gallery_Display extends C_Base_Module
 {
+    public static $enqueued_displayed_gallery_ids = [];
+
 	function define($id = 'pope-module',
                     $name = 'Pope Module',
                     $description = '',
@@ -131,45 +133,92 @@ class M_Gallery_Display extends C_Base_Module
     {
         global $post;
 
-        if ((defined('NGG_SKIP_LOAD_SCRIPTS') && NGG_SKIP_LOAD_SCRIPTS) || $this->is_rest_request() || empty($post->post_content))
-            return;
+        if (have_posts())
+        {
+            while (have_posts()) {
+                the_post();
 
-        preg_match_all('/' . get_shortcode_regex() . '/', $post->post_content, $matches, PREG_SET_ORDER);
+                if ((defined('NGG_SKIP_LOAD_SCRIPTS') && NGG_SKIP_LOAD_SCRIPTS) || $this->is_rest_request() || empty($post->post_content))
+                    return;
 
-        $manager = C_NextGen_Shortcode_Manager::get_instance();
-        $ngg_shortcodes = $manager->get_shortcodes();
-        $shortcode_keys = array_keys($ngg_shortcodes);
+                preg_match_all('/' . get_shortcode_regex() . '/', $post->post_content, $matches, PREG_SET_ORDER);
 
-        foreach ($matches as $shortcode) {
-            // Only process our 'ngg' shortcodes
-            $this_shortcode_name = $shortcode[2];
-            if (!in_array($this_shortcode_name, $shortcode_keys))
-                continue;
+                $manager = C_NextGen_Shortcode_Manager::get_instance();
+                $ngg_shortcodes = $manager->get_shortcodes();
+                $shortcode_keys = array_keys($ngg_shortcodes);
 
-            $params = shortcode_parse_atts(trim($shortcode[0], '[]'));
-            if (in_array($params[0], $shortcode_keys)) // Don't pass 0 => 'ngg' as a parameter, it's just part of the shortcode itself
-                unset($params[0]);
+                foreach ($matches as $shortcode) {
+                    // Only process our 'ngg' shortcodes
+                    $this_shortcode_name = $shortcode[2];
+                    if (!in_array($this_shortcode_name, $shortcode_keys))
+                        continue;
 
-            // And do the enqueueing process
-            $renderer = C_Displayed_Gallery_Renderer::get_instance();
-            $registry = C_Component_Registry::get_instance();
+                    $params = shortcode_parse_atts(trim($shortcode[0], '[]'));
+                    if (in_array($params[0], $shortcode_keys)) // Don't pass 0 => 'ngg' as a parameter, it's just part of the shortcode itself
+                        unset($params[0]);
 
-            // This is necessary for legacy shortcode compatibility
-            if (is_callable($ngg_shortcodes[$this_shortcode_name]['transformer']))
-                $params = call_user_func($ngg_shortcodes[$this_shortcode_name]['transformer'], $params);
+                    // And do the enqueueing process
+                    $renderer = C_Displayed_Gallery_Renderer::get_instance();
 
-            $displayed_gallery = $renderer->params_to_displayed_gallery($params);
+                    // This is necessary for legacy shortcode compatibility
+                    if (is_callable($ngg_shortcodes[$this_shortcode_name]['transformer']))
+                        $params = call_user_func($ngg_shortcodes[$this_shortcode_name]['transformer'], $params);
 
-            if (!$displayed_gallery || empty($params))
-                continue;
+                    $displayed_gallery = $renderer->params_to_displayed_gallery($params);
 
-            if (is_null($displayed_gallery->id()))
-                $displayed_gallery->id(md5(json_encode($displayed_gallery->get_entity())));
+                    if (!$displayed_gallery || empty($params))
+                        continue;
 
-            /** @var C_Display_Type_Controller $controller */
-            $controller = $registry->get_utility('I_Display_Type_Controller', $displayed_gallery->display_type);
-            $controller->enqueue_frontend_resources($displayed_gallery);
+                    $this->enqueue_frontend_resources_for_displayed_gallery($displayed_gallery);
+
+                    if ($params['src'] === 'albums')
+                    {
+                        $mapper  = C_Gallery_Mapper::get_instance();
+
+                        /** @var C_Display_Type_Controller $controller */
+                        $controller = C_Component_Registry::get_instance()->get_utility('I_Display_Type_Controller', $displayed_gallery->display_type);
+
+                        // TODO: the result of $controller->param('gallery') is always null
+                        $gallery = $controller->param('gallery');
+                        $result  = $mapper->get_by_slug($gallery);
+
+                        if ($result)
+                            $gallery = $result->{$result->id_field};
+
+                        $new_params = array(
+                            'source'                  => 'galleries',
+                            'container_ids'           => array($gallery),
+                            'display_type'            => $displayed_gallery->display_settings['gallery_display_type'],
+                            'original_display_type'   => $displayed_gallery->display_type,
+                            'original_settings'       => $displayed_gallery->display_settings,
+                            'original_album_entities' => $displayed_gallery->get_albums()
+                        );
+
+                        $child_displayed_gallery = $renderer->params_to_displayed_gallery($new_params);
+                        if ($child_displayed_gallery)
+                            $this->enqueue_frontend_resources_for_displayed_gallery($child_displayed_gallery, $controller);
+                    }
+                }
+            }
         }
+    }
+
+    /**
+     * @param C_Displayed_Gallery $displayed_gallery
+     * @param C_Display_Type_Controller $controller
+     */
+    public function enqueue_frontend_resources_for_displayed_gallery($displayed_gallery, $controller = FALSE)
+    {
+        if (is_null($displayed_gallery->id()))
+            $displayed_gallery->id(md5(json_encode($displayed_gallery->get_entity())));
+
+        if (!$controller)
+            /** @var C_Display_Type_Controller $controller */
+            $controller = C_Component_Registry::get_instance()->get_utility('I_Display_Type_Controller', $displayed_gallery->display_type);
+
+        self::$enqueued_displayed_gallery_ids[] = $displayed_gallery->id();
+
+        $controller->enqueue_frontend_resources($displayed_gallery);
     }
 
     function is_rest_request()
@@ -445,6 +494,7 @@ class M_Gallery_Display extends C_Base_Module
 	            NGG_SCRIPT_VERSION,
 	            TRUE
             );
+
             wp_register_style(
 	            'ngg_trigger_buttons',
 	            $router->get_static_url('photocrati-nextgen_gallery_display#trigger_buttons.css'),
