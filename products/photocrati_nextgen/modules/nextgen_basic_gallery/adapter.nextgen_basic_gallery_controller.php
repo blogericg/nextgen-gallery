@@ -4,14 +4,16 @@
  * Class A_NextGen_Basic_Gallery_Controller
  * @mixin C_Display_Type_Controller
  * @adapts I_Display_Type_Controller for both "photocrati-nextgen_basic_slideshow" and "photocrati-nextgen_basic_thumbnails" contexts
+ * @property C_Display_Type_Controller|A_NextGen_Basic_Gallery_Controller $object
  */
 class A_NextGen_Basic_Gallery_Controller extends Mixin
 {
-    function index_action($displayed_gallery, $return=FALSE)
+    /**
+     * @param C_Displayed_Gallery $displayed_gallery
+     * @return C_Displayed_Gallery
+     */
+    function get_alternate_displayed_gallery($displayed_gallery)
     {
-        $retval = '';
-        $call_parent = TRUE;
-
         $show = $this->object->param('show');
         $pid  = $this->object->param('pid');
 
@@ -25,23 +27,34 @@ class A_NextGen_Basic_Gallery_Controller extends Mixin
             $ds = $params['display_settings'];
 
             if ((!empty($ds['show_slideshow_link']) || !empty($ds['show_thumbnail_link']) || !empty($ds['use_imagebrowser_effect']))
-                &&   $show != $this->object->context)
+            &&   $show != $this->object->context)
             {
-
                 // Render the new display type
                 $renderer = C_Displayed_Gallery_Renderer::get_instance();
                 $displayed_gallery->original_display_type = $displayed_gallery->display_type;
                 $displayed_gallery->original_settings = $displayed_gallery->display_settings;
                 $displayed_gallery->display_type = $show;
                 $params = (array)$displayed_gallery->get_entity();
-	            $params['display_settings'] = array();
-                $retval = $renderer->display_images($params, $return);
+                $params['display_settings'] = array();
 
-                $call_parent = FALSE;
+                $displayed_gallery = $renderer->params_to_displayed_gallery($params);
             }
         }
 
-        return $call_parent ? $this->call_parent('index_action', $displayed_gallery, $return) : $retval;
+        return $displayed_gallery;
+    }
+
+    function index_action($displayed_gallery, $return = FALSE)
+    {
+        $alternate_displayed_gallery = $this->object->get_alternate_displayed_gallery($displayed_gallery);
+
+        if ($displayed_gallery !== $alternate_displayed_gallery)
+        {
+            $renderer = C_Displayed_Gallery_Renderer::get_instance();
+            return $renderer->display_images($alternate_displayed_gallery, $return);
+        }
+
+        return $this->call_parent('index_action', $displayed_gallery, $return);
     }
 
     /**

@@ -166,63 +166,49 @@ class M_Gallery_Display extends C_Base_Module
 
                     $displayed_gallery = $renderer->params_to_displayed_gallery($params);
 
-                    /** @var C_Display_Type_Controller $controller */
-                    $controller = C_Component_Registry::get_instance()->get_utility('I_Display_Type_Controller', $displayed_gallery->display_type);
+                    $controller = C_Display_Type_Controller::get_instance($displayed_gallery->display_type);
 
                     if (!$displayed_gallery || empty($params))
                         continue;
 
-                    $this->enqueue_frontend_resources_for_displayed_gallery($displayed_gallery);
+                    $this->enqueue_frontend_resources_for_displayed_gallery($displayed_gallery, $controller);
 
-                    if ($params['src'] === 'albums')
-                    {
-                        $mapper  = C_Gallery_Mapper::get_instance();
+                    $this->enqueue_frontend_resources_for_alternate_displayed_gallery($displayed_gallery, $controller);
 
-                        $renderer->do_app_rewrites($displayed_gallery);
-
-                        $gallery = $controller->param('gallery');
-
-                        if ($gallery)
-                        {
-                            $result  = $mapper->get_by_slug($gallery);
-                            if ($result)
-                                $gallery = $result->{$result->id_field};
-
-                            $new_params = [
-                                'source'                  => 'galleries',
-                                'container_ids'           => array($gallery),
-                                'display_type'            => $displayed_gallery->display_settings['gallery_display_type'],
-                                'original_display_type'   => $displayed_gallery->display_type,
-                                'original_settings'       => $displayed_gallery->display_settings,
-                                'original_album_entities' => $displayed_gallery->get_albums()
-                            ];
-
-                            $child_displayed_gallery = $renderer->params_to_displayed_gallery($new_params);
-                            if ($child_displayed_gallery)
-                            {
-                                /** @var C_Display_Type_Controller $controller */
-                                $new_controller = C_Component_Registry::get_instance()->get_utility('I_Display_Type_Controller', $displayed_gallery->display_settings['gallery_display_type']);
-                                $this->enqueue_frontend_resources_for_displayed_gallery($child_displayed_gallery, $new_controller);
-                            }
-                        }
-                    }
                 }
             }
         }
+    }
+
+    public function enqueue_frontend_resources_for_alternate_displayed_gallery($displayed_gallery, $controller)
+    {
+        // Allow basic thumbnails "use imagebrowser effect" feature to seamlessly change between display types as well
+        // as for album display types to show galleries
+        $alternate_displayed_gallery = $controller->get_alternate_displayed_gallery($displayed_gallery);
+        if ($alternate_displayed_gallery === $displayed_gallery)
+            return;
+
+        $alternate_controller = C_Display_Type_Controller::get_instance($alternate_displayed_gallery->display_type);
+        $this->enqueue_frontend_resources_for_displayed_gallery($alternate_displayed_gallery, $alternate_controller);
+
+        // Because albums display basic thumbnails which can then become an imagebrowser we have to search and recurse here
+        $further_alternate_displayed_gallery = $alternate_controller->get_alternate_displayed_gallery($alternate_displayed_gallery);
+        if ($further_alternate_displayed_gallery === $alternate_displayed_gallery)
+            return;
+
+        $further_controller = C_Display_Type_Controller::get_instance($further_alternate_displayed_gallery->display_type);
+        $this->enqueue_frontend_resources_for_displayed_gallery($further_alternate_displayed_gallery, $further_controller);
+        $this->enqueue_frontend_resources_for_alternate_displayed_gallery($further_alternate_displayed_gallery, $further_controller);
     }
 
     /**
      * @param C_Displayed_Gallery $displayed_gallery
      * @param C_Display_Type_Controller $controller
      */
-    public function enqueue_frontend_resources_for_displayed_gallery($displayed_gallery, $controller = FALSE)
+    public function enqueue_frontend_resources_for_displayed_gallery($displayed_gallery, $controller)
     {
         if (is_null($displayed_gallery->id()))
             $displayed_gallery->id(md5(json_encode($displayed_gallery->get_entity())));
-
-        if (!$controller)
-            /** @var C_Display_Type_Controller $controller */
-            $controller = C_Component_Registry::get_instance()->get_utility('I_Display_Type_Controller', $displayed_gallery->display_type);
 
         self::$enqueued_displayed_gallery_ids[] = $displayed_gallery->id();
 
