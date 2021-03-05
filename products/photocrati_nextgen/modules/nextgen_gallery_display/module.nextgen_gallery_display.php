@@ -172,7 +172,6 @@ class M_Gallery_Display extends C_Base_Module
                         continue;
 
                     $this->enqueue_frontend_resources_for_displayed_gallery($displayed_gallery, $controller);
-                    $this->enqueue_frontend_resources_for_alternate_displayed_gallery($displayed_gallery, $controller);
                 }
             }
         }
@@ -192,15 +191,6 @@ class M_Gallery_Display extends C_Base_Module
 
         $alternate_controller = C_Display_Type_Controller::get_instance($alternate_displayed_gallery->display_type);
         $this->enqueue_frontend_resources_for_displayed_gallery($alternate_displayed_gallery, $alternate_controller);
-
-        // Because albums display basic thumbnails which can then become an imagebrowser we have to search and recurse here
-        $further_alternate_displayed_gallery = $alternate_controller->get_alternate_displayed_gallery($alternate_displayed_gallery);
-        if ($further_alternate_displayed_gallery === $alternate_displayed_gallery)
-            return;
-
-        $further_controller = C_Display_Type_Controller::get_instance($further_alternate_displayed_gallery->display_type);
-        $this->enqueue_frontend_resources_for_displayed_gallery($further_alternate_displayed_gallery, $further_controller);
-        $this->enqueue_frontend_resources_for_alternate_displayed_gallery($further_alternate_displayed_gallery, $further_controller);
     }
 
     /**
@@ -215,6 +205,7 @@ class M_Gallery_Display extends C_Base_Module
         self::$enqueued_displayed_gallery_ids[] = $displayed_gallery->id();
 
         $controller->enqueue_frontend_resources($displayed_gallery);
+        $this->enqueue_frontend_resources_for_alternate_displayed_gallery($displayed_gallery, $controller);
     }
 
     function is_rest_request()
