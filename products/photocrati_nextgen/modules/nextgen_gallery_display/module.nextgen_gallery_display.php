@@ -166,6 +166,9 @@ class M_Gallery_Display extends C_Base_Module
 
                     $displayed_gallery = $renderer->params_to_displayed_gallery($params);
 
+                    /** @var C_Display_Type_Controller $controller */
+                    $controller = C_Component_Registry::get_instance()->get_utility('I_Display_Type_Controller', $displayed_gallery->display_type);
+
                     if (!$displayed_gallery || empty($params))
                         continue;
 
@@ -175,28 +178,33 @@ class M_Gallery_Display extends C_Base_Module
                     {
                         $mapper  = C_Gallery_Mapper::get_instance();
 
-                        /** @var C_Display_Type_Controller $controller */
-                        $controller = C_Component_Registry::get_instance()->get_utility('I_Display_Type_Controller', $displayed_gallery->display_type);
+                        $renderer->do_app_rewrites($displayed_gallery);
 
-                        // TODO: the result of $controller->param('gallery') is always null
                         $gallery = $controller->param('gallery');
-                        $result  = $mapper->get_by_slug($gallery);
 
-                        if ($result)
-                            $gallery = $result->{$result->id_field};
+                        if ($gallery)
+                        {
+                            $result  = $mapper->get_by_slug($gallery);
+                            if ($result)
+                                $gallery = $result->{$result->id_field};
 
-                        $new_params = array(
-                            'source'                  => 'galleries',
-                            'container_ids'           => array($gallery),
-                            'display_type'            => $displayed_gallery->display_settings['gallery_display_type'],
-                            'original_display_type'   => $displayed_gallery->display_type,
-                            'original_settings'       => $displayed_gallery->display_settings,
-                            'original_album_entities' => $displayed_gallery->get_albums()
-                        );
+                            $new_params = [
+                                'source'                  => 'galleries',
+                                'container_ids'           => array($gallery),
+                                'display_type'            => $displayed_gallery->display_settings['gallery_display_type'],
+                                'original_display_type'   => $displayed_gallery->display_type,
+                                'original_settings'       => $displayed_gallery->display_settings,
+                                'original_album_entities' => $displayed_gallery->get_albums()
+                            ];
 
-                        $child_displayed_gallery = $renderer->params_to_displayed_gallery($new_params);
-                        if ($child_displayed_gallery)
-                            $this->enqueue_frontend_resources_for_displayed_gallery($child_displayed_gallery, $controller);
+                            $child_displayed_gallery = $renderer->params_to_displayed_gallery($new_params);
+                            if ($child_displayed_gallery)
+                            {
+                                /** @var C_Display_Type_Controller $controller */
+                                $new_controller = C_Component_Registry::get_instance()->get_utility('I_Display_Type_Controller', $displayed_gallery->display_settings['gallery_display_type']);
+                                $this->enqueue_frontend_resources_for_displayed_gallery($child_displayed_gallery, $new_controller);
+                            }
+                        }
                     }
                 }
             }

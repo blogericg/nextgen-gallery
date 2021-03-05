@@ -443,4 +443,6 @@ class Mixin_Displayed_Gallery_Renderer extends Mixin
     {
     	return defined('REST_REQUEST') || strpos($_SERVER['REQUEST_URI'], 'wp-json') !== FALSE;
     }
+
+    function do_app_rewrites($displayed_gallery) {}
 }

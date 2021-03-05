@@ -182,7 +182,7 @@ class M_NextGen_Basic_Album extends C_Base_Module
             'A_Nextgen_Basic_Album' => 'adapter.nextgen_basic_album.php',
             'A_Nextgen_Basic_Album_Controller' => 'adapter.nextgen_basic_album_controller.php',
             'A_Nextgen_Basic_Album_Mapper' => 'adapter.nextgen_basic_album_mapper.php',
-            'A_Nextgen_Basic_Album_Routes' => 'adapter.nextgen_basic_album_routes.php',
+            'A_NextGen_Basic_Album_Routes' => 'adapter.nextgen_basic_album_routes.php',
             'A_Nextgen_Basic_Album_Urls' => 'adapter.nextgen_basic_album_urls.php',
             'A_Nextgen_Basic_Compact_Album_Form' => 'adapter.nextgen_basic_compact_album_form.php',
             'A_Nextgen_Basic_Extended_Album_Form' => 'adapter.nextgen_basic_extended_album_form.php',
