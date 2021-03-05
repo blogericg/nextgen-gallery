@@ -172,14 +172,16 @@ class M_Gallery_Display extends C_Base_Module
                         continue;
 
                     $this->enqueue_frontend_resources_for_displayed_gallery($displayed_gallery, $controller);
-
                     $this->enqueue_frontend_resources_for_alternate_displayed_gallery($displayed_gallery, $controller);
-
                 }
             }
         }
     }
 
+    /**
+     * @param C_Displayed_Gallery $displayed_gallery
+     * @param C_Display_Type_Controller $controller
+     */
     public function enqueue_frontend_resources_for_alternate_displayed_gallery($displayed_gallery, $controller)
     {
         // Allow basic thumbnails "use imagebrowser effect" feature to seamlessly change between display types as well

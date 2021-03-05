@@ -8,12 +8,19 @@
  */
 class A_NextGen_Basic_Gallery_Controller extends Mixin
 {
+    protected static $alternate_displayed_galleries = [];
+
     /**
      * @param C_Displayed_Gallery $displayed_gallery
      * @return C_Displayed_Gallery
      */
     function get_alternate_displayed_gallery($displayed_gallery)
     {
+        // Prevent recursive checks for further alternates causing additional modifications to the settings array
+        $id = $displayed_gallery->id();
+        if (!empty(self::$alternate_displayed_galleries[$id]))
+            return self::$alternate_displayed_galleries[$id];
+
         $show = $this->object->param('show');
         $pid  = $this->object->param('pid');
 
@@ -31,13 +38,15 @@ class A_NextGen_Basic_Gallery_Controller extends Mixin
             {
                 // Render the new display type
                 $renderer = C_Displayed_Gallery_Renderer::get_instance();
-                $displayed_gallery->original_display_type = $displayed_gallery->display_type;
-                $displayed_gallery->original_settings = $displayed_gallery->display_settings;
-                $displayed_gallery->display_type = $show;
-                $params = (array)$displayed_gallery->get_entity();
+                $params['original_display_type'] = $displayed_gallery->display_type;
+                $params['original_settings'] = $displayed_gallery->display_settings;
+                $params['display_type'] = $show;
                 $params['display_settings'] = array();
 
                 $displayed_gallery = $renderer->params_to_displayed_gallery($params);
+                if (is_null($displayed_gallery->id()))
+                    $displayed_gallery->id(md5(json_encode($displayed_gallery->get_entity())));
+                self::$alternate_displayed_galleries[$id] = $displayed_gallery;
             }
         }
 

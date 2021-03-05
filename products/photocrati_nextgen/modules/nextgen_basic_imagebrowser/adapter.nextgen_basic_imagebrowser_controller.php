@@ -210,7 +210,8 @@ class A_NextGen_Basic_ImageBrowser_Controller extends Mixin
             'nextgen_basic_imagebrowser_script',
             $this->object->get_static_url(NGG_BASIC_IMAGEBROWSER . '#imagebrowser.js'),
             array('ngg_common'),
-            NGG_SCRIPT_VERSION
+            NGG_SCRIPT_VERSION,
+            TRUE
         );
 
         $this->enqueue_ngg_styles();

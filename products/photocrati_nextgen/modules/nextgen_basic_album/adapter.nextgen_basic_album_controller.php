@@ -10,12 +10,19 @@ class A_NextGen_Basic_Album_Controller extends Mixin_NextGen_Basic_Pagination
 {
     var $albums = array();
 
+    protected static $alternate_displayed_galleries = [];
+
     /**
      * @param C_Displayed_Gallery $displayed_gallery
      * @return C_Displayed_Gallery
      */
     function get_alternate_displayed_gallery($displayed_gallery)
     {
+        // Prevent recursive checks for further alternates causing additional modifications to the settings array
+        $id = $displayed_gallery->id();
+        if (!empty(self::$alternate_displayed_galleries[$id]))
+            return self::$alternate_displayed_galleries[$id];
+
         // Without this line the param() method will always return NULL
         $renderer = C_Displayed_Gallery_Renderer::get_instance('inner');
         $renderer->do_app_rewrites($displayed_gallery);
@@ -44,6 +51,9 @@ class A_NextGen_Basic_Album_Controller extends Mixin_NextGen_Basic_Pagination
                 $gallery_params['template'] = $display_settings['gallery_display_template'];
 
             $displayed_gallery = $renderer->params_to_displayed_gallery($gallery_params);
+            if (is_null($displayed_gallery->id()))
+                $displayed_gallery->id(md5(json_encode($displayed_gallery->get_entity())));
+            self::$alternate_displayed_galleries[$id] = $displayed_gallery;
         }
 
         return $displayed_gallery;
