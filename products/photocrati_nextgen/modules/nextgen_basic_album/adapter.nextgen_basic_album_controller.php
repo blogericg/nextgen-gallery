@@ -23,7 +23,7 @@ class A_NextGen_Basic_Album_Controller extends Mixin_NextGen_Basic_Pagination
         if (!empty(self::$alternate_displayed_galleries[$id]))
             return self::$alternate_displayed_galleries[$id];
 
-        // Without this line the param() method will always return NULL
+        // Without this line the param() method will always return NULL when in wp_enqueue_scripts
         $renderer = C_Displayed_Gallery_Renderer::get_instance('inner');
         $renderer->do_app_rewrites($displayed_gallery);
 

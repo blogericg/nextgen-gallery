@@ -12,7 +12,6 @@ class A_NextGen_Basic_Album_Routes extends Mixin
 
     function do_app_rewrites($displayed_gallery)
     {
-
         if (self::$has_ran)
             return;
         self::$has_ran = TRUE;
