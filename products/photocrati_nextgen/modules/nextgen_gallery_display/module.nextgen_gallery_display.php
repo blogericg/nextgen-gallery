@@ -171,7 +171,7 @@ class M_Gallery_Display extends C_Base_Module
                     if (!$displayed_gallery || empty($params))
                         continue;
 
-                    $this->enqueue_frontend_resources_for_displayed_gallery($displayed_gallery, $controller);
+                    self::enqueue_frontend_resources_for_displayed_gallery($displayed_gallery, $controller);
                 }
             }
         }
@@ -181,7 +181,7 @@ class M_Gallery_Display extends C_Base_Module
      * @param C_Displayed_Gallery $displayed_gallery
      * @param C_Display_Type_Controller $controller
      */
-    public function enqueue_frontend_resources_for_alternate_displayed_gallery($displayed_gallery, $controller)
+    public static function enqueue_frontend_resources_for_alternate_displayed_gallery($displayed_gallery, $controller)
     {
         // Allow basic thumbnails "use imagebrowser effect" feature to seamlessly change between display types as well
         // as for album display types to show galleries
@@ -190,14 +190,14 @@ class M_Gallery_Display extends C_Base_Module
             return;
 
         $alternate_controller = C_Display_Type_Controller::get_instance($alternate_displayed_gallery->display_type);
-        $this->enqueue_frontend_resources_for_displayed_gallery($alternate_displayed_gallery, $alternate_controller);
+        self::enqueue_frontend_resources_for_displayed_gallery($alternate_displayed_gallery, $alternate_controller);
     }
 
     /**
      * @param C_Displayed_Gallery $displayed_gallery
      * @param C_Display_Type_Controller $controller
      */
-    public function enqueue_frontend_resources_for_displayed_gallery($displayed_gallery, $controller)
+    public static function enqueue_frontend_resources_for_displayed_gallery($displayed_gallery, $controller)
     {
         if (is_null($displayed_gallery->id()))
             $displayed_gallery->id(md5(json_encode($displayed_gallery->get_entity())));
@@ -205,7 +205,7 @@ class M_Gallery_Display extends C_Base_Module
         self::$enqueued_displayed_gallery_ids[] = $displayed_gallery->id();
 
         $controller->enqueue_frontend_resources($displayed_gallery);
-        $this->enqueue_frontend_resources_for_alternate_displayed_gallery($displayed_gallery, $controller);
+        self::enqueue_frontend_resources_for_alternate_displayed_gallery($displayed_gallery, $controller);
     }
 
     function is_rest_request()

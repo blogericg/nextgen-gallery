@@ -37,7 +37,7 @@ class M_Widget extends C_Base_Module
      */
     function _register_hooks()
     {
-    	add_action('widgets_init', array($this, 'register_widgets'));
+    	add_action('widgets_init', [$this, 'register_widgets']);
     }
 
     function register_widgets()
