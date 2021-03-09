@@ -7,17 +7,15 @@
  */
 class A_NextGen_Basic_Tagcloud_Controller extends Mixin
 {
-    /**
-     * Displays the 'tagcloud' display type
-     *
-     * @param C_Displayed_Gallery $displayed_gallery
-     * @param bool $return (optional)
-     * @return string
-     */
-    function index_action($displayed_gallery, $return = FALSE)
+    protected static $alternate_displayed_galleries = [];
+
+    function get_alternate_displayed_gallery($displayed_gallery)
     {
-        $display_settings = $displayed_gallery->display_settings;
-        $application = C_Router::get_instance()->get_routed_app();
+        // Prevent recursive checks for further alternates causing additional modifications to the settings array
+        $id = $displayed_gallery->id();
+        if (!empty(self::$alternate_displayed_galleries[$id]))
+            return self::$alternate_displayed_galleries[$id];
+
         $tag = urldecode($this->param('gallerytag'));
 
         // The display setting 'display_type' has been removed to 'gallery_display_type'
@@ -29,17 +27,42 @@ class A_NextGen_Basic_Tagcloud_Controller extends Mixin
         // we're looking at a tag, so show images w/that tag as a thumbnail gallery
         if (!is_home() && !empty($tag))
         {
-            return C_Displayed_Gallery_Renderer::get_instance()->display_images(
-                array(
-                    'source' => 'tags',
-                    'container_ids'         => array(esc_attr($tag)),
-                    'display_type'          => $display_settings['gallery_display_type'],
-                    'original_display_type' => $displayed_gallery->display_type,
-                    'original_settings'     => $display_settings
-                )
-            );
+            $params = [
+                'source'                => 'tags',
+                'container_ids'         => array(esc_attr($tag)),
+                'display_type'          => $displayed_gallery->display_settings['gallery_display_type'],
+                'original_display_type' => $displayed_gallery->display_type,
+                'original_settings'     => $displayed_gallery->display_settings
+            ];
         }
 
+        $renderer = C_Displayed_Gallery_Renderer::get_instance();
+        $displayed_gallery = $renderer->params_to_displayed_gallery($params);
+        if (is_null($displayed_gallery->id()))
+            $displayed_gallery->id(md5(json_encode($displayed_gallery->get_entity())));
+        self::$alternate_displayed_galleries[$id] = $displayed_gallery;
+
+        return $displayed_gallery;
+    }
+
+    /**
+     * Displays the 'tagcloud' display type
+     *
+     * @param C_Displayed_Gallery $displayed_gallery
+     * @param bool $return (optional)
+     * @return string
+     */
+    function index_action($displayed_gallery, $return = FALSE)
+    {
+        // we're looking at a tag, so show images w/that tag as a thumbnail gallery
+        if (!is_home() && !empty($this->param('gallerytag')))
+        {
+            $displayed_gallery = $this->get_alternate_displayed_gallery($displayed_gallery);
+            return C_Displayed_Gallery_Renderer::get_instance()->display_images($displayed_gallery);
+        }
+
+        $application = C_Router::get_instance()->get_routed_app();
+        $display_settings = $displayed_gallery->display_settings;
         $defaults = array(
             'exclude'  => '',
             'format'   => 'list',
