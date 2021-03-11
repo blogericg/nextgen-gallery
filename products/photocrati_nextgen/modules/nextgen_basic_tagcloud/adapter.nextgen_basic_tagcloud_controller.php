@@ -34,13 +34,14 @@ class A_NextGen_Basic_Tagcloud_Controller extends Mixin
                 'original_display_type' => $displayed_gallery->display_type,
                 'original_settings'     => $displayed_gallery->display_settings
             ];
-        }
 
-        $renderer = C_Displayed_Gallery_Renderer::get_instance();
-        $displayed_gallery = $renderer->params_to_displayed_gallery($params);
-        if (is_null($displayed_gallery->id()))
-            $displayed_gallery->id(md5(json_encode($displayed_gallery->get_entity())));
-        self::$alternate_displayed_galleries[$id] = $displayed_gallery;
+            $renderer = C_Displayed_Gallery_Renderer::get_instance();
+            $alternate_displayed_gallery = $renderer->params_to_displayed_gallery($params);
+            if (is_null($alternate_displayed_gallery->id()))
+                $alternate_displayed_gallery->id(md5(json_encode($alternate_displayed_gallery->get_entity())));
+            self::$alternate_displayed_galleries[$id] = $alternate_displayed_gallery;
+            return $alternate_displayed_gallery;
+        }
 
         return $displayed_gallery;
     }
