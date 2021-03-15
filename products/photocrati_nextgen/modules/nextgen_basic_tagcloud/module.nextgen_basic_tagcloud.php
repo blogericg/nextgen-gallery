@@ -47,8 +47,7 @@ class M_NextGen_Basic_Tagcloud extends C_Base_Module
 
     function _register_utilities()
     {
-        if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
-            $this->get_registry()->add_utility('I_Taxonomy_Controller', 'C_Taxonomy_Controller');
+        $this->get_registry()->add_utility('I_Taxonomy_Controller', 'C_Taxonomy_Controller');
     }
 
     function _register_adapters()
@@ -75,40 +74,28 @@ class M_NextGen_Basic_Tagcloud extends C_Base_Module
             );
         }
 
-        if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
-        {
-            // Provides settings fields and frontend rendering
-            $this->get_registry()->add_adapter(
-                'I_Display_Type_Controller',
-                'A_NextGen_Basic_Tagcloud_Controller',
-                $this->module_id
-            );
+        // Provides settings fields and frontend rendering
+        $this->get_registry()->add_adapter(
+            'I_Display_Type_Controller',
+            'A_NextGen_Basic_Tagcloud_Controller',
+            $this->module_id
+        );
 
-            // Add legacy urls
-            $this->get_registry()->add_adapter(
-                'I_Routing_App',
-                'A_NextGen_Basic_TagCloud_Urls'
-            );
-        }
+        // Add legacy urls
+        $this->get_registry()->add_adapter(
+            'I_Routing_App',
+            'A_NextGen_Basic_TagCloud_Urls'
+        );
     }
 
 	function _register_hooks()
 	{
-        if (apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id)
-        && (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES))
+        if (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES)
         {
             C_NextGen_Shortcode_Manager::add('tagcloud', array(&$this, 'render_shortcode'));
             C_NextGen_Shortcode_Manager::add('nggtagcloud', array(&$this, 'render_shortcode'));
 
-            add_filter(
-                'the_posts',
-                array(
-                    C_Taxonomy_Controller::get_instance(),
-                    'detect_ngg_tag'
-                ),
-                -10,
-                2
-            );
+            add_filter('the_posts', [C_Taxonomy_Controller::get_instance(), 'detect_ngg_tag'], -10, 2);
         }
 
         add_action('ngg_routes', array(&$this, 'define_routes'));

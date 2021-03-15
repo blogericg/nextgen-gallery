@@ -466,20 +466,6 @@ class C_NextGEN_Bootstrap
 		}
 
 		add_action('all_admin_notices', [$this, 'render_jquery_wp_55_warning']);
-
-		add_filter('ngg_load_frontend_logic', array($this, 'disable_frontend_logic'), -10, 2);
-
-	}
-
-	function disable_frontend_logic($enabled, $module_id)
-	{
-		if (is_admin())
-		{
-			$settings = C_NextGen_Settings::get_instance();
-			if (!$settings->get('always_enable_frontend_logic'))
-				$enabled = FALSE;
-		}
-		return $enabled;
 	}
 
 	function handle_activation_redirect()

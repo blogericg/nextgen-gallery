@@ -48,43 +48,27 @@ class M_NextGen_Basic_Singlepic extends C_Base_Module
     function _register_adapters()
     {
 		// Provides default values for the display type
-		$this->get_registry()->add_adapter(
-			'I_Display_Type_Mapper',
-			'A_NextGen_Basic_Singlepic_Mapper'
-		);
+		$this->get_registry()->add_adapter('I_Display_Type_Mapper', 'A_NextGen_Basic_Singlepic_Mapper');
 
+        // Provides the display settings form for the SinglePic display type
         if (M_Attach_To_Post::is_atp_url() || is_admin())
-        {
-            // Provides the display settings form for the SinglePic display type
-            $this->get_registry()->add_adapter(
-                'I_Form',
-                'A_NextGen_Basic_SinglePic_Form',
-                $this->module_id
-            );
-        }
+            $this->get_registry()->add_adapter('I_Form', 'A_NextGen_Basic_SinglePic_Form', $this->module_id);
 
-        if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
-        {
-            // Provides settings fields and frontend rendering
-            $this->get_registry()->add_adapter(
-                'I_Display_Type_Controller',
-                'A_NextGen_Basic_Singlepic_Controller',
-                $this->module_id
-            );
-        }
+        // Provides settings fields and frontend rendering
+        $this->get_registry()->add_adapter('I_Display_Type_Controller', 'A_NextGen_Basic_Singlepic_Controller', $this->module_id);
     }
 
 	function _register_hooks()
 	{
-        if (apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id)
-        && (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES))
+        if (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES)
         {
             C_NextGen_Shortcode_Manager::add('singlepic', array(&$this, 'render_singlepic'));
             C_NextGen_Shortcode_Manager::add('nggsinglepic', array(&$this, 'render_singlepic'));
 
             // TODO - why aren't we using the singlepic controller for this instead?
             // enqueue the singlepic CSS if an inline image has the ngg-singlepic class
-            if (!$this->is_rest_request()) add_filter('the_content', array(&$this, 'enqueue_singlepic_css'), PHP_INT_MAX, 1);
+            if (!$this->is_rest_request())
+                add_filter('the_content', array(&$this, 'enqueue_singlepic_css'), PHP_INT_MAX, 1);
         }
 	}
 

@@ -50,14 +50,12 @@ class M_NextGen_Basic_ImageBrowser extends C_Base_Module
         if (M_Attach_To_Post::is_atp_url() || is_admin())
             $registry->add_adapter('I_Form', 'A_NextGen_Basic_ImageBrowser_Form', $this->module_id);
 
-        if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
-            $registry->add_adapter('I_Display_Type_Controller', 'A_NextGen_Basic_ImageBrowser_Controller', $this->module_id);
+        $registry->add_adapter('I_Display_Type_Controller', 'A_NextGen_Basic_ImageBrowser_Controller', $this->module_id);
     }
 
     function _register_hooks()
     {
-        if (apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id)
-        && (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES))
+        if (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES)
         {
             C_NextGen_Shortcode_Manager::add('imagebrowser',    array($this, 'render_shortcode'));
             C_NextGen_Shortcode_Manager::add('nggimagebrowser', array($this, 'render_shortcode'));
