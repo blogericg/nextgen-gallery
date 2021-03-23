@@ -61,30 +61,26 @@ class M_NextGen_Basic_Album extends C_Base_Module
 			'A_NextGen_Basic_Album'
 		);
 
-        if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
-        {
-            // Add a controller for displaying albums on the front-end
-            $this->get_registry()->add_adapter(
-                'I_Display_Type_Controller',
-                'A_NextGen_Basic_Album_Controller',
-                array(
-                    NGG_BASIC_COMPACT_ALBUM,
-                    NGG_BASIC_EXTENDED_ALBUM,
-                    $this->module_id
-                )
-            );
+        // Add a controller for displaying albums on the front-end
+        $this->get_registry()->add_adapter(
+            'I_Display_Type_Controller',
+            'A_NextGen_Basic_Album_Controller',
+            array(
+                NGG_BASIC_COMPACT_ALBUM,
+                NGG_BASIC_EXTENDED_ALBUM,
+                $this->module_id
+            )
+        );
 
-            // Add a generic adapter for display types to do late url rewriting
-            $this->get_registry()->add_adapter(
-                'I_Displayed_Gallery_Renderer',
-                'A_NextGen_Basic_Album_Routes'
-            );
+        // Add a generic adapter for display types to do late url rewriting
+        $this->get_registry()->add_adapter(
+            'I_Displayed_Gallery_Renderer',
+            'A_NextGen_Basic_Album_Routes'
+        );
 
-            $this->get_registry()->add_adapter('I_MVC_View', 'A_NextGen_Album_Breadcrumbs');
-            $this->get_registry()->add_adapter('I_MVC_View', 'A_NextGen_Album_Descriptions');
-            $this->get_registry()->add_adapter('I_MVC_View', 'A_NextGen_Album_Child_Entities');
-        }
-
+        $this->get_registry()->add_adapter('I_MVC_View', 'A_NextGen_Album_Breadcrumbs');
+        $this->get_registry()->add_adapter('I_MVC_View', 'A_NextGen_Album_Descriptions');
+        $this->get_registry()->add_adapter('I_MVC_View', 'A_NextGen_Album_Child_Entities');
 
 		// Add a mapper for setting the defaults for the album
         $this->get_registry()->add_adapter(
@@ -116,8 +112,7 @@ class M_NextGen_Basic_Album extends C_Base_Module
 
 	function _register_hooks()
 	{
-        if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id)
-        && (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES))
+        if (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES)
         {
             C_NextGen_Shortcode_Manager::add('album', NULL, [$this, 'ngglegacy_shortcode']);
             C_NextGen_Shortcode_Manager::add('nggalbum', NULL, [$this, 'ngglegacy_shortcode']);
@@ -125,9 +120,8 @@ class M_NextGen_Basic_Album extends C_Base_Module
 
         add_filter('ngg_atp_show_display_type', array($this, 'atp_show_basic_albums'), 10, 2);
 
-        add_filter('ngg_' . NGG_BASIC_COMPACT_ALBUM . '_template_dirs', array($this, 'filter_compact_view_dir'));
-
-        add_filter('ngg_' . NGG_BASIC_EXTENDED_ALBUM . '_template_dirs', array($this, 'filter_extended_view_dir'));
+        add_filter('ngg_' . NGG_BASIC_COMPACT_ALBUM . '_template_dirs', [$this, 'filter_compact_view_dir']);
+        add_filter('ngg_' . NGG_BASIC_EXTENDED_ALBUM . '_template_dirs', [$this, 'filter_extended_view_dir']);
     }
 
     /**

@@ -91,56 +91,25 @@ class M_NextGen_Basic_Gallery extends C_Base_Module
             );
         }
 
-        // Frontend-only components
-        if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
-        {
-            // Provides the controllers for the display types
-            $this->get_registry()->add_adapter(
-                'I_Display_Type_Controller',
-                'A_NextGen_Basic_Slideshow_Controller',
-                NGG_BASIC_SLIDESHOW
-            );
-            $this->get_registry()->add_adapter(
-                'I_Display_Type_Controller',
-                'A_NextGen_Basic_Thumbnails_Controller',
-                NGG_BASIC_THUMBNAILS
-            );
+        // Provides the controllers for the display types
+        $this->get_registry()->add_adapter('I_Display_Type_Controller', 'A_NextGen_Basic_Slideshow_Controller', NGG_BASIC_SLIDESHOW);
+        $this->get_registry()->add_adapter('I_Display_Type_Controller', 'A_NextGen_Basic_Thumbnails_Controller', NGG_BASIC_THUMBNAILS);
+        $this->get_registry()->add_adapter('I_Display_Type_Controller', 'A_NextGen_Basic_Gallery_Controller', NGG_BASIC_SLIDESHOW);
+        $this->get_registry()->add_adapter('I_Display_Type_Controller', 'A_NextGen_Basic_Gallery_Controller', NGG_BASIC_THUMBNAILS);
 
-            $this->get_registry()->add_adapter(
-                'I_Display_Type_Controller',
-                'A_NextGen_Basic_Gallery_Controller',
-                NGG_BASIC_SLIDESHOW
-            );
-            $this->get_registry()->add_adapter(
-                'I_Display_Type_Controller',
-                'A_NextGen_Basic_Gallery_Controller',
-                NGG_BASIC_THUMBNAILS
-            );
-        }
-        
         // Provide defaults for the display types
-        $this->get_registry()->add_adapter(
-            'I_Display_Type_Mapper',
-            'A_NextGen_Basic_Gallery_Mapper'
-        );
+        $this->get_registry()->add_adapter('I_Display_Type_Mapper', 'A_NextGen_Basic_Gallery_Mapper');
         
         // Provides validation for the display types
-        $this->get_registry()->add_adapter(
-            'I_Display_Type',
-            'A_NextGen_Basic_Gallery_Validation'
-        );
+        $this->get_registry()->add_adapter('I_Display_Type', 'A_NextGen_Basic_Gallery_Validation');
         
         // Provides url generation support for the display types
-        $this->get_registry()->add_adapter(
-			'I_Routing_App',
-			'A_NextGen_Basic_Gallery_Urls'
-		);
+        $this->get_registry()->add_adapter('I_Routing_App', 'A_NextGen_Basic_Gallery_Urls');
     }
     
     function _register_hooks()
 	{
-        if (apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id)
-        && (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES))
+        if (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES)
         {
             C_NextGen_Shortcode_Manager::add('random',       NULL, [$this, 'render_random_images']);
             C_NextGen_Shortcode_Manager::add('recent',       NULL, [$this, 'render_recent_images']);

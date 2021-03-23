@@ -39,36 +39,18 @@ class M_Gallery_Display extends C_Base_Module
 	 */
 	function _register_utilities()
 	{
-        // Register frontend-only components
-        if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
-        {
-            // This utility provides a controller to render the settings form
-            // for a display type, or render the front-end of a display type
-            $this->get_registry()->add_utility(
-                'I_Display_Type_Controller',
-                'C_Display_Type_Controller'
-            );
+        // This utility provides a controller to render the settings form for a display type, or render the front-end of a display type
+        $this->get_registry()->add_utility('I_Display_Type_Controller', 'C_Display_Type_Controller');
 
-            // This utility provides the capabilities of rendering a display type
-            $this->get_registry()->add_utility(
-                'I_Displayed_Gallery_Renderer',
-                'C_Displayed_Gallery_Renderer'
-            );
-        }
+        // This utility provides the capabilities of rendering a display type
+        $this->get_registry()->add_utility('I_Displayed_Gallery_Renderer', 'C_Displayed_Gallery_Renderer');
 
 		// This utility provides a datamapper for Display Types
-		$this->get_registry()->add_utility(
-			'I_Display_Type_Mapper',
-			'C_Display_Type_Mapper'
-		);
+		$this->get_registry()->add_utility('I_Display_Type_Mapper', 'C_Display_Type_Mapper');
 
-		// This utility provides a datamapper for Displayed Galleries. A
-		// displayed gallery is the association between some entities (images
-		//or galleries) and a display type
-		$this->get_registry()->add_utility(
-			'I_Displayed_Gallery_Mapper',
-			'C_Displayed_Gallery_Mapper'
-		);
+		// This utility provides a datamapper for Displayed Galleries. A displayed gallery is the association between
+        // some entities (images or galleries) and a display type
+		$this->get_registry()->add_utility('I_Displayed_Gallery_Mapper', 'C_Displayed_Gallery_Mapper') ;
 	}
 
 	/**
@@ -81,26 +63,15 @@ class M_Gallery_Display extends C_Base_Module
 			'I_Component_Factory', 'A_Gallery_Display_Factory'
 		);
 
-        if (is_admin()) {
-            $this->get_registry()->add_adapter(
-                'I_Page_Manager',
-                'A_Display_Settings_Page'
-            );
-
-            $this->get_registry()->add_adapter(
-                'I_NextGen_Admin_Page',
-                'A_Display_Settings_Controller',
-                NGG_DISPLAY_SETTINGS_SLUG
-            );
-        }
-
-        // Frontend-only components
-        if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
+        if (is_admin())
         {
-            $this->get_registry()->add_adapter('I_MVC_View', 'A_Gallery_Display_View');
-            $this->get_registry()->add_adapter('I_MVC_View', 'A_Displayed_Gallery_Trigger_Element');
-            $this->get_registry()->add_adapter('I_Display_Type_Controller', 'A_Displayed_Gallery_Trigger_Resources');
+            $this->get_registry()->add_adapter('I_Page_Manager', 'A_Display_Settings_Page');
+            $this->get_registry()->add_adapter('I_NextGen_Admin_Page', 'A_Display_Settings_Controller', NGG_DISPLAY_SETTINGS_SLUG);
         }
+
+        $this->get_registry()->add_adapter('I_MVC_View', 'A_Gallery_Display_View');
+        $this->get_registry()->add_adapter('I_MVC_View', 'A_Displayed_Gallery_Trigger_Element');
+        $this->get_registry()->add_adapter('I_Display_Type_Controller', 'A_Displayed_Gallery_Trigger_Resources');
 	}
 
 	/**
@@ -108,12 +79,9 @@ class M_Gallery_Display extends C_Base_Module
 	 */
 	function _register_hooks()
 	{
-        if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
-        {
-            C_NextGen_Shortcode_Manager::add('ngg', [$this, 'display_images']);
-            C_NextGen_Shortcode_Manager::add('ngg_images', [$this, 'display_images']);
-            add_filter('the_content', array($this, '_render_related_images'));
-        }
+        C_NextGen_Shortcode_Manager::add('ngg', [$this, 'display_images']);
+        C_NextGen_Shortcode_Manager::add('ngg_images', [$this, 'display_images']);
+        add_filter('the_content', array($this, '_render_related_images'));
 
         add_action('init', array(&$this, 'register_resources'), 12);
         add_action('admin_bar_menu', array(&$this, 'add_admin_bar_menu'), 100);
@@ -466,38 +434,33 @@ class M_Gallery_Display extends C_Base_Module
             NGG_SCRIPT_VERSION
         );
 
-        if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
-        {
-            wp_register_style(
-                'nextgen_gallery_related_images',
-                $router->get_static_url('photocrati-nextgen_gallery_display#nextgen_gallery_related_images.css'),
-	            array(),
-	            NGG_SCRIPT_VERSION
-            );
-            wp_register_script(
-	            'ngg_common',
-	            $router->get_static_url('photocrati-nextgen_gallery_display#common.js'),
-	            array('jquery', 'photocrati_ajax'),
-	            NGG_SCRIPT_VERSION,
-	            TRUE
-            );
+        wp_register_style(
+            'nextgen_gallery_related_images',
+            $router->get_static_url('photocrati-nextgen_gallery_display#nextgen_gallery_related_images.css'),
+            array(),
+            NGG_SCRIPT_VERSION
+        );
+        wp_register_script(
+            'ngg_common',
+            $router->get_static_url('photocrati-nextgen_gallery_display#common.js'),
+            array('jquery', 'photocrati_ajax'),
+            NGG_SCRIPT_VERSION,
+            TRUE
+        );
+        wp_register_style(
+            'ngg_trigger_buttons',
+            $router->get_static_url('photocrati-nextgen_gallery_display#trigger_buttons.css'),
+            array(),
+            NGG_SCRIPT_VERSION
+        );
 
-            wp_register_style(
-	            'ngg_trigger_buttons',
-	            $router->get_static_url('photocrati-nextgen_gallery_display#trigger_buttons.css'),
-	            array(),
-	            NGG_SCRIPT_VERSION
-            );
-
-            wp_register_script(
-                'ngg_waitforimages',
-                $router->get_static_url('photocrati-nextgen_gallery_display#jquery.waitforimages-2.4.0-modded.js'),
-                array('jquery'),
-                NGG_SCRIPT_VERSION
-            );
-        }
+        wp_register_script(
+            'ngg_waitforimages',
+            $router->get_static_url('photocrati-nextgen_gallery_display#jquery.waitforimages-2.4.0-modded.js'),
+            array('jquery'),
+            NGG_SCRIPT_VERSION
+        );
     }
-
 
 	/**
 	 * Adds the display settings page to wp-admin
