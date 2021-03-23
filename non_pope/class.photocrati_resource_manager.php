@@ -54,16 +54,21 @@ class C_Photocrati_Resource_Manager
     {
         // This is admittedly an ugly hack, but much easier than reworking the entire nextgen_admin modules
         if (!empty($_GET['page']) && $_GET['page'] === 'ngg_addgallery' && isset($_GET['attach_to_post']))
-            $force = TRUE;
-        else
-            $force = FALSE;
+            return FALSE;
 
-        if (!$force
-        && (!defined('NGG_PRO_PLUGIN_VERSION') || version_compare(NGG_PRO_PLUGIN_VERSION, '3.3', '>='))
-        && (!defined('NGG_ENABLE_RESOURCE_MANAGER') || !NGG_ENABLE_RESOURCE_MANAGER))
-            return TRUE;
+        // Provide users a method of forcing this on should it be necessary
+        if (defined('NGG_ENABLE_RESOURCE_MANAGER') && NGG_ENABLE_RESOURCE_MANAGER)
+            return FALSE;
 
-        return FALSE;
+        // Pro, Plus, and Starter versions below these were not ready to function without the resource manager
+        if (defined('NGG_PRO_PLUGIN_VERSION') && version_compare(NGG_PRO_PLUGIN_VERSION, '3.3', '<'))
+            return FALSE;
+        if (defined('NGG_STARTER_PLUGIN_VERSION') && version_compare(NGG_STARTER_PLUGIN_VERSION, '1.1', '<'))
+            return FALSE;
+        if (defined('NGG_PLUS_PLUGIN_VERSION') && version_compare(NGG_PLUS_PLUGIN_VERSION, '1.8', '<'))
+            return FALSE;
+
+        return TRUE;
     }
 
 	function is_valid_request()
