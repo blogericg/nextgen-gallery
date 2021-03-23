@@ -97,8 +97,8 @@ class M_NextGen_Basic_Tagcloud extends C_Base_Module
         if (apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id)
         && (!defined('NGG_DISABLE_LEGACY_SHORTCODES') || !NGG_DISABLE_LEGACY_SHORTCODES))
         {
-            C_NextGen_Shortcode_Manager::add('tagcloud', array(&$this, 'render_shortcode'));
-            C_NextGen_Shortcode_Manager::add('nggtagcloud', array(&$this, 'render_shortcode'));
+            C_NextGen_Shortcode_Manager::add('tagcloud', NULL, [$this, 'render_shortcode']);
+            C_NextGen_Shortcode_Manager::add('nggtagcloud', NULL, [$this, 'render_shortcode']);
 
             add_filter(
                 'the_posts',
@@ -136,17 +136,14 @@ class M_NextGen_Basic_Tagcloud extends C_Base_Module
 	/**
      * Short-cut for rendering a thumbnail gallery based on tags
      * @param array $params
-     * @param null $inner_content
-     * @return string
+     * @return array
      */
-	function render_shortcode($params, $inner_content=NULL)
+	function render_shortcode($params)
     {
 	    $params['tagcloud']     = $this->_get_param('tagcloud', 'yes', $params);
         $params['source']       = $this->_get_param('source', 'tags', $params);
         $params['display_type'] = $this->_get_param('display_type', NGG_BASIC_TAGCLOUD, $params);
-
-		$renderer = C_Displayed_Gallery_Renderer::get_instance();
-        return $renderer->display_images($params, $inner_content);
+        return $params;
     }
 
     function get_type_list()

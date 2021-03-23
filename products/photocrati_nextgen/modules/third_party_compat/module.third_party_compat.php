@@ -70,33 +70,6 @@ class M_Third_Party_Compat extends C_Base_Module
         if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION == 4) {
             @ini_set('zlib.output_compression', 'Off');
         }
-
-        // Detect 'Adminer' and whether the user is viewing its loader.php
-        if (class_exists('AdminerForWP') && function_exists('adminer_object'))
-        {
-            if (!defined('NGG_DISABLE_RESOURCE_MANAGER'))
-                define('NGG_DISABLE_RESOURCE_MANAGER', TRUE);
-        }
-
-        // Cornerstone's page builder requires a 'clean slate' of css/js that our resource manager interefers with
-        if (class_exists('Cornerstone'))
-        {
-            if (!defined('NGG_DISABLE_FILTER_THE_CONTENT')) define('NGG_DISABLE_FILTER_THE_CONTENT', TRUE);
-            if (!defined('NGG_DISABLE_RESOURCE_MANAGER'))   define('NGG_DISABLE_RESOURCE_MANAGER', TRUE);
-        }
-
-        // Genesis Tabs creates a new query / do_shortcode loop which requires these be set
-        if (class_exists('Genesis_Tabs'))
-        {
-            if (!defined('NGG_DISABLE_FILTER_THE_CONTENT')) define('NGG_DISABLE_FILTER_THE_CONTENT', TRUE);
-            if (!defined('NGG_DISABLE_RESOURCE_MANAGER'))   define('NGG_DISABLE_RESOURCE_MANAGER', TRUE);
-        }
-
-        // Elementor's graphical builder is broken by our resource manager
-        if (defined('ELEMENTOR_VERSION'))
-        {
-            if (!defined('NGG_DISABLE_RESOURCE_MANAGER')) define('NGG_DISABLE_RESOURCE_MANAGER', TRUE);
-        }
     }
 
     function _register_adapters()
@@ -129,7 +102,6 @@ class M_Third_Party_Compat extends C_Base_Module
 	    add_action('debug_bar_enqueue_scripts', array($this, 'no_debug_bar'));
         add_filter('ngg_non_minified_modules', array($this, 'dont_minify_nextgen_pro_cssjs'));
         add_filter('ngg_atp_show_display_type', array($this, 'atp_check_pro_albums'), 10, 2);
-        add_filter('run_ngg_resource_manager', array($this, 'run_ngg_resource_manager'));
         add_filter('wpseo_sitemap_urlimages', array($this, 'add_wpseo_xml_sitemap_images'), 10, 2);
         add_filter('ngg_pre_delete_unused_term_id', array($this, 'dont_auto_purge_wpml_terms'));
 
@@ -217,41 +189,6 @@ class M_Third_Party_Compat extends C_Base_Module
                 }
             }
         }
-    }
-
-    /**
-     * Some other plugins output content and die(); this causes problems with our resource manager which uses output buffering
-     *
-     * @param bool $valid_request
-     * @return bool
-     */
-    function run_ngg_resource_manager($valid_request = TRUE)
-    {
-        // WP-Post-To-PDF-Enhanced
-        if (class_exists('wpptopdfenh') && !empty($_GET['format']))
-            $valid_request = FALSE;
-
-        // WP-Photo-Seller download
-        if (class_exists('WPS') && isset($_REQUEST['wps_file_dl']) && $_REQUEST['wps_file_dl'] == '1')
-            $valid_request = FALSE;
-
-        // Multiverso Advanced File Sharing download
-        if (function_exists('mv_install') && isset($_GET['upf']) && isset($_GET['id']))
-            $valid_request = FALSE;
-
-        // WooCommerce downloads
-        if (class_exists('WC_Download_Handler') && isset($_GET['download_file']) && isset($_GET['order']) && isset($_GET['email']))
-            $valid_request = FALSE;
-
-        // WP-E-Commerce
-        if (isset($_GET['wpsc_download_id']) || (function_exists('wpsc_download_file') && isset($_GET['downloadid'])))
-            $valid_request = FALSE;
-
-        // Easy Digital Downloads
-        if (function_exists('edd_process_download') && (isset($_GET['download_id']) || isset($_GET['download'])))
-            $valid_request = FALSE;
-
-        return $valid_request;
     }
 
     /**

@@ -410,7 +410,17 @@ class Mixin_Display_Type_Controller extends Mixin
         return $template;
 
     }
-    
+
+    /**
+     * The basic thumbnails and slideshow have options to display galleries with the other display type, and albums
+     * of course display child of an entirely different kind. Implementing this method allows displays to alter
+     * the displayed gallery passed to their index_action() method.
+     *
+     * @param C_Displayed_Gallery $displayed_gallery
+     * @return C_Displayed_Gallery mixed
+     */
+    function get_alternate_displayed_gallery($displayed_gallery)
+    {
+        return $displayed_gallery;
+    }
 }
-
-

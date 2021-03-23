@@ -10,6 +10,8 @@ if (!defined('NGG_SHOW_DISPLAYED_GALLERY_ERRORS')) define('NGG_SHOW_DISPLAYED_GA
 
 class M_Gallery_Display extends C_Base_Module
 {
+    public static $enqueued_displayed_gallery_ids = [];
+
 	function define($id = 'pope-module',
                     $name = 'Pope Module',
                     $description = '',
@@ -108,15 +110,13 @@ class M_Gallery_Display extends C_Base_Module
 	{
         if (!is_admin() && apply_filters('ngg_load_frontend_logic', TRUE, $this->module_id))
         {
-            C_NextGen_Shortcode_Manager::add('ngg', array(&$this, 'display_images'));
-            C_NextGen_Shortcode_Manager::add('ngg_images', array(&$this, 'display_images'));
-            add_action('wp_enqueue_scripts', array(&$this, 'no_resources_mode'), PHP_INT_MAX-1);
+            C_NextGen_Shortcode_Manager::add('ngg', [$this, 'display_images']);
+            C_NextGen_Shortcode_Manager::add('ngg_images', [$this, 'display_images']);
             add_filter('the_content', array($this, '_render_related_images'));
         }
 
         add_action('init', array(&$this, 'register_resources'), 12);
         add_action('admin_bar_menu', array(&$this, 'add_admin_bar_menu'), 100);
-		add_filter('run_ngg_resource_manager', array(&$this, 'no_resources_mode'));
 
         // Add hook to delete displayed galleries when removed from a post
         add_action('pre_post_update', array(&$this, 'locate_stale_displayed_galleries'));
@@ -125,7 +125,93 @@ class M_Gallery_Display extends C_Base_Module
         add_action('after_delete_post', array(&$this, 'cleanup_displayed_galleries'));
 
         add_action('wp_print_styles', array($this, 'fix_nextgen_custom_css_order'), PHP_INT_MAX-1);
+
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_frontend_resources']);
 	}
+
+	function enqueue_frontend_resources()
+    {
+        global $post;
+
+        if (have_posts())
+        {
+            while (have_posts()) {
+                the_post();
+
+                if ((defined('NGG_SKIP_LOAD_SCRIPTS') && NGG_SKIP_LOAD_SCRIPTS) || $this->is_rest_request() || empty($post->post_content))
+                    return;
+
+                preg_match_all('/' . get_shortcode_regex() . '/', $post->post_content, $matches, PREG_SET_ORDER);
+
+                $manager = C_NextGen_Shortcode_Manager::get_instance();
+                $ngg_shortcodes = $manager->get_shortcodes();
+                $shortcode_keys = array_keys($ngg_shortcodes);
+
+                foreach ($matches as $shortcode) {
+                    // Only process our 'ngg' shortcodes
+                    $this_shortcode_name = $shortcode[2];
+                    if (!in_array($this_shortcode_name, $shortcode_keys))
+                        continue;
+
+                    $params = shortcode_parse_atts(trim($shortcode[0], '[]'));
+                    if (in_array($params[0], $shortcode_keys)) // Don't pass 0 => 'ngg' as a parameter, it's just part of the shortcode itself
+                        unset($params[0]);
+
+                    // And do the enqueueing process
+                    $renderer = C_Displayed_Gallery_Renderer::get_instance();
+
+                    // This is necessary for legacy shortcode compatibility
+                    if (is_callable($ngg_shortcodes[$this_shortcode_name]['transformer']))
+                        $params = call_user_func($ngg_shortcodes[$this_shortcode_name]['transformer'], $params);
+
+                    $displayed_gallery = $renderer->params_to_displayed_gallery($params);
+
+                    $controller = C_Display_Type_Controller::get_instance($displayed_gallery->display_type);
+
+                    if (!$displayed_gallery || empty($params))
+                        continue;
+
+                    self::enqueue_frontend_resources_for_displayed_gallery($displayed_gallery, $controller);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param C_Displayed_Gallery $displayed_gallery
+     * @param C_Display_Type_Controller $controller
+     */
+    public static function enqueue_frontend_resources_for_alternate_displayed_gallery($displayed_gallery, $controller)
+    {
+        // Allow basic thumbnails "use imagebrowser effect" feature to seamlessly change between display types as well
+        // as for album display types to show galleries
+        $alternate_displayed_gallery = $controller->get_alternate_displayed_gallery($displayed_gallery);
+        if ($alternate_displayed_gallery === $displayed_gallery)
+            return;
+
+        $alternate_controller = C_Display_Type_Controller::get_instance($alternate_displayed_gallery->display_type);
+        self::enqueue_frontend_resources_for_displayed_gallery($alternate_displayed_gallery, $alternate_controller);
+    }
+
+    /**
+     * @param C_Displayed_Gallery $displayed_gallery
+     * @param C_Display_Type_Controller $controller
+     */
+    public static function enqueue_frontend_resources_for_displayed_gallery($displayed_gallery, $controller)
+    {
+        if (is_null($displayed_gallery->id()))
+            $displayed_gallery->id(md5(json_encode($displayed_gallery->get_entity())));
+
+        self::$enqueued_displayed_gallery_ids[] = $displayed_gallery->id();
+
+        $controller->enqueue_frontend_resources($displayed_gallery);
+        self::enqueue_frontend_resources_for_alternate_displayed_gallery($displayed_gallery, $controller);
+    }
+
+    function is_rest_request()
+    {
+        return defined('REST_REQUEST') || strpos($_SERVER['REQUEST_URI'], 'wp-json') !== FALSE;
+    }
 
     /**
      * This moves the NextGen custom CSS to the last of the queue
@@ -249,22 +335,6 @@ class M_Gallery_Display extends C_Base_Module
 
         return str_replace(' src', ' defer integrity="sha384-kW+oWsYx3YpxvjtZjFXqazFpA7UP/MbiY4jvs+RWZo2+N94PFZ36T6TFkc9O3qoB" crossorigin="anonymous" data-auto-replace-svg="false" data-keep-original-source="false" data-search-pseudo-elements src', $tag);
     }
-
-	function no_resources_mode($valid_request=TRUE)
-	{
-		if (isset($_REQUEST['ngg_no_resources'])) {
-			global $wp_scripts, $wp_styles;
-
-			// Don't enqueue any stylesheets
-			if ($wp_scripts)
-				$wp_scripts->queue = $wp_styles->queue = array();
-
-			// Don't run the resource manager
-			$valid_request = FALSE;
-		}
-
-		return $valid_request;
-	}
 
   static function _render_related_string($sluglist=array(), $maxImages=NULL, $type=NULL)
   {
@@ -411,6 +481,7 @@ class M_Gallery_Display extends C_Base_Module
 	            NGG_SCRIPT_VERSION,
 	            TRUE
             );
+
             wp_register_style(
 	            'ngg_trigger_buttons',
 	            $router->get_static_url('photocrati-nextgen_gallery_display#trigger_buttons.css'),

@@ -214,7 +214,7 @@ class C_NextGEN_Bootstrap
 		// Load the installer
 		include_once('non_pope/class.photocrati_installer.php');
 
-		// Load the resource manager
+		// Load the (mostly deprecated) resource manager
 		include_once('non_pope/class.photocrati_resource_manager.php');
 		C_Photocrati_Resource_Manager::init();
 
