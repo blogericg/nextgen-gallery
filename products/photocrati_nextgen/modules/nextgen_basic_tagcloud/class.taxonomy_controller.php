@@ -63,6 +63,7 @@ class C_Taxonomy_Controller extends C_MVC_Controller
 
         // This appears to be necessary for multisite installations, but I can't imagine why. More hackery..
         $tag = urldecode(get_query_var('ngg_tag') ? get_query_var('ngg_tag') : get_query_var('name'));
+        $tag = stripslashes(M_NextGen_Data::strip_html($tag)); // Tags may not include HTML
 
         if (!$this->ngg_tag_detection_has_run // don't run more than once; necessary for certain themes
         &&  !is_admin() // will destroy 'view all posts' page without this
