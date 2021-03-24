@@ -134,6 +134,11 @@ class M_Gallery_Display extends C_Base_Module
 
                     $displayed_gallery = $renderer->params_to_displayed_gallery($params);
 
+                    if (did_action('wp_enqueue_scripts') == 1
+                    &&  !C_Photocrati_Resource_Manager::addons_version_check()
+                    &&  in_array($displayed_gallery->display_type, ['photocrati-nextgen_pro_horizontal_filmstrip', 'photocrati-nextgen_pro_slideshow']))
+                        continue;
+
                     $controller = C_Display_Type_Controller::get_instance($displayed_gallery->display_type);
 
                     if (!$displayed_gallery || empty($params))
