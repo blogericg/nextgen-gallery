@@ -179,6 +179,12 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
+= V3.9.0 - 03.24.2020 =
+* Changed: Resource manager disabled by default
+* Changed: Remove ngg_load_frontend_logic filter
+* Fixed:   Refactored to resolve over 300 plugin & theme conflicts
+* Fixed:   Problem reported with taxonomy controller
+
 = V3.8.0 - 02.24.2020 =
 * NEW:     NGG featured image support for custom post types (1076)
 * Fixed:   Compatibility with Custom Post Type UI plugin (1076)
