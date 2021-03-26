@@ -1,6 +1,10 @@
 NextGEN Gallery
 by Imagely
 
+= V3.9.1 - 03.29.2020 = 
+* Fixed:   C_Dynamic_Stylesheet_Controller error
+* Fixed:   Galleries not displaying
+
 = V3.9.0 - 03.24.2020 =
 * Changed: Resource manager disabled by default
 * Changed: Remove ngg_load_frontend_logic filter
