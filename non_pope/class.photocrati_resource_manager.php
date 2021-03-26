@@ -34,7 +34,7 @@ class C_Photocrati_Resource_Manager
 	 */
 	function print_marker()
 	{
-        if ($this->is_disabled())
+        if (self::is_disabled())
             return;
 
 		// is_feed() is important to not break Wordpress feeds and the WooCommerce api
@@ -50,7 +50,27 @@ class C_Photocrati_Resource_Manager
 		$this->valid_request = $this->is_valid_request();
 	}
 
-	public function is_disabled()
+    /**
+     * Pro, Plus, and Starter versions below these were not ready to function without the resource manager
+     *
+     * @return bool
+     */
+	public static function addons_version_check()
+    {
+        if (defined('NGG_PRO_PLUGIN_VERSION') && version_compare(NGG_PRO_PLUGIN_VERSION, '3.3', '<'))
+            return FALSE;
+        if (defined('NGG_STARTER_PLUGIN_VERSION') && version_compare(NGG_STARTER_PLUGIN_VERSION, '1.1', '<'))
+            return FALSE;
+        if (defined('NGG_PLUS_PLUGIN_VERSION') && version_compare(NGG_PLUS_PLUGIN_VERSION, '1.8', '<'))
+            return FALSE;
+
+        return TRUE;
+    }
+
+    /**
+     * @return bool
+     */
+	public static function is_disabled()
     {
         // This is admittedly an ugly hack, but much easier than reworking the entire nextgen_admin modules
         if (!empty($_GET['page']) && $_GET['page'] === 'ngg_addgallery' && isset($_GET['attach_to_post']))
@@ -60,15 +80,7 @@ class C_Photocrati_Resource_Manager
         if (defined('NGG_ENABLE_RESOURCE_MANAGER') && NGG_ENABLE_RESOURCE_MANAGER)
             return FALSE;
 
-        // Pro, Plus, and Starter versions below these were not ready to function without the resource manager
-        if (defined('NGG_PRO_PLUGIN_VERSION') && version_compare(NGG_PRO_PLUGIN_VERSION, '3.3', '<'))
-            return FALSE;
-        if (defined('NGG_STARTER_PLUGIN_VERSION') && version_compare(NGG_STARTER_PLUGIN_VERSION, '1.1', '<'))
-            return FALSE;
-        if (defined('NGG_PLUS_PLUGIN_VERSION') && version_compare(NGG_PLUS_PLUGIN_VERSION, '1.8', '<'))
-            return FALSE;
-
-        return TRUE;
+        return self::addons_version_check();
     }
 
 	function is_valid_request()
@@ -108,7 +120,7 @@ class C_Photocrati_Resource_Manager
 	 */
 	function start_buffer()
 	{
-        if ($this->is_disabled())
+        if (self::is_disabled())
             return;
 
 		if (apply_filters('run_ngg_resource_manager', $this->valid_request))

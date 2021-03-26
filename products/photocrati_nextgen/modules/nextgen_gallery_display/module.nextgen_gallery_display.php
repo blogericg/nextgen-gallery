@@ -107,7 +107,7 @@ class M_Gallery_Display extends C_Base_Module
                 the_post();
 
                 if ((defined('NGG_SKIP_LOAD_SCRIPTS') && NGG_SKIP_LOAD_SCRIPTS) || $this->is_rest_request() || empty($post->post_content))
-                    return;
+                    continue;
 
                 preg_match_all('/' . get_shortcode_regex() . '/', $post->post_content, $matches, PREG_SET_ORDER);
 
@@ -133,6 +133,11 @@ class M_Gallery_Display extends C_Base_Module
                         $params = call_user_func($ngg_shortcodes[$this_shortcode_name]['transformer'], $params);
 
                     $displayed_gallery = $renderer->params_to_displayed_gallery($params);
+
+                    if (did_action('wp_enqueue_scripts') == 1
+                    &&  !C_Photocrati_Resource_Manager::addons_version_check()
+                    &&  in_array($displayed_gallery->display_type, ['photocrati-nextgen_pro_horizontal_filmstrip', 'photocrati-nextgen_pro_slideshow']))
+                        continue;
 
                     $controller = C_Display_Type_Controller::get_instance($displayed_gallery->display_type);
 
