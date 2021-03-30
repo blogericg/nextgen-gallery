@@ -214,23 +214,13 @@ class C_NextGen_Shortcode_Manager
 
 	function execute_found_shortcode($found_id)
 	{
-		$details = $this->_found[$found_id];
-		if (isset($this->_shortcodes[$details['shortcode']]))
-		{
-		    $shortcode = $this->_shortcodes[$details['shortcode']];
-
-		    if (is_callable($shortcode['transformer']))
-		        $details['params'] = call_user_func($shortcode['transformer'], $details['params']);
-
-		    $method = (is_null($shortcode['callback']) && is_callable($shortcode['transformer'])) ? [$this, 'render_legacy_shortcode'] : $shortcode['callback'];
-
-			$retval = call_user_func($method, $details['params'], $details['inner_content']);
-		}
-		else {
-		    $retval = "Invalid shortcode";
-        }
-
-		return $retval;
+		return isset($this->_found[$found_id])
+			? $this->render_shortcode(
+				$this->_found[$found_id]['shortcode'],
+				$this->_found[$found_id]['params'],
+				$this->_found[$found_id]['inner_content']
+			)
+			: "Invalid shortcode";
 	}
 
 	/**
@@ -289,6 +279,26 @@ class C_NextGen_Shortcode_Manager
 
 		return $retval;
 
+	}
+
+	function render_shortcode($shortcode, $params=[], $inner_content='')
+	{
+		if (isset($this->_shortcodes[$shortcode]))
+		{
+		    $shortcode = $this->_shortcodes[$shortcode];
+
+		    if (is_callable($shortcode['transformer']))
+		        $params = call_user_func($shortcode['transformer'], $params);
+
+		    $method = (is_null($shortcode['callback']) && is_callable($shortcode['transformer'])) ? [$this, 'render_legacy_shortcode'] : $shortcode['callback'];
+
+			$retval = call_user_func($method, $params, $inner_content);
+		}
+		else {
+		    $retval = "Invalid shortcode";
+        }
+
+		return $retval;
 	}
 
 	function replace_with_placeholder($shortcode, $params=array(), $inner_content='')
