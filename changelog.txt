@@ -1,31 +1,34 @@
 NextGEN Gallery
 by Imagely
 
+= V3.9.1.1 - 04.30.2021
+* Fixed:   call_user_func() warning when rendering shortcodes in widgets
+
 = V3.9.1 - 03.29.2020 = 
 * Fixed:   C_Dynamic_Stylesheet_Controller error
 * Fixed:   Galleries not displaying
 
-= V3.9.0 - 03.24.2020 =
+= V3.9.0 - 03.24.2021 =
 * Changed: Resource manager disabled by default
 * Changed: Remove ngg_load_frontend_logic filter
 * Fixed:   Refactored to resolve over 300 plugin & theme conflicts
 * Fixed:   Problem reported with taxonomy controller
 
-= V3.8.0 - 02.24.2020 =
+= V3.8.0 - 02.24.2021 =
 * NEW:     NGG featured image support for custom post types (1076)
 * Fixed:   Compatibility with Custom Post Type UI plugin (1076)
 * Fixed:   Compatibility with Advanced Custom Fields plugin (1150)
 * Fixed:   Compatibility with Photo Station plugin (855)
 * Fixed:   Compatibility with Stackable (981)
 
-= V3.7.0 - 02.17.2020 =
+= V3.7.0 - 02.17.2021 =
 * Fixed:   Added ellipsis to pagination to show pages skipped (1099) (1157)
 * Fixed:   Deleted images could still appear in 'random' image galleries (1129)
 * Fixed:   Galleries with only one page were causing pagination links to appear (1156)
 * Fixed:   Inability to change gallerypath on multisite networks (1150)
 * Fixed:   Overriding static resources (CSS & JS) through files in wp-content/ngg/ was not working (1144)
 
-= V3.6.0 - 02.10.2020 =
+= V3.6.0 - 02.10.2021 =
 * NEW:     Added new 'Bulk actions' option to remove EXIF Orientation from existing images (1137)
 * NEW:     Allow maximum_entity_limit display setting regardless of source (1146)
 * NEW:     Provide hooks to customize Uppy settings (1139)
