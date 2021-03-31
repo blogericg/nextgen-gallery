@@ -273,8 +273,7 @@ class C_NextGen_Shortcode_Manager
 		}
 		else {
             // For widgets, don't use placeholders
-			$callback = $this->_shortcodes[$shortcode]['callback'];
-			$retval = call_user_func($callback, $params, $inner_content);
+			return $this->render_shortcode($shortcode, $params, $inner_content);
 		}
 
 		return $retval;
