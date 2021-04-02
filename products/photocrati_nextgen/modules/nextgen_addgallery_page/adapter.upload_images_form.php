@@ -13,18 +13,6 @@ class A_Upload_Images_Form extends Mixin
         return __("Upload Images", 'nggallery');
     }
 
-    /**
-     * Pass PHP object or array to JS, preserving numeric and boolean value
-     * @param string $handle 
-     * @param string $name 
-     * @param object|array $data 
-     */
-    function pass_data_to_js($handle, $var_name, $data)
-    {
-        $var_name = esc_js($var_name);
-        return wp_add_inline_script($handle, "let {$var_name} = ".json_encode($data, JSON_NUMERIC_CHECK));
-    }
-
     function enqueue_static_resources()
     {
         wp_enqueue_script('uppy');
@@ -33,9 +21,9 @@ class A_Upload_Images_Form extends Mixin
         wp_enqueue_script('toastify');
         wp_enqueue_style('toastify');
         wp_localize_script('uppy', 'NggUploadImages_i18n', $this->object->get_i18n_strings());
-        $this->pass_data_to_js('uppy', 'NggUppyCoreSettings', $this->object->get_uppy_core_settings());
-        $this->pass_data_to_js('uppy', 'NggUppyDashboardSettings', $this->object->get_uppy_dashboard_settings());
-        $this->pass_data_to_js('uppy', 'NggXHRSettings', $this->object->get_uppy_xhr_settings());
+        M_Ajax::pass_data_to_js('uppy', 'NggUppyCoreSettings', $this->object->get_uppy_core_settings());
+        M_Ajax::pass_data_to_js('uppy', 'NggUppyDashboardSettings', $this->object->get_uppy_dashboard_settings());
+        M_Ajax::pass_data_to_js('uppy', 'NggXHRSettings', $this->object->get_uppy_xhr_settings());
     }
 
     function get_allowed_image_mime_types()
