@@ -421,11 +421,10 @@ class M_Attach_To_Post extends C_Base_Module
 			add_editor_style($router->get_static_url('photocrati-attach_to_post#ngg_attach_to_post_tinymce_plugin.css'));
 			wp_enqueue_script('photocrati_ajax');
 
-			wp_localize_script(
-				'media-editor',
-				'nextgen_gallery_attach_to_post_url',
-				C_NextGen_Settings::get_instance()->attach_to_post_url
-			);
+
+			wp_localize_script('media-editor', 'igw', [
+				'url' => C_NextGen_Settings::get_instance()->attach_to_post_url
+			]);
 
 			wp_localize_script(
 				'photocrati_ajax',
