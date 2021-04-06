@@ -24,7 +24,7 @@ class C_Widget_Slideshow extends WP_Widget
             $options = $this->get_settings();
 
             foreach ($sidebars as $sidebar_name => $sidebar) {
-                if ($sidebar_name === 'wp_inactive_widgets')
+                if ($sidebar_name === 'wp_inactive_widgets' || !$sidebar)
                     continue;
                 foreach ($sidebar as $widget) {
                     if (strpos($widget, 'slideshow-', 0) !== 0)
