@@ -179,7 +179,7 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 == Changelog ==
 
-= V3.9.2 - 04.06.2021
+= V3.9.2 - 04.07.2021
 * Fixed:   call_user_func() warning when rendering shortcodes in widgets (1168)
 * Fixed:   do_shortcode and legacy shortcodes (1170)
 * Fixed:   Incorrect use of wp_localize_script (1171)
