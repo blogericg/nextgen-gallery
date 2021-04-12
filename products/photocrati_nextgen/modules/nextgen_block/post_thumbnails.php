@@ -84,12 +84,10 @@ class C_Ngg_Post_Thumbnails
     {
         add_thickbox();
 
-        global $wp_scripts;
-
         wp_enqueue_script(
             'ngg-post-thumbnails',
             C_Router::get_instance()->get_static_url(NEXTGEN_BLOCK . '#build/post-thumbnail.min.js'),
-            ['lodash', 'wp-element', 'wp-data', 'wp-editor', 'wp-components', 'wp-i18n', 'post', 'photocrati_ajax'],
+            ['lodash', 'wp-element', 'wp-data', 'wp-editor', 'wp-components', 'wp-i18n', 'photocrati_ajax'],
             NGG_PLUGIN_VERSION
         );
         
