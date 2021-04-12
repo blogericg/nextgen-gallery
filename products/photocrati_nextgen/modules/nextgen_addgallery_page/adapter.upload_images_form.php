@@ -64,13 +64,13 @@ class A_Upload_Images_Form extends Mixin
     function get_uppy_dashboard_settings()
     {
         return apply_filters('ngg_uppy_dashboard_settings', [
-            'inline'                        => true,
-            'target'                        => '#uploader',
-            'width'                         => '100%',
-            'proudlyDisplayPoweredByUppy'   => false,
-            'hideRetryButton'               => true,
-            'note'                          => $this->object->get_uppy_note(),
-            'locale'                        => [
+            'inline'                      => TRUE,
+            'target'                      => '#uploader',
+            'width'                       => '100%',
+            'proudlyDisplayPoweredByUppy' => FALSE,
+            'hideRetryButton'             => TRUE,
+            'note'                        => $this->object->get_uppy_note(),
+            'locale'                      => [
                 'strings' => [
                     'dropPaste' => $this->can_upload_zips()
                         ? __('Drag image and ZIP files here or %{browse}', 'nggallery')
