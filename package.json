@@ -22,6 +22,7 @@
     "gulp-uglify": "^2.0.0",
     "gulp-zip": "^3.2.0",
     "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "webpack": "^4.25.1",
     "webpack-stream": "^5.1.1",
     "yargs": "^4.7.1"

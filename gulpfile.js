@@ -248,12 +248,33 @@ gulp.task('webpack-block', function() {
     .pipe(gulp.dest("./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/build"));
 });
 
+gulp.task('rest-api-debugger', function() {
+  return gulp.src('./products/photocrati_nextgen/modules/rest/static/debugger.jsx')
+    .pipe(webpack({
+		mode: "development",
+		devtool: "source-map",	
+        watch: true,
+		module: {
+			rules: [
+				{ test: /\.js[x]?$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
+			],
+		},
+		output: {
+			filename: 'debugger.min.js',
+		},
+    }))
+    .pipe(gulp.dest("./products/photocrati_nextgen/modules/rest/static"));
+});
+
 gulp.task('webpack-others', function() {
 	return gulp.src('./build/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_block/static/src/post-thumbnail.jsx')
 	.pipe(webpack({
 		mode: "production",
 		devtool: "source-map",	
 		module: {
+            exports: {
+                watch: true
+            },
 			rules: [
 			{ test: /\.js[x]?$/, loader: 'babel-loader', query: { presets: ['@babel/preset-env', '@babel/preset-react'], plugins: ['@babel/plugin-proposal-class-properties'] } },
 			],
