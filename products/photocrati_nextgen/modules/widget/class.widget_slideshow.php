@@ -187,8 +187,16 @@ class C_Widget_Slideshow extends WP_Widget
 
     function render_slideshow($args, $instance)
     {
-        // The displayed gallery was created during the action wp_enqueue_resources and was cached to avoid ID conflicts
-        $displayed_gallery = self::$displayed_gallery_ids[$args['widget_id']];
+        // This displayed gallery is created dynamically at runtime
+        if (empty(self::$displayed_gallery_ids[$args['widget_id']]))
+        {
+            $displayed_gallery = $this->get_displayed_gallery($args, $instance);
+            self::$displayed_gallery_ids[$displayed_gallery->id()] = $displayed_gallery;
+        }
+        else {
+            // The displayed gallery was created during the action wp_enqueue_resources and was cached to avoid ID conflicts
+            $displayed_gallery = self::$displayed_gallery_ids[$args['widget_id']];
+        }
 
         $renderer = C_Displayed_Gallery_Renderer::get_instance();
         $retval = $renderer->display_images($displayed_gallery);

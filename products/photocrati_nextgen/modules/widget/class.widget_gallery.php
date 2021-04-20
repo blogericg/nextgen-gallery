@@ -61,26 +61,28 @@ class C_Widget_Gallery extends WP_Widget
         // It is important that this run at priority 11 or higher so that M_Gallery_Display->enqueue_frontend_resources() has run first
     }
 
+    function get_defaults()
+    {
+        return [
+            'exclude'  => 'all',
+            'height'   => '75',
+            'items'    => '4',
+            'list'     =>  '',
+            'show'     => 'thumbnail',
+            'title'    => 'Gallery',
+            'type'     => 'recent',
+            'webslice' => TRUE,
+            'width'    => '100'
+        ];
+    }
+
     function form($instance)
     {
         // used for rendering utilities
         $parent = C_Widget::get_instance();
 
         // defaults
-        $instance = wp_parse_args(
-            (array)$instance,
-            array(
-                'exclude'  => 'all',
-                'height'   => '75',
-                'items'    => '4',
-                'list'     =>  '',
-                'show'     => 'thumbnail',
-                'title'    => 'Gallery',
-                'type'     => 'recent',
-                'webslice' => TRUE,
-                'width'    => '100'
-            )
-        );
+        $instance = wp_parse_args((array)$instance, $this->get_defaults());
 
         return $parent->render_partial(
             'photocrati-widget#form_gallery',
@@ -253,13 +255,23 @@ class C_Widget_Gallery extends WP_Widget
         $final_displayed_gallery = $renderer->params_to_displayed_gallery($params);
         if (is_null($final_displayed_gallery->id()))
             $final_displayed_gallery->id(md5(json_encode($final_displayed_gallery->get_entity())));
+
         return $final_displayed_gallery;
     }
 
     function widget($args, $instance)
     {
-        // The displayed gallery was created during the action wp_enqueue_resources and was cached to avoid ID conflicts
-        $displayed_gallery = self::$displayed_gallery_ids[$args['widget_id']];
+        // This displayed gallery is created dynamically at runtime
+        if (empty(self::$displayed_gallery_ids[$args['widget_id']]))
+        {
+            $displayed_gallery = $this->get_displayed_gallery($args, $instance);
+            self::$displayed_gallery_ids[$displayed_gallery->id()] = $displayed_gallery;
+        }
+        else {
+            // The displayed gallery was created during the action wp_enqueue_resources and was cached to avoid ID conflicts
+            $displayed_gallery = self::$displayed_gallery_ids[$args['widget_id']];
+        }
+
         print C_Displayed_Gallery_Renderer::get_instance()->display_images($displayed_gallery);
     }
 }
