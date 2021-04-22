@@ -9,6 +9,7 @@
     "@babel/plugin-proposal-class-properties": "^7.2.1",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.0.0",
+    "ajv": "^8.1.0",
     "ansi-colors": "^4.1.1",
     "babel-loader": "^8.0.4",
     "del": "^2.2.2",

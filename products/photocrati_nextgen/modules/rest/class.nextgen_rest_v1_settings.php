@@ -15,7 +15,7 @@ class C_NextGen_Rest_V1_Settings extends WP_REST_Controller
                 array(
                     'methods'  => 'GET',
                     'callback' => array($this, 'settings_list'),
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [$this, 'permission_callback']
                 ),
                 'schema' => array($this, 'settings_list_schema')
             )
@@ -35,7 +35,7 @@ class C_NextGen_Rest_V1_Settings extends WP_REST_Controller
                 array(
                     'methods'  => 'GET',
                     'callback' => array($this, 'setting_get'),
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [$this, 'permission_callback']
                 ),
                 'schema' => array($this, 'settings_value_schema')
             )
@@ -60,11 +60,21 @@ class C_NextGen_Rest_V1_Settings extends WP_REST_Controller
                 array(
                     'methods'  => WP_REST_Server::EDITABLE,
                     'callback' => array($this, 'setting_set'),
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [$this, 'permission_callback']
                 ),
                 'schema' => array($this, 'settings_value_schema')
             )
         );
+    }
+
+    public function permission_callback() {
+        if (!current_user_can('NextGEN Change options'))
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('Permission denied', 'nggallery'),
+                ['status' => 401]
+            );
+        return TRUE;
     }
 
     /**
@@ -86,11 +96,11 @@ class C_NextGen_Rest_V1_Settings extends WP_REST_Controller
                             'key' => array(
                                 'description' => __('Unique identifier for the setting.', 'nggallery'),
                                 'type'        => 'string',
-                                'readonly'    => TRUE
+                                'readOnly'    => TRUE
                             ),
                             'value' => array(
                                 'description' => __('Setting value.', 'nggallery'),
-                                'type'        => 'mixed'
+                                'type'        => ['integer', 'string', 'boolean', 'null', 'number', 'array', 'object']
                             ),
                             '_links' => array(
                                 'description' => __('Related resources', 'nggallery'),
@@ -106,7 +116,7 @@ class C_NextGen_Rest_V1_Settings extends WP_REST_Controller
     /**
      * @return array
      */
-    public function setting_value_schema()
+    public function settings_value_schema()
     {
         return array(
             '$schema'    => 'http://json-schema.org/draft-07/schema#',
@@ -116,11 +126,11 @@ class C_NextGen_Rest_V1_Settings extends WP_REST_Controller
                 'key' => array(
                     'description' => __('Unique identifier for the setting.', 'nggallery'),
                     'type'        => 'string',
-                    'readonly'    => TRUE
+                    'readOnly'    => TRUE
                 ),
                 'value' => array(
                     'description' => __('Setting value.', 'nggallery'),
-                    'type'        => 'mixed'
+                    'type'        => ['integer', 'string', 'boolean', 'null', 'number', 'array', 'object']
                 )
             )
         );

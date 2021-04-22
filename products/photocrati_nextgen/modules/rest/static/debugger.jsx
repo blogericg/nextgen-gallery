@@ -1,5 +1,7 @@
-import ReactDOM from 'react-dom'
-import React, {Fragment} from 'react'
+import ReactDOM from 'react-dom';
+import React, {Fragment} from 'react';
+
+import Ajv from "ajv";
 
 //  No license is provided; credit is given to http://phpjs.org/functions/var_dump/
 function print_formatted_array() {
@@ -240,16 +242,52 @@ class NGGDebugRester extends React.Component {
     fetch_update = (resource_type) => {
         const url = window.ngg_rest_debugger_url + resource_type.endpoint;
         const self = this;
-        fetch(url)
-            .then(response => response.json())
-            .then(function(data) {
-                // minor hack to account for non-array results
-                if (data instanceof Array) {
-                    self.setState({[resource_type.endpoint]: data});
-                } else {
-                    self.setState({[resource_type.endpoint]: [data]});
+
+        // First make an OPTIONS request to get the schema to validate and validate all responses automatically
+        // Yes this could be made neater but this is a debug panel not meant for production and I'm just hammering
+        // out the bare basics here.
+        fetch(url, {
+            method: 'OPTIONS',
+            headers: {
+                'X-WP-Nonce': window.ngg_rest_debugger_nonce
+            }
+        })
+            .then(otherresponse => otherresponse.json())
+            .then(function(optionsdata) {
+                const ajv = new Ajv();
+                const schema = optionsdata.schema;
+                try {
+                    const ajv_validate = ajv.compile(schema)
+                    fetch(url, {
+                        headers: {
+                            'X-WP-Nonce': window.ngg_rest_debugger_nonce
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(function(data) {
+
+                            // I can't think of an easy and elegant way to flag these results so we'll just dump them into
+                            // the console for now
+                            const valid = ajv_validate(data)
+                            if (!valid) {
+                                console.log(url + " Validation failure", ajv_validate.errors);
+                            } else {
+                                console.log(url + " Validation passed");
+                            }
+
+                            // minor hack to account for non-array results
+                            if (data instanceof Array) {
+                                self.setState({[resource_type.endpoint]: data});
+                            } else {
+                                self.setState({[resource_type.endpoint]: [data]});
+                            }
+                        });
+
+                } catch (exception) {
+                    console.log(url + " Schema error:", exception, typeof exception);
                 }
             });
+
     }
 
     clear_endpoint = (endpoint) => {

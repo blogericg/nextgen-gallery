@@ -15,11 +15,21 @@ class C_NextGen_Rest_V1_Albums extends WP_REST_Controller
                 array(
                     'methods'  => 'GET',
                     'callback' => array($this, 'albums_list'),
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [$this, 'permission_callback']
                 ),
                 'schema' => array($this, 'album_list_schema')
             )
         );
+    }
+
+    public function permission_callback() {
+        if (!current_user_can('NextGEN Edit album'))
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('Permission denied', 'nggallery'),
+                ['status' => 401]
+            );
+        return TRUE;
     }
 
     /**
@@ -41,7 +51,7 @@ class C_NextGen_Rest_V1_Albums extends WP_REST_Controller
                             'id' => array(
                                 'description' => __('Unique identifier for the album.', 'nggallery'),
                                 'type'        => 'integer',
-                                'readonly'    => TRUE
+                                'readOnly'    => TRUE
                             ),
                             'name' => array(
                                 'description' => __('Album title.', 'nggallery'),
@@ -54,7 +64,7 @@ class C_NextGen_Rest_V1_Albums extends WP_REST_Controller
                             'slug' => array(
                                 'description' => __('Slug used to identify album in URL.', 'nggallery'),
                                 'type'        => 'string',
-                                'readonly'    => TRUE
+                                'readOnly'    => TRUE
                             ),
                             'preview image id' => array(
                                 'description' => __('Image ID used for album previews.', 'nggallery'),

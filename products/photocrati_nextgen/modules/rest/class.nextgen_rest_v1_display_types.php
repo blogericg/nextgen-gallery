@@ -15,7 +15,7 @@ class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
                 array(
                     'methods'  => 'GET',
                     'callback' => array($this, 'display_types_list'),
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [$this, 'permission_callback']
                 ),
                 'schema' => [$this, 'display_type_list_schema']
             )
@@ -42,7 +42,7 @@ class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
                 array(
                     'methods'  => 'GET',
                     'callback' => array($this, 'display_type_get_setting'),
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [$this, 'permission_callback']
                 ),
                 'schema' => array($this, 'display_type_setting_value_schema')
             )
@@ -72,7 +72,7 @@ class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
                 array(
                     'methods'  => WP_REST_Server::EDITABLE,
                     'callback' => array($this, 'display_type_set_setting'),
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [$this, 'permission_callback']
                 ),
                 'schema' => array($this, 'display_type_setting_value_schema')
             )
@@ -92,11 +92,21 @@ class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
                 array(
                     'methods'  => 'GET',
                     'callback' => array($this, 'display_type_list_settings'),
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [$this, 'permission_callback']
                 ),
                 'schema' => array($this, 'display_type_settings_list_schema')
             )
         );
+    }
+
+    public function permission_callback() {
+        if (!current_user_can('NextGEN Change options'))
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('Permission denied', 'nggallery'),
+                ['status' => 401]
+            );
+        return TRUE;
     }
 
     /**
@@ -118,11 +128,11 @@ class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
                             'key' => array(
                                 'description' => __('Unique identifier for the setting.', 'nggallery'),
                                 'type'        => 'string',
-                                'readonly'    => TRUE
+                                'readOnly'    => TRUE
                             ),
                             'value' => array(
                                 'description' => __('Setting value.', 'nggallery'),
-                                'type'        => 'mixed'
+                                'type'        => ['integer', 'string', 'boolean', 'null', 'number', 'array', 'object']
                             ),
                             '_links' => array(
                                 'description' => __('Related resources', 'nggallery'),
@@ -148,7 +158,7 @@ class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
                 'id' => array(
                     'description' => __('Display type id.', 'nggallery'),
                     'type'        => 'string',
-                    'readonly'    => TRUE
+                    'readOnly'    => TRUE
                 ),
                 'title' => array(
                     'description' => __('Display type title.', 'nggallery'),
@@ -175,11 +185,11 @@ class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
                 'key' => array(
                     'description' => __('Unique identifier for the setting.', 'nggallery'),
                     'type'        => 'string',
-                    'readonly'    => TRUE
+                    'readOnly'    => TRUE
                 ),
                 'value' => array(
                     'description' => __('Setting value.', 'nggallery'),
-                    'type'        => 'mixed'
+                    'type'        => ['integer', 'string', 'boolean', 'null', 'number', 'array', 'object']
                 )
             )
         );

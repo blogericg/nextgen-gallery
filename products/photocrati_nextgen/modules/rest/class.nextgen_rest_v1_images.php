@@ -23,11 +23,21 @@ class C_NextGen_Rest_V1_Images extends WP_REST_Controller
                 array(
                     'methods'  => 'GET',
                     'callback' => array($this, 'images_list'),
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [$this, 'permission_callback']
                 ),
                 'schema' => array($this, 'images_list_schema')
             )
         );
+    }
+
+    public function permission_callback() {
+        if (!current_user_can('NextGEN Manage others gallery'))
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('Permission denied', 'nggallery'),
+                ['status' => 401]
+            );
+        return TRUE;
     }
 
     /**
@@ -73,7 +83,7 @@ class C_NextGen_Rest_V1_Images extends WP_REST_Controller
                             'id' => array(
                                 'description' => __('Unique identifier for the image.', 'nggallery'),
                                 'type'        => 'integer',
-                                'readonly'    => TRUE
+                                'readOnly'    => TRUE
                             ),
                             'alttext' => array(
                                 'description' => __('Titled used for alt attribute when displaying images.', 'nggallery'),
@@ -86,7 +96,7 @@ class C_NextGen_Rest_V1_Images extends WP_REST_Controller
                             'slug' => array(
                                 'description' => __('Slug generated from image alttext attribute.', 'nggallery'),
                                 'type'        => 'string',
-                                'readonly'    => TRUE
+                                'readOnly'    => TRUE
                             ),
                             'post id' => array(
                                 'description' => __('WordPress page or post ID linked to image. Zero for no association.', 'nggallery'),
@@ -95,7 +105,7 @@ class C_NextGen_Rest_V1_Images extends WP_REST_Controller
                             'filename' => array(
                                 'description' => __('Image filename.', 'nggallery'),
                                 'type'        => 'string',
-                                'readonly'    => TRUE
+                                'readOnly'    => TRUE
                             ),
                             'excluded' => array(
                                 'description' => __('Whether the image is excluded when displaying its parent gallery.', 'nggallery'),
@@ -112,12 +122,12 @@ class C_NextGen_Rest_V1_Images extends WP_REST_Controller
                             'image url' => array(
                                 'description' => __('Publicly accessible URL to the main image file.', 'nggallery'),
                                 'type'        => 'string',
-                                'readonly'    => TRUE
+                                'readOnly'    => TRUE
                             ),
                             'thumbnail url' => array(
                                 'description' => __('Publicly accessible URL to the main image thumbnail.', 'nggallery'),
                                 'type'        => 'string',
-                                'readonly'    => TRUE
+                                'readOnly'    => TRUE
                             )
                         )
                     )

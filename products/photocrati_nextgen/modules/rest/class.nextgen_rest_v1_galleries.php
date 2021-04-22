@@ -13,9 +13,9 @@ class C_NextGen_Rest_V1_Galleries
             '/galleries',
             array(
                 array(
-                    'methods'  => 'GET',
+                    'methods'  => WP_REST_Server::READABLE,
                     'callback' => array($this, 'galleries_list'),
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [$this, 'permission_callback']
                 ),
                 'schema' => array($this, 'galleries_list_schema')
             )
@@ -34,13 +34,23 @@ class C_NextGen_Rest_V1_Galleries
                     )
                 ),
                 array(
-                    'methods'  => 'GET',
+                    'methods'  => WP_REST_Server::READABLE,
                     'callback' => array($this, 'gallery_info'),
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [$this, 'permission_callback']
                 ),
                 'schema' => array($this, 'gallery_info_schema')
             )
         );
+    }
+
+    public function permission_callback() {
+        if (!current_user_can('NextGEN Manage others gallery'))
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('Permission denied', 'nggallery'),
+                ['status' => 401]
+            );
+        return TRUE;
     }
 
     /**
@@ -61,7 +71,7 @@ class C_NextGen_Rest_V1_Galleries
             'id' => array(
                 'description' => __('Unique identifier for the gallery.', 'nggallery'),
                 'type'        => 'integer',
-                'readonly'    => TRUE
+                'readOnly'    => TRUE
             ),
             'title' => array(
                 'description' => __('Gallery title.', 'nggallery'),
@@ -70,12 +80,12 @@ class C_NextGen_Rest_V1_Galleries
             'slug' => array(
                 'description' => __('Slug used to identify galleries in URL.', 'nggallery'),
                 'type'        => 'string',
-                'readonly'    => TRUE
+                'readOnly'    => TRUE
             ),
             'path' => array(
                 'description' => __('Gallery path under the site document root.', 'nggallery'),
                 'type'        => 'string',
-                'readonly'    => TRUE
+                'readOnly'    => TRUE
             ),
             'description' => array(
                 'description' => __('Gallery description.', 'nggallery'),

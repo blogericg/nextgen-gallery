@@ -18,6 +18,7 @@
 
 <script>
     window.ngg_rest_debugger_url = '<?php print esc_attr($base_rest_url); ?>';
+    window.ngg_rest_debugger_nonce = '<?php print esc_attr(wp_create_nonce('wp_rest')); ?>';
 </script>
 
 <script src="<?php print esc_attr($script_url); ?>"></script>
