@@ -264,11 +264,9 @@ class NGGDebugRester extends React.Component {
                         }
                     })
                         .then(response => response.json())
-                        .then(function(data) {
-
-                            // I can't think of an easy and elegant way to flag these results so we'll just dump them into
-                            // the console for now
-                            const valid = ajv_validate(data)
+                        .then(function(responsedata) {
+                            // I can't think of an easy and elegant way to flag these results so we'll just dump them into the console for now
+                            const valid = ajv_validate(responsedata)
                             if (!valid) {
                                 console.log(url + " Validation failure", ajv_validate.errors);
                             } else {
@@ -276,10 +274,10 @@ class NGGDebugRester extends React.Component {
                             }
 
                             // minor hack to account for non-array results
-                            if (data instanceof Array) {
-                                self.setState({[resource_type.endpoint]: data});
+                            if (responsedata instanceof Array) {
+                                self.setState({[resource_type.endpoint]: responsedata});
                             } else {
-                                self.setState({[resource_type.endpoint]: [data]});
+                                self.setState({[resource_type.endpoint]: [responsedata]});
                             }
                         });
 

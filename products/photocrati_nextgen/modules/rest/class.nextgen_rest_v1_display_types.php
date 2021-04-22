@@ -4,7 +4,7 @@
  * ATTENTION: Update C_NextGen_Rest_V1 when adding any new routes
  */
 
-class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
+class C_NextGen_Rest_V1_Display_Types
 {
     public function register_routes()
     {
@@ -196,7 +196,7 @@ class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
     }
 
     /**
-     * @return array
+     * @return WP_REST_Response
      */
     public function display_types_list()
     {
@@ -214,12 +214,12 @@ class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
             ];
         }
 
-        return $retval;
+        return rest_ensure_response($retval);
     }
 
     /**
      * @param WP_REST_Request $args
-     * @return WP_Error|array
+     * @return WP_Error|WP_REST_Response
      */
     public function display_type_list_settings($args)
     {
@@ -248,12 +248,12 @@ class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
             ];
         }
 
-        return $retval;
+        return rest_ensure_response($retval);
     }
 
     /**
      * @param WP_REST_Request $args
-     * @return WP_Error|array
+     * @return WP_Error|WP_REST_Response
      */
     public function display_type_get_setting($args)
     {
@@ -276,15 +276,15 @@ class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
                 array('status' => 404)
             );
 
-        return [
+        return rest_ensure_response([
             'key' => $key,
             'value' => $display->settings[$key]
-        ];
+        ]);
     }
 
     /**
      * @param WP_REST_Request $args
-     * @return WP_Error|array
+     * @return WP_Error|WP_REST_Response
      */
     public function display_type_set_setting($args)
     {
@@ -311,9 +311,9 @@ class C_NextGen_Rest_V1_Display_Types extends WP_REST_Controller
         $display->settings[$key] = $value;
         $mapper->save($display);
 
-        return [
+        return rest_ensure_response([
             'key' => $key,
             'value' => $display->settings[$key]
-        ];
+        ]);
     }
 }

@@ -4,7 +4,7 @@
  * ATTENTION: Update C_NextGen_Rest_V1 when adding any new routes
  */
 
-class C_NextGen_Rest_V1_Images extends WP_REST_Controller
+class C_NextGen_Rest_V1_Images
 {
     public function register_routes()
     {
@@ -174,6 +174,6 @@ class C_NextGen_Rest_V1_Images extends WP_REST_Controller
             );
         }
 
-        return $retval;
+        return rest_ensure_response($retval);
     }
 }

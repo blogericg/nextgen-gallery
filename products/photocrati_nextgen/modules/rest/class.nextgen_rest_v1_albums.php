@@ -4,7 +4,7 @@
  * ATTENTION: Update C_NextGen_Rest_V1 when adding any new routes
  */
 
-class C_NextGen_Rest_V1_Albums extends WP_REST_Controller
+class C_NextGen_Rest_V1_Albums
 {
     public function register_routes()
     {
@@ -86,7 +86,7 @@ class C_NextGen_Rest_V1_Albums extends WP_REST_Controller
     }
 
     /**
-     * @return array
+     * @return WP_REST_Response|WP_Error
      */
     public function albums_list()
     {
@@ -104,6 +104,6 @@ class C_NextGen_Rest_V1_Albums extends WP_REST_Controller
             );
         }
 
-        return $retval;
+        return rest_ensure_response($retval);
     }
 }

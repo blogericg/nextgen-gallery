@@ -137,7 +137,7 @@ class C_NextGen_Rest_V1_Settings extends WP_REST_Controller
     }
 
     /**
-     * @return array
+     * @return WP_REST_Response
      */
     public function settings_list()
     {
@@ -155,7 +155,7 @@ class C_NextGen_Rest_V1_Settings extends WP_REST_Controller
             );
         }
 
-        return $retval;
+        return rest_ensure_response($retval);
     }
 
     /**
@@ -176,10 +176,10 @@ class C_NextGen_Rest_V1_Settings extends WP_REST_Controller
                 array('status' => 404)
             );
 
-        return [
+        return rest_ensure_response([
             'key' => $args->get_param('key'),
             'value' => $setting
-        ];
+        ]);
     }
 
     /**
@@ -205,9 +205,9 @@ class C_NextGen_Rest_V1_Settings extends WP_REST_Controller
         $settings->save();
 
         $setting = $settings->get($key, NULL);
-        return [
+        return rest_ensure_response([
             'key' => $key,
             'value' => $setting
-        ];
+        ]);
     }
 }
