@@ -72,7 +72,8 @@ class C_NextGen_Rest_V1_Albums
                             ),
                             'number of children' => array(
                                 'description' => __('Count of child galleries and sub-albums.', 'nggallery'),
-                                'type'        => 'integer'
+                                'type'        => 'integer',
+                                'readOnly'    => TRUE
                             ),
                             'page id' => array(
                                 'description'  => __('WordPress page or post ID linked to album. Zero for no association.', 'nggallery'),
