@@ -35,6 +35,12 @@ class C_Widget_Slideshow extends WP_Widget
                     {
                         $sidebar_data = $wp_registered_sidebars[$sidebar_name];
                         $sidebar_data['widget_id'] = $widget;
+
+                        // These are normally replaced at display time but we're building our cache before then
+                        $sidebar_data['before_widget'] = str_replace('%1$s', $widget, $sidebar_data['before_widget']);
+                        $sidebar_data['before_widget'] = str_replace('%2$s', 'widget_slideshow', $sidebar_data['before_widget']);
+                        $sidebar_data['widget_name'] = __('NextGEN Slideshow', 'nggallery');
+
                         $displayed_gallery = $this->get_displayed_gallery($sidebar_data, $options[$id]);
                         self::$displayed_gallery_ids[$widget] = $displayed_gallery;
                         $controller = C_Display_Type_Controller::get_instance(NGG_BASIC_SLIDESHOW);
