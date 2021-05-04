@@ -104,6 +104,14 @@ class A_Miscellaneous_Form extends Mixin
                     __('Do not enqueue FontAwesome', 'nggallery'),
                     C_NextGen_Settings::get_instance()->disable_fontawesome,
                     __("Warning: your theme or another plugin must provide FontAwesome or your gallery displays may appear incorrectly", 'nggallery')
+                ),
+
+                'disable_ngg_tags_page_field' => $this->_render_radio_field(
+                    (object)array('name' => 'misc_settings'),
+                    'disable_ngg_tags_page',
+                    __('Disable the /ngg_tag/ page', 'nggallery'),
+                    C_NextGen_Settings::get_instance()->get('disable_ngg_tags_page', FALSE),
+                    __("Normally an SEO feature; some users may wish to disable this to prevent NextGEN from revealing image tags to site visitors", 'nggallery')
                 )
             ),
             TRUE
