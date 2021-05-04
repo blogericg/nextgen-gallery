@@ -2,7 +2,7 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 5.5.4
-Stable tag: 3.9.3
+Stable tag: 3.10
 Tested up to: 5.7.1
 License: GPLv3
 Requires PHP: 5.6
@@ -178,6 +178,13 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 
 == Changelog ==
+
+= V3.10  - 05.05.2021
+* NEW:     Added option under Misc Options to disable the /ngg_tag/ page feature
+* Fixed:   Misc performance improvements to NGG 3.9.0
+* Fixed:   Opening the rotate-image dialog a second time could show the incorrect image
+* Fixed:   Paginated galleries on paginated WP posts linked to the incorrect URL
+* Fixed:   Widgets were not rendering correctly with some third party page builders
 
 = V3.9.3 - 04.20.2021
 * Changed: Updated uppy.js

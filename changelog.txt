@@ -1,6 +1,13 @@
 NextGEN Gallery
 by Imagely
 
+= V3.10  - 05.05.2021
+* NEW:     Added option under Misc Options to disable the /ngg_tag/ page feature
+* Fixed:   Misc performance improvements to NGG 3.9.0
+* Fixed:   Opening the rotate-image dialog a second time could show the incorrect image
+* Fixed:   Paginated galleries on paginated WP posts linked to the incorrect URL
+* Fixed:   Widgets were not rendering correctly with some third party page builders
+
 = V3.9.3 - 04.20.2021
 * Changed: Updated uppy.js
 * Fixed:   Conflict with Avada builder
